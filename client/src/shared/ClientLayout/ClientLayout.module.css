@@ -1,0 +1,258 @@
+.header {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   background-color: #161616;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 5px 15px;
+   font-family: "AcuminRPro", sans-serif;
+   z-index: 1000;
+   transition: padding 0.3s ease, height 0.3s ease;
+}
+
+/* Cuando el header se achica */
+.shrink {
+   padding: 5px 20px;
+}
+
+/* Navegación oculta en modo reducido */
+.hidden {
+   opacity: 0;
+   transform: translateY(-20px);
+   pointer-events: none;
+   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Logo */
+.logo img {
+   height: 60px;
+   transition: height 0.3s ease;
+}
+
+.shrink .logo img {
+   height: 40px;
+   margin-bottom: -30px;
+   margin-top: 10px;
+}
+
+/* Línea divisoria */
+.divider {
+   width: 100vw;
+   height: 1px;
+   background-color: #e0e0e0;
+   margin: 10px 0;
+   transition: opacity 0.3s ease;
+}
+
+.shrink .divider {
+   opacity: 0;
+}
+
+/* Navegación */
+.navList {
+   list-style: none;
+   display: flex;
+   gap: 35px;
+   padding: 0;
+   margin: 0;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+}
+
+.nav {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+}
+
+.navList li {
+   position: relative;
+   padding-bottom: 5px;
+}
+
+.navList li a {
+   text-decoration: none;
+   color: #f2f0eb;
+   font-size: 1rem;
+   position: relative;
+   padding: 5px 0;
+   display: inline-block;
+   transition: color 0.3s ease;
+}
+
+.navList li a::after {
+   content: "";
+   position: absolute;
+   bottom: -10px;
+   left: 0;
+   width: 0;
+   height: 2px;
+   background-color: #f2f0eb;
+   transition: width 0.3s ease-in-out;
+}
+
+.navList li a:hover::after,
+.navList li a.active::after {
+   width: 100%;
+}
+
+.navList li a.active {
+   color: #ffffff;
+   /* O cualquier color que desees */
+}
+
+.navList li a.active::after {
+   width: 100%;
+}
+
+
+.shrink .logo {
+   margin-top: 5px;
+   margin-bottom: -10px;
+   transition: margin-top 0.3s ease;
+}
+
+
+.footer {
+   background-color: #244d3c;
+   /* Verde oscuro */
+   color: #f2f0eb;
+   /* Blanco suave */
+   padding: 40px 80px;
+   font-family: "Acumin", sans-serif;
+   margin-top: auto;
+}
+
+.footerContainer {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.footerContent img {
+   width: 100px;
+   margin-bottom: 10px;
+}
+
+.footerContent p {
+   font-size: 1rem;
+   line-height: 1.5;
+   max-width: 650px;
+   margin-bottom: 20px;
+}
+
+.footerRedes {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: -10px;
+}
+
+.footerLinks {
+   display: flex;
+   gap: 10px;
+   font-size: 1rem;
+   margin-top: 10px;
+}
+
+.footerLinks a,
+.footerLegal a {
+   color: #f2f0eb;
+   text-decoration: none;
+}
+
+.footerLinks span {
+   color: #f2f0eb;
+}
+
+.footerSocials {
+   display: flex;
+   gap: 25px;
+}
+
+.footerSocials a {
+   width: 30px;
+   height: 30px;
+   transition: transform 0.3s ease;
+}
+
+.footerSocials a:hover {
+   transform: scale(1.2);
+}
+
+.footerLegal {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 0.9rem;
+   color: #f2f0eb;
+   opacity: 0.3;
+   padding: 20px 0;
+   margin-bottom: -20px;
+}
+
+.footerLegal p {
+   margin: 0;
+}
+
+.dividerLine {
+   width: 100%;
+   height: 1px;
+   background-color: #f2f0eb;
+   align-items: center;
+   opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+   .footer {
+      padding: 20px 40px;
+      /* Espaciado en dispositivos móviles */
+   }
+
+   .footerContainer {
+      display: flex;
+      flex-direction: column;
+      /* Asegura que los bloques principales estén uno debajo del otro */
+      gap: 20px;
+      /* Espaciado entre bloques principales */
+   }
+
+   .footerLinks {
+      display: flex;
+      flex-direction: row;
+      /* Coloca los enlaces en una fila horizontal */
+      justify-content: flex-start;
+      /* Alinea a la izquierda */
+      gap: 10px;
+      /* Espaciado entre los enlaces */
+      font-size: 0.9rem;
+      /* Tamaño del texto */
+   }
+
+   .footerSocials {
+      display: flex;
+      flex-direction: row;
+      /* Coloca los iconos en una fila horizontal */
+      justify-content: flex-end;
+      /* Alinea a la derecha */
+      align-items: center;
+      /* Centra los iconos verticalmente */
+      gap: 10px;
+      /* Espaciado entre los iconos */
+   }
+
+   .footerLegal {
+      display: flex;
+      flex-direction: column;
+      /* Organiza el texto en una columna */
+      align-items: center;
+      /* Centra los elementos */
+      gap: 5px;
+      /* Espaciado entre los textos */
+      font-size: 0.8rem;
+      /* Tamaño reducido del texto */
+   }
+}

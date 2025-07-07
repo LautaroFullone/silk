@@ -1,0 +1,137 @@
+.quizContainer {
+   background-image: url("/images/Quiz_assets-07.png");
+   background-size: cover;
+   background-position: center;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 40px 0px 0px 0px;
+   /* Ajuste para subir el botón */
+   opacity: 0;
+   transform: translateY(30px);
+   transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+}
+
+.fadeIn {
+   opacity: 1;
+   transform: translateY(0);
+}
+
+/* Cuadro con tamaño reducido */
+.quizBox {
+   position: relative;
+   width: 550px;
+   /* Antes: 670px */
+   height: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+/* Imagen de fondo ajustada */
+.quizBackground {
+   width: 100%;
+   height: auto;
+   display: block;
+}
+
+/* Botón con bordes redondeados y tamaño reducido */
+.quizButton {
+   position: absolute;
+   bottom: 35px;
+   /* Subido un poco */
+   background-color: #1b4f3c;
+   color: #ffffff;
+   padding: 10px 20px;
+   /* Más compacto */
+   border: none;
+   border-radius: 6px;
+   /* Más pequeño */
+   font-size: 0.9rem;
+   /* Reducción del tamaño del texto */
+   cursor: pointer;
+   font-family: "AcuminProBold", sans-serif;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.quizButton .arrow {
+   font-size: 1.1rem;
+   /* Más chico */
+   transition: transform 0.3s ease;
+}
+
+.quizButton:hover {
+   background-color: #227657;
+   transform: scale(1.05);
+}
+
+.quizButton:hover .arrow {
+   transform: translateX(5px);
+}
+
+/* Sección de imágenes con la barra blanca ajustada */
+.quizImages {
+   width: 100%;
+   height: 250px;
+   /* Reducida de 339px */
+   background-color: white;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 80px;
+   margin-top: 40px;
+   /* Ajuste para que quede pegada al quiz */
+}
+
+.quizImageContainer {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.quizImage {
+   width: 110px;
+   /* Ajuste menor */
+   height: auto;
+   object-fit: contain;
+   transition: transform 0.3s ease;
+}
+
+.quizImage:hover {
+   transform: scale(1.2);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+
+   .quizContainer {
+      height: 500px;
+   }
+
+   .quizBox {
+      width: 90%;
+      max-width: 320px;
+      margin-top: 100px;
+   }
+
+   .quizButton {
+      font-size: 0.7rem;
+      /* Más chico */
+      padding: 4px 6px;
+      /* Más compacto */
+      bottom: 15px;
+      /* Subido un poco más */
+      border-radius: 4px;
+      /* Bordes suaves */
+   }
+
+   .quizImages {
+      display: none;
+      /* Eliminadas las imágenes y la barra blanca */
+   }
+}
