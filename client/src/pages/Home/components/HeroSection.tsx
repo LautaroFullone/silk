@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from './Banner.module.css'
+import styles from './HeroSection.module.css'
 
 const images = [
    '/Banner 1_1.png',
@@ -13,7 +13,7 @@ interface BannerProps {
    onOpenModal: () => void // Nueva prop para abrir el modal
 }
 
-const Banner: React.FC<BannerProps> = ({ onOpenModal }) => {
+const HeroSection: React.FC<BannerProps> = ({ onOpenModal }) => {
    const [currentImage, setCurrentImage] = useState(0)
    const bannerRef = useRef<HTMLDivElement>(null)
    const [isVisible, setIsVisible] = useState(false)
@@ -77,4 +77,4 @@ const Banner: React.FC<BannerProps> = ({ onOpenModal }) => {
    )
 }
 
-export default Banner
+export default HeroSection
