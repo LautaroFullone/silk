@@ -56,29 +56,35 @@ const SectionCopy: React.FC = () => {
    }, [])
 
    return (
-      <div
-         ref={sectionRef}
-         className={`bg-[#161616] text-[#F2F0EB] px-15 py-10 text-center trans`}
-      >
-         <h2 className="font-very-vogue text-5xl tracking-[1px] mb-5">
-            En <span className="font-classy-vogue text-[#F2F0EB]">SILK</span> creamos más
-            que looks:
-            <br />
-            <em>construimos confianza.</em>
-         </h2>
+      <div className="bg-[#161616] text-[#F2F0EB] py-16 px-8 min-h-screen">
+         <div className="max-w-5xl mx-auto">
+            {/* Título principal */}
+            <h2 className="font-very-vogue text-[3.5rem] leading-[1.1] tracking-[1px] text-center mb-10">
+               En <span className="font-classy-vogue tracking-[1.5px]">SILK</span> creamos
+               más que looks:
+               <br />
+               <span className="font-vogue-italic italic block mt-2 tracking-[1px]">
+                  construimos confianza.
+               </span>
+            </h2>
 
-         <div className={styles.sectionGrid}>
-            {items.map((item) => (
-               <div key={item.id} className={styles.sectionItem}>
-                  <img
-                     src={item.image}
-                     alt={item.title}
-                     className={styles.sectionImage}
-                  />
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-               </div>
-            ))}
+            <div className="flex flex-wrap justify-center mt-10 gap-8">
+               {items.map((item) => (
+                  <div key={item.id} className="w-[320px]">
+                     <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-[320px] object-cover object-center mb-4 shadow-lg"
+                     />
+                     <h3 className="text-lg font-bold mb-2 font-acumin tracking-wide uppercase">
+                        {item.title}
+                     </h3>
+                     <p className="text-[15px] leading-[1.4] font-acumin font-normal">
+                        {item.description}
+                     </p>
+                  </div>
+               ))}
+            </div>
          </div>
       </div>
    )

@@ -7,7 +7,11 @@ const ClientLayout = () => {
       <>
          <Header />
 
+         {/* <main className="flex-1">
+            <div className="container px-4 mx-auto"> */}
          <Outlet />
+         {/* </div>
+         </main> */}
 
          <Footer />
       </>
