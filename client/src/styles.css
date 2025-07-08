@@ -71,6 +71,11 @@
 }
 
 @theme inline {
+   --font-acumin: 'Acumin Pro', sans-serif;
+   --font-very-vogue: 'Very Vogue', sans-serif;
+   --font-classy-vogue: 'Classy Vogue', sans-serif;
+   --font-bodoni-moda: 'Bodoni Moda', sans-serif;
+
    --radius-sm: calc(var(--radius) - 4px);
    --radius-md: calc(var(--radius) - 2px);
    --radius-lg: var(--radius);
@@ -119,6 +124,40 @@
    }
 }
 
-/* *:not(input):not(textarea):not([contenteditable="true"]) {
-   caret-color: transparent;
-} */
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   /* Añadir esto asegura que padding y border estén incluidos en las dimensiones */
+}
+
+/* App.css */
+html,
+body {
+   overflow-x: hidden;
+   /* Evita el desbordamiento horizontal */
+}
+
+body {
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+   /* La página ocupa al menos toda la altura de la pantalla */
+   padding-top: 100px;
+   /* Ajusta este valor según la altura inicial del header */
+}
+
+#root {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+   /* Asegura que el contenido crezca */
+}
+
+.App {
+   display: flex;
+   flex-direction: column;
+   flex-grow: 1;
+   /* Crece para ocupar el espacio */
+}

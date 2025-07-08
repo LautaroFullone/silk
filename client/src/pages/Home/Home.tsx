@@ -11,14 +11,6 @@ const Home = () => {
    return (
       <>
          <Banner onOpenModal={() => setIsModalOpen(true)} />
-         <h1 className="font-acuminprosemibold text-4xl">SILK</h1>
-         <p className="font-acuminprosemibold">construimos confianza</p>
-         <h2 className="font-classy tracking-wide">Asesoría</h2>
-
-         <p className="font-acumin text-base">Texto base con Acumin Pro</p>
-         <p className="font-acuminBold">Negrita</p>
-         <p className="font-acuminThin">Thin</p>
-         <p className="font-bodoni italic">Con Bodoni Moda</p>
          <Quiz />
          <Section />
          <Blog />
