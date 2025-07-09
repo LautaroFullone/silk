@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const navLinks = [
-   { to: '/blog', label: 'BLOG' },
-   { to: '#quiz', label: 'QUIZ', isExternal: true },
-   { to: '/servicios', label: 'SERVICIOS' },
-   { to: '#we-are', label: 'NOSOTROS', isExternal: true },
+   { label: 'BLOG', to: '/blog' },
+   { label: 'QUIZ', to: '/quiz' },
+   { label: 'SERVICIOS', to: '/servicios' },
+   { label: 'NOSOTROS', to: '/nosotros' },
 ]
 
 const Header = () => {
@@ -27,7 +27,7 @@ const Header = () => {
    return (
       <header
          className={`fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300
-                   bg-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} `}
+            bg-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} `}
       >
          <div className="flex justify-center transition-all duration-300">
             <Link to="/" onClick={scrollToTop}>
@@ -51,10 +51,11 @@ const Header = () => {
                ${isScrolled ? 'hidden' : 'block'}`}
          >
             <ul className="flex gap-9 justify-center items-center w-full m-0 p-0 list-none">
-               {navLinks.map((link, idx) => {
+               {navLinks.map((link, index) => {
                   const isActive = location.pathname === link.to
+
                   return (
-                     <li key={idx} className="relative group">
+                     <li key={`nav-link-${index}`} className="relative group">
                         <Link
                            to={link.to}
                            className={`text-base text-tertiary transition-colors duration-300
@@ -75,3 +76,5 @@ const Header = () => {
       </header>
    )
 }
+
+export default Header

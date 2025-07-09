@@ -1,22 +1,16 @@
-import { useState } from 'react'
 import Blog from './components/Blog'
-import Modal from './components/Modal'
 import Quiz from './components/Quiz'
-import Section from './components/Section'
 import HeroSection from './components/HeroSection'
-import SectionCopy from './components/Section copy'
+import ConfidenceSection from './components/ConfidenceSection'
 
 const Home = () => {
-   const [isModalOpen, setIsModalOpen] = useState(false)
-
    return (
       <>
-         <HeroSection onOpenModal={() => setIsModalOpen(true)} />
+         <HeroSection />
          <Quiz />
-         {/* <Section /> */}
-         <SectionCopy />
+         <ConfidenceSection />
          <Blog />
-         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+         {/*<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
       </>
    )
 }
