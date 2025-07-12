@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const navLinks = [
@@ -8,7 +8,7 @@ const navLinks = [
    { label: 'NOSOTROS', to: '/nosotros' },
 ]
 
-const Header = () => {
+const Header = forwardRef<HTMLElement>((props, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const location = useLocation()
 
@@ -26,8 +26,9 @@ const Header = () => {
 
    return (
       <header
+         ref={ref}
          className={`fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300
-            bg-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} `}
+            bg-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} select-none`}
       >
          <div className="flex justify-center transition-all duration-300">
             <Link to="/" onClick={scrollToTop}>
@@ -75,6 +76,6 @@ const Header = () => {
          </nav>
       </header>
    )
-}
+})
 
 export default Header

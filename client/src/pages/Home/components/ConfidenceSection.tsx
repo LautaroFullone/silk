@@ -27,7 +27,7 @@ const items: Item[] = [
 
 const ConfidenceSection = () => {
    return (
-      <div className="bg-secondary py-20">
+      <section className="bg-secondary py-20">
          <div className="max-w-5xl mx-auto">
             <h2 className="font-very-vogue text-6xl text-center mb-10">
                En <span className="font-classy-vogue">SILK</span> creamos más que looks:
@@ -57,7 +57,7 @@ const ConfidenceSection = () => {
                ))}
             </div>
          </div>
-      </div>
+      </section>
    )
 }
 
