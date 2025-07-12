@@ -11,7 +11,7 @@ const ClientLayout = () => {
          <Header ref={headerRef} />
 
          <main
-            className={`flex-1 transition-[margin] duration-500`}
+            className="flex-1 transition-[margin] duration-500"
             style={{ marginTop: headerHeight }}
          >
             <Outlet />
