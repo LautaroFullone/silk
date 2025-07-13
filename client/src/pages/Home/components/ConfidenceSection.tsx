@@ -32,15 +32,18 @@ const ConfidenceSection = () => {
             <h2 className="font-very-vogue text-6xl text-center mb-10">
                En <span className="font-classy-vogue">SILK</span> creamos más que looks:
                <br />
-               <span className="italic">construimos confianza.</span>
+               <span className="italic">construimos confianza</span>
             </h2>
 
             <div
                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
                   gap-8 justify-items-center "
             >
-               {items.map((item) => (
-                  <div className="w-full flex flex-col items-start">
+               {items.map((item, index) => (
+                  <div
+                     key={`confidence-image-${index}`}
+                     className="w-full flex flex-col items-start"
+                  >
                      <div className="w-full aspect-[4/5] rounded-sm overflow-hidden mb-4">
                         <img
                            src={item.image}
@@ -48,9 +51,11 @@ const ConfidenceSection = () => {
                            className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                         />
                      </div>
+
                      <h3 className="text-xl font-bold mb-1 tracking-wide uppercase">
                         {item.title}
                      </h3>
+
                      <p>{item.description}</p>
                   </div>
                ))}

@@ -1,42 +1,67 @@
-import React, { useEffect, useRef, useState } from 'react'
+import {
+   Carousel,
+   CarouselContent,
+   CarouselItem,
+   CarouselNext,
+   CarouselPrevious,
+} from '@shadcn/carousel'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import styles from './Blog.module.css'
-import type { Blog } from '@models/Blog.model'
-// import { getBlogs } from "../../services/blogService";
-// import type { Blog } from "../../services/blogService";
+
+const mockBlogs = [
+   {
+      id: '1',
+      img: '/Banner-1.png',
+      category: 'STYLE',
+      title: 'Butter Yellow is hot!',
+      author: 'Lucas Contardi',
+   },
+   {
+      id: '2',
+      img: '/Banner-2.png',
+      category: 'BEAUTY',
+      title: 'Top 5 No-Makeup looks',
+      author: 'Maggie Cruz Frezzini',
+   },
+   {
+      id: '3',
+      img: '/Banner-3.png',
+      category: 'CELEBRITY',
+      title: 'Taylor Swift vistiendo Versace',
+      author: 'Lucas Contardi',
+   },
+   {
+      id: '4',
+      img: '/Banner-1.png',
+      category: 'STYLE',
+      title: 'Butter Yellow is hot!',
+      author: 'Lucas Contardi',
+   },
+   {
+      id: '5',
+      img: '/Banner-2.png',
+      category: 'BEAUTY',
+      title: 'Top 5 No-Makeup looks',
+      author: 'Maggie Cruz Frezzini',
+   },
+   {
+      id: '6',
+      img: '/Banner-3.png',
+      category: 'CELEBRITY',
+      title: 'Taylor Swift vistiendo Versace',
+      author: 'Lucas Contardi',
+   },
+]
 
 const Blog: React.FC = () => {
-   const [blogs, setBlogs] = useState<Blog[]>([])
+   // eslint-disable-next-line
+   const [blogs, setBlogs] = useState<any[]>([])
    const [currentIndex, setCurrentIndex] = useState(0)
    const itemsPerPage = 3
-   const blogRef = useRef<HTMLDivElement>(null)
-   const [isVisible, setIsVisible] = useState(false)
 
    useEffect(() => {
-      // const fetchBlogs = async () => {
-      //    const blogsData = await getBlogs()
-      //    setBlogs(blogsData)
-      // }
-      // fetchBlogs()
-      setBlogs([])
-   }, [])
-
-   useEffect(() => {
-      const observer = new IntersectionObserver(
-         ([entry]) => {
-            if (entry.isIntersecting) {
-               setIsVisible(true)
-               observer.disconnect()
-            }
-         },
-         { threshold: 0.2 }
-      )
-
-      if (blogRef.current) {
-         observer.observe(blogRef.current)
-      }
-
-      return () => observer.disconnect()
+      setBlogs(mockBlogs)
    }, [])
 
    const nextSlide = () => {
@@ -52,46 +77,69 @@ const Blog: React.FC = () => {
    }
 
    return (
-      <div ref={blogRef} className={`${styles.blog} ${isVisible ? styles.fadeIn : ''}`}>
-         <h2>
-            <span style={{ fontFamily: 'VeryVogueText' }}>Lo</span>{' '}
-            <em style={{ fontFamily: 'VeryVogueTextItalic' }}>último</em>{' '}
-            <span style={{ fontFamily: 'VeryVogueText' }}>de nuestro blog</span>
-         </h2>
+      <section className="bg-tertiary py-20">
+         <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto text-secondary">
+            <h2 className="font-very-vogue text-5xl text-center mb-10">
+               Lo <span className="italic mr-1">último</span> de nuestro blog
+            </h2>
 
-         <div className={styles.blogCarousel} aria-live="polite">
-            <button
-               className={styles.carouselButton}
-               onClick={prevSlide}
-               aria-label="Ver anteriores"
-            >
-               ◀
-            </button>
-
-            {blogs.slice(currentIndex, currentIndex + itemsPerPage).map((blog) => (
-               <Link
-                  key={blog.id}
-                  to={`/bloggers/${blog.id}`}
-                  className={styles.blogLink}
-               >
-                  <div className={styles.blogItem}>
-                     <img src={blog.img} alt={blog.title} />
-                     <div className={styles.blogCategory}>{blog.category}</div>
-                     <h3>{blog.title}</h3>
-                     <p className={styles.blogAuthor}>BY {blog.author.toUpperCase()}</p>
+            {!blogs.length ? (
+               <p className="text-center text-gray-500 mt-10 text-xl">
+                  Aún no hay entradas de blog.
+               </p>
+            ) : (
+               <>
+                  <div className="sm:hidden flex justify-center mb-2 text-xs text-gray-400">
+                     Desliza para ver más
                   </div>
-               </Link>
-            ))}
+                  {/* <CarouselPrevious className="flex-shrink-0 mr-2" /> */}
+                  <Carousel
+                     opts={{
+                        align: 'start',
+                        loop: true,
+                     }}
+                     className="w-full"
+                  >
+                     <CarouselPrevious className="hidden sm:flex" />
+                     <CarouselContent className="m-0">
+                        {blogs.map((blog) => (
+                           <CarouselItem
+                              key={`blog-slot-${blog.id}`}
+                              className="basis-full sm:basis-1/2 lg:basis-1/3 px-2 pl-2 pr-2"
+                           >
+                              <Link
+                                 to={`/blog/${blog.id}`}
+                                 className="block w-full group text-left"
+                              >
+                                 <div className="relative mb-3 aspect-square rounded-sm overflow-hidden">
+                                    <img
+                                       src={blog.img}
+                                       alt={blog.title}
+                                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                    />
 
-            <button
-               className={styles.carouselButton}
-               onClick={nextSlide}
-               aria-label="Ver siguientes"
-            >
-               ▶
-            </button>
+                                    <div className="absolute left-3 bottom-3 bg-tertiary px-3 py-1 rounded text-sm font-semibold uppercase shadow">
+                                       {blog.category}
+                                    </div>
+                                 </div>
+
+                                 <h3 className="text-lg  font-bold mb-1">{blog.title}</h3>
+
+                                 <p className="text-xs text-gray-500 mb-1">
+                                    BY {blog.author?.toUpperCase()}
+                                 </p>
+                              </Link>
+                           </CarouselItem>
+                        ))}
+                     </CarouselContent>
+                     <CarouselNext className="hidden sm:flex" />
+                     {/* <CarouselPrevious className="hidden sm:flex left-2 z-10" />
+                     <CarouselNext className="hidden sm:flex right-2 z-10" /> */}
+                  </Carousel>
+               </>
+            )}
          </div>
-      </div>
+      </section>
    )
 }
 
