@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
    Carousel,
    CarouselContent,
@@ -5,9 +7,6 @@ import {
    CarouselNext,
    CarouselPrevious,
 } from '@shadcn/carousel'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 const mockBlogs = [
    {
@@ -55,26 +54,7 @@ const mockBlogs = [
 ]
 
 const Blog: React.FC = () => {
-   // eslint-disable-next-line
-   const [blogs, setBlogs] = useState<any[]>([])
-   const [currentIndex, setCurrentIndex] = useState(0)
-   const itemsPerPage = 3
-
-   useEffect(() => {
-      setBlogs(mockBlogs)
-   }, [])
-
-   const nextSlide = () => {
-      setCurrentIndex((prevIndex) =>
-         blogs.length <= itemsPerPage ? 0 : (prevIndex + 1) % blogs.length
-      )
-   }
-
-   const prevSlide = () => {
-      setCurrentIndex((prevIndex) =>
-         blogs.length <= itemsPerPage ? 0 : (prevIndex - 1 + blogs.length) % blogs.length
-      )
-   }
+   const [blogs] = useState(mockBlogs)
 
    return (
       <section className="bg-tertiary py-20">
