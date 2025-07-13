@@ -12,17 +12,15 @@ const MiniCarrouselSection = () => {
    const images = [...quizImages, ...quizImages, ...quizImages, ...quizImages]
 
    return (
-      <div className="flex justify-center bg-tertiary">
-         <div className="w-full sm:max-w-5xl bg-tertiary py-10 sm:px-0">
+      <div className="flex justify-center">
+         <div className="w-full sm:max-w-5xl py-10 sm:px-0">
             <Marquee gradient={false} speed={30}>
                {images.map((img, i) => (
                   <img
                      key={img + i}
                      src={`/${img}`}
                      alt={`Prenda ${i + 1}`}
-                     className={`${
-                        i === 0 ? 'ml-0' : 'ml-4'
-                     } w-[80px] sm:w-[100px] h-auto object-contain`}
+                     className={`ml-4 w-[80px] sm:w-[100px] h-auto object-contain`}
                   />
                ))}
             </Marquee>
