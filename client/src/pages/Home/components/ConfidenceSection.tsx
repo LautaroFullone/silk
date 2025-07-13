@@ -1,10 +1,4 @@
-interface Item {
-   image: string
-   title: string
-   description: string
-}
-
-const items: Item[] = [
+const items = [
    {
       image: '/Fotos_sección_pre-blog-04.jpg',
       title: 'DIGITALIZAMOS TU CLOSET',
@@ -23,12 +17,18 @@ const items: Item[] = [
       description:
          'Te ayudamos a proyectar confianza y seguridad a través de un estilo auténtico y único.',
    },
+   {
+      image: '/recomendacion-lauti.png',
+      title: 'REMENDACION DEV',
+      description:
+         'Agregando una imagen más en esa seccion, la grilla se ve mejor cuando hay 2 columnas ',
+   },
 ]
 
 const ConfidenceSection = () => {
    return (
       <section className="bg-secondary py-20">
-         <div className="max-w-5xl mx-auto">
+         <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
             <h2 className="font-very-vogue text-6xl text-center mb-10">
                En <span className="font-classy-vogue">SILK</span> creamos más que looks:
                <br />
@@ -36,22 +36,21 @@ const ConfidenceSection = () => {
             </h2>
 
             <div
-               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
-                  gap-12 justify-items-center "
+               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+                  gap-8 justify-items-center "
             >
                {items.map((item) => (
-                  <div key={`image-${item.title}`}>
-                     <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-[320px] object-cover object-center 
-                           mb-4 shadow-lg rounded-sm"
-                     />
-
-                     <h3 className="text-xl mb-2 tracking-wide uppercase">
+                  <div className="w-full flex flex-col items-start">
+                     <div className="w-full aspect-[4/5] rounded-sm overflow-hidden mb-4">
+                        <img
+                           src={item.image}
+                           alt={item.title}
+                           className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                        />
+                     </div>
+                     <h3 className="text-xl font-bold mb-1 tracking-wide uppercase">
                         {item.title}
                      </h3>
-
                      <p>{item.description}</p>
                   </div>
                ))}

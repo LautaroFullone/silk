@@ -13,7 +13,7 @@ const MiniCarrouselSection = () => {
 
    return (
       <div className="flex justify-center">
-         <div className="w-full sm:max-w-5xl py-10 sm:px-0">
+         <div className="w-full sm:max-w-5xl py-10">
             <Marquee gradient={false} speed={30}>
                {images.map((img, i) => (
                   <img
