@@ -1,4 +1,3 @@
-import styles from './ClientLayout.module.css'
 import React from 'react'
 
 const footerLinks = [

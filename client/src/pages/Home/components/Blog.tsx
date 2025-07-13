@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Blog.module.css'
+import type { Blog } from '@models/Blog.model'
 // import { getBlogs } from "../../services/blogService";
 // import type { Blog } from "../../services/blogService";
 
@@ -17,6 +18,7 @@ const Blog: React.FC = () => {
       //    setBlogs(blogsData)
       // }
       // fetchBlogs()
+      setBlogs([])
    }, [])
 
    useEffect(() => {

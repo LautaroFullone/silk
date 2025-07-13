@@ -8,7 +8,7 @@ const navLinks = [
    { label: 'NOSOTROS', to: '/nosotros' },
 ]
 
-const Header = forwardRef<HTMLElement>((props, ref) => {
+const Header = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const location = useLocation()
 
