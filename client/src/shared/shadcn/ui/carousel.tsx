@@ -171,8 +171,8 @@ function CarouselPrevious({ className = '', size = 36, ...props }) {
          className={cn(
             'absolute cursor-pointer text-primary',
             orientation === 'horizontal'
-               ? 'top-1/2 -left-12 -translate-y-1/2'
-               : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
+               ? 'top-1/2 -left-10 -translate-y-1/2'
+               : '-top-10 left-1/2 -translate-x-1/2 rotate-90',
             className
          )}
          onClick={scrollPrev}
@@ -192,8 +192,8 @@ function CarouselNext({ className = '', size = 36, ...props }) {
             'absolute cursor-pointer text-primary',
             !canScrollNext && 'disabled',
             orientation === 'horizontal'
-               ? 'top-1/2 -right-12 -translate-y-1/2'
-               : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
+               ? 'top-1/2 -right-10 -translate-y-1/2'
+               : '-bottom-10 left-1/2 -translate-x-1/2 rotate-90',
             className
          )}
          onClick={scrollNext}

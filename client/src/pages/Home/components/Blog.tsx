@@ -69,10 +69,10 @@ const Blog: React.FC = () => {
                </p>
             ) : (
                <>
-                  <div className="sm:hidden flex justify-center mb-2 text-xs text-gray-400">
+                  <div className="text-center mb-2 text-xs text-gray-400">
                      Desliza para ver más
                   </div>
-                  {/* <CarouselPrevious className="flex-shrink-0 mr-2" /> */}
+
                   <Carousel
                      opts={{
                         align: 'start',
@@ -80,7 +80,7 @@ const Blog: React.FC = () => {
                      }}
                      className="w-full"
                   >
-                     <CarouselPrevious className="hidden sm:flex" />
+                     <CarouselPrevious />
                      <CarouselContent className="m-0">
                         {blogs.map((blog) => (
                            <CarouselItem
@@ -98,12 +98,12 @@ const Blog: React.FC = () => {
                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                                     />
 
-                                    <div className="absolute left-3 bottom-3 bg-tertiary px-3 py-1 rounded text-sm font-semibold uppercase shadow">
+                                    <div className="absolute left-3 bottom-3 bg-white px-3 py-1 rounded text-sm font-semibold uppercase">
                                        {blog.category}
                                     </div>
                                  </div>
 
-                                 <h3 className="text-lg  font-bold mb-1">{blog.title}</h3>
+                                 <h3 className="text-lg font-bold mb-1">{blog.title}</h3>
 
                                  <p className="text-xs text-gray-500 mb-1">
                                     BY {blog.author?.toUpperCase()}
@@ -112,7 +112,7 @@ const Blog: React.FC = () => {
                            </CarouselItem>
                         ))}
                      </CarouselContent>
-                     <CarouselNext className="hidden sm:flex" />
+                     <CarouselNext />
                      {/* <CarouselPrevious className="hidden sm:flex left-2 z-10" />
                      <CarouselNext className="hidden sm:flex right-2 z-10" /> */}
                   </Carousel>

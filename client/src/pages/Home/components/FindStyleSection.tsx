@@ -1,3 +1,5 @@
+import { ChevronRight } from 'lucide-react'
+
 const FindStyleSection = () => {
    return (
       <div
@@ -14,12 +16,13 @@ const FindStyleSection = () => {
             </div>
 
             <button
+               onClick={() => alert('Hacer el quiz!')}
                className="absolute left-1/2 -translate-x-1/2 bottom-6 sm:bottom-10 
                   bg-primary px-5 py-2 sm:px-6 sm:py-3 rounded-md shadow-lg hover:scale-105          
                   flex items-center cursor-pointer transition-all"
             >
                HACER EL QUIZ
-               <span className="ml-2">{'>'}</span>
+               <ChevronRight className="ml-1" size={19} />
             </button>
          </div>
       </div>
