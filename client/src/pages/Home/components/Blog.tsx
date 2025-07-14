@@ -53,7 +53,7 @@ const mockBlogs = [
    },
 ]
 
-const Blog: React.FC = () => {
+const Blog = () => {
    const [blogs] = useState(mockBlogs)
 
    return (
