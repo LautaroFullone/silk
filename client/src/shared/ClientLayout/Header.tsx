@@ -5,6 +5,7 @@ const navLinks = [
    { label: 'BLOG', to: '/blog' },
    { label: 'QUIZ', to: '/quiz' },
    { label: 'SERVICIOS', to: '/servicios' },
+   { label: 'FAQ', to: '/preguntas-frecuentes' },
    { label: 'NOSOTROS', to: '/nosotros' },
 ]
 
