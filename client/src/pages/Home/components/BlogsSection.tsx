@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import {
    Carousel,
    CarouselContent,
@@ -53,8 +53,9 @@ const mockBlogs = [
    },
 ]
 
-const Blog = () => {
+const BlogsSection = () => {
    const [blogs] = useState(mockBlogs)
+   const showArrows = blogs?.length >= 3
 
    return (
       <section className="bg-tertiary py-20">
@@ -69,9 +70,11 @@ const Blog = () => {
                </p>
             ) : (
                <>
-                  <div className="text-center mb-2 text-xs text-gray-400">
-                     Desliza para ver más
-                  </div>
+                  {showArrows && (
+                     <div className="text-center mb-2 text-xs text-gray-400">
+                        Desliza para ver más
+                     </div>
+                  )}
 
                   <Carousel
                      opts={{
@@ -80,7 +83,8 @@ const Blog = () => {
                      }}
                      className="w-full"
                   >
-                     <CarouselPrevious />
+                     {showArrows && <CarouselPrevious />}
+
                      <CarouselContent className="m-0">
                         {blogs.map((blog) => (
                            <CarouselItem
@@ -112,9 +116,8 @@ const Blog = () => {
                            </CarouselItem>
                         ))}
                      </CarouselContent>
-                     <CarouselNext />
-                     {/* <CarouselPrevious className="hidden sm:flex left-2 z-10" />
-                     <CarouselNext className="hidden sm:flex right-2 z-10" /> */}
+
+                     {showArrows && <CarouselNext />}
                   </Carousel>
                </>
             )}
@@ -123,4 +126,4 @@ const Blog = () => {
    )
 }
 
-export default Blog
+export default BlogsSection
