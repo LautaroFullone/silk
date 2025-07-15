@@ -57,39 +57,40 @@ const preguntasFrecuentes = [
 
 const Faq = () => {
    return (
-      <section className="mt-16">
-         <h3 className="text-[2.1rem] sm:text-4xl font-serif font-medium text-[#3a2e1f] mb-10 text-center">
+      <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12 text-[#3a2e1f]">
+         <h2 className="font-very-vogue text-3xl sm:text-5xl mb-12 ml-0  text-center">
             Preguntas Frecuentes
-         </h3>
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-24">
-            <Accordion type="multiple" className="flex flex-col gap-4 w-full">
+         </h2>
+
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Accordion type="multiple" className="w-full mt-2">
                {preguntasFrecuentes.slice(0, 4).map((item) => (
                   <AccordionItem
                      key={item.id}
                      value={String(item.id)}
-                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-2"
+                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-6"
                   >
-                     <AccordionTrigger className="py-4 px-6 font-bold text-base text-[#281710] hover:bg-[#e3d8c9] rounded-md">
+                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-md uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
                         {item.pregunta}
                      </AccordionTrigger>
-                     <AccordionContent className="px-6 pb-4 text-[#3a2e1f] text-[1.05rem] text-justify">
+                     <AccordionContent className="px-6 pb-4 text-base cursor-default">
                         {item.respuesta}
                      </AccordionContent>
                   </AccordionItem>
                ))}
             </Accordion>
 
-            <Accordion type="multiple" className="flex flex-col gap-4 w-full">
+            <Accordion type="multiple" className="w-full mt-2">
                {preguntasFrecuentes.slice(4).map((item) => (
                   <AccordionItem
                      key={item.id}
                      value={String(item.id)}
-                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-2"
+                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-6"
                   >
-                     <AccordionTrigger className="py-4 px-6 font-bold text-base text-[#281710] hover:bg-[#e3d8c9] rounded-md">
+                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-md uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
                         {item.pregunta}
                      </AccordionTrigger>
-                     <AccordionContent className="px-6 pb-4 text-[#3a2e1f] text-[1.05rem] text-justify">
+                     <AccordionContent className="px-6 pb-4 text-base cursor-default">
                         {item.respuesta}
                      </AccordionContent>
                   </AccordionItem>

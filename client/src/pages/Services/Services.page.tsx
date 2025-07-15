@@ -172,7 +172,7 @@ const servicios = [
 
 const Services = () => {
    return (
-      <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto px-4 py-12">
+      <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto  py-12">
          <p className="text-primary font-bold text-xl mb-6 text-center">
             NUESTROS SERVICIOS
          </p>
@@ -213,7 +213,7 @@ const Services = () => {
                            <AccordionTrigger className="font-semibold text-primary py-2 text-base hover:bg-primary/10 transition cursor-pointer ">
                               {opcion.titulo}
                            </AccordionTrigger>
-                           <AccordionContent className="pb-4 pt-1 text-sm cursor-default">
+                           <AccordionContent className="pb-4 pt-1 text-base cursor-default">
                               {opcion.contenido}
                            </AccordionContent>
                         </AccordionItem>
@@ -232,7 +232,7 @@ const Services = () => {
                COMENZÁ HOY
             </button>
          </div>
-      </div>
+      </section>
    )
 }
 
