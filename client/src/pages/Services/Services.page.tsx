@@ -209,11 +209,11 @@ const Services = () => {
 
                   <Accordion type="single" collapsible className="w-full mt-2">
                      {servicio.opciones.map((opcion) => (
-                        <AccordionItem key={opcion.id} value={opcion.id} className="">
-                           <AccordionTrigger className="font-semibold text-primary py-2 text-base hover:bg-primary/10 transition cursor-pointer ">
+                        <AccordionItem withBorder key={opcion.id} value={opcion.id}>
+                           <AccordionTrigger className="font-semibold pl-1 text-primary py-2 text-base hover:bg-primary/10 transition cursor-pointer ">
                               {opcion.titulo}
                            </AccordionTrigger>
-                           <AccordionContent className="pb-4 pt-1 text-base cursor-default">
+                           <AccordionContent className="pb-4 pt-1 pl-1 text-base cursor-default">
                               {opcion.contenido}
                            </AccordionContent>
                         </AccordionItem>

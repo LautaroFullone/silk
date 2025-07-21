@@ -1,3 +1,4 @@
+import { Button } from '@shadcn'
 import { useRef, useEffect, useState } from 'react'
 
 const images = [
@@ -53,13 +54,14 @@ const HeroSection = () => {
                   </span>
                </p>
 
-               <button
-                  onClick={() => alert('Comenzar!')}
-                  className=" bg-tertiary text-secondary px-5 py-2 sm:px-6 sm:py-3 mt-8 
-                     text-lg rounded-md shadow-lg hover:scale-105 cursor-pointer transition-all"
+               <Button
+                  onClick={() => alert('Hacer el quiz!')}
+                  className="mt-8"
+                  variant="tertiary"
+                  size="xl"
                >
                   COMENZAR
-               </button>
+               </Button>
             </div>
          </div>
       </section>
