@@ -17,10 +17,11 @@ const Footer = () => {
                </p>
             </div>
 
-            <div className="flex flex-col md:flex-row md:justify-between items-center mb-[-10px]">
-               <div className="flex gap-4 text-base mt-2 md:mt-0">
-                  <Link to="/nosotros">NOSOTROS</Link>|
-                  <Link to="/nosotros">SERVICIO</Link>
+            <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
+               <div className="flex gap-4 ">
+                  <Link to="/nosotros">BLOGS</Link>|<Link to="/nosotros">QUIZ</Link>|
+                  <Link to="/nosotros">SERVICIOS</Link>|<Link to="/nosotros">FAQ</Link>|
+                  <Link to="/nosotros">NOSOTROS</Link>
                </div>
 
                <div className="flex gap-6">
@@ -28,7 +29,7 @@ const Footer = () => {
                      to="/"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-300 hover:scale-110"
+                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
                   >
                      <img
                         src="/instagram.png"
@@ -41,7 +42,7 @@ const Footer = () => {
                      to="/"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-300 hover:scale-110"
+                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
                   >
                      <img
                         src="/facebook.png"
@@ -54,7 +55,7 @@ const Footer = () => {
                      to="/"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-300 hover:scale-110"
+                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
                   >
                      <img
                         src="/tik-tok.png"
@@ -65,10 +66,8 @@ const Footer = () => {
                </div>
             </div>
 
-            {/* Divider */}
-            <div className="w-full h-[1px] bg-tertiary/40 my-6" />
+            <div className="w-full h-[1px] bg-tertiary/40 my-5" />
 
-            {/* Legales */}
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-xs opacity-70 pb-2">
                <p className="m-0">©2025 ESTUDIOSILK. TODOS LOS DERECHOS RESERVADOS</p>
                <div className="flex gap-3">

@@ -99,7 +99,7 @@ const BlogsSection = () => {
                                     <img
                                        src={blog.img}
                                        alt={blog.title}
-                                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-200"
                                     />
 
                                     <div className="absolute left-3 bottom-3 bg-white px-3 py-1 rounded text-sm font-semibold uppercase">
