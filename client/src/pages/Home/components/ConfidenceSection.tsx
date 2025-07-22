@@ -19,9 +19,9 @@ const items = [
    },
    {
       image: '/recomendacion-lauti.png',
-      title: 'REMENDACION DEV',
+      title: 'RECOMENDACIÓN DEV',
       description:
-         'Agregando una imagen más en esa seccion, la grilla se ve mejor cuando hay 2 columnas ',
+         'Agregando una imagen más en esa seccion, la grilla se ve mejor cuando hay 2 columnas (pantalla más chica) ',
    },
 ]
 
