@@ -1,5 +1,6 @@
-// src/pages/BlogList.tsx
-
+import BlogCard from './components/BlogCard'
+import { FileText } from 'lucide-react'
+import { useState } from 'react'
 import {
    Pagination,
    PaginationContent,
@@ -8,9 +9,7 @@ import {
    PaginationNext,
    PaginationPrevious,
 } from '@shadcn/pagination'
-import { FileText } from 'lucide-react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import useMobile from '@hooks/useMobile'
 
 const ALL_BLOGS = [
    {
@@ -107,6 +106,7 @@ const BLOGS_PER_PAGE = 6 // Cambia este valor para ver más o menos por página
 
 const Blogs = () => {
    const [currentPage, setCurrentPage] = useState(1)
+   const isMobile = useMobile()
 
    // Calcula qué blogs mostrar
    const totalPages = Math.ceil(ALL_BLOGS.length / BLOGS_PER_PAGE)
@@ -115,74 +115,69 @@ const Blogs = () => {
    const blogs = ALL_BLOGS.slice(startIdx, endIdx)
 
    return (
-      <div className="min-h-screen bg-[#f6f6f2] px-6 pb-10">
+      <div className="min-h-screen px-6 pb-10">
          <div className="max-w-6xl mx-auto pt-12">
-            <h1 className="text-5xl font-serif text-center mb-12 tracking-wide">Blog</h1>
+            <h1 className="text-secondary text-5xl font-serif text-center mb-12 tracking-wide">
+               Blogs publicados
+            </h1>
             {blogs.length === 0 ? (
                <div className="flex flex-col items-center justify-center text-primary">
                   <FileText size={80} className="text-4xl mb-2" />
                   <p className="text-2xl font-serif">Aún no hay artículos publicados.</p>
                </div>
             ) : (
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 overflow-y-auto max-h-[65vh] p-3">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 overflow-y-auto max-h-[100vh] p-3">
                   {blogs.map((blog) => (
-                     <Link to={`/blog/${blog.id}`} key={blog.id} className="group">
-                        <div className="rounded-sm shadow-sm bg-white hover:shadow-lg transition-all overflow-hidden flex flex-col h-full">
-                           {blog.image && (
-                              <img
-                                 src={blog.image}
-                                 alt={blog.title}
-                                 className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-200"
-                              />
-                           )}
-                           <div className="p-5 flex flex-col flex-1">
-                              <h2 className="text-xl font-bold mb-2 text-primary transition-colors">
-                                 {blog.title}
-                              </h2>
-                              <div className="text-gray-400 text-xs mb-3">
-                                 {blog.date}
-                              </div>
-                              <p className="text-gray-700 flex-1 mb-3">{blog.summary}</p>
-                              <span className="text-green-900 font-medium group-hover:underline transition-all">
-                                 Leer más →
-                              </span>
-                           </div>
-                        </div>
-                     </Link>
+                     <BlogCard
+                        key={blog.id}
+                        id={String(blog.id)}
+                        title={blog.title}
+                        description={blog.summary}
+                        imageSrc={blog.image}
+                        date={blog.date}
+                     />
                   ))}
                </div>
             )}
+
             {totalPages > 1 && (
-               <div className="mt-12 flex justify-center">
+               <div className="mt-12 flex justify-center text-secondary">
                   <Pagination>
-                     <PaginationContent>
+                     <PaginationContent className="cursor-pointer select-none">
                         <PaginationItem>
                            <PaginationPrevious
-                              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                              className={
-                                 currentPage === 1 ? 'pointer-events-none opacity-40' : ''
+                              onClick={() =>
+                                 setCurrentPage((prev) => Math.max(prev - 1, 1))
                               }
                            />
                         </PaginationItem>
-                        {[...Array(totalPages)].map((_, i) => (
-                           <PaginationItem key={i}>
-                              <PaginationLink
-                                 isActive={i + 1 === currentPage}
-                                 onClick={() => setCurrentPage(i + 1)}
-                              >
-                                 {i + 1}
-                              </PaginationLink>
+
+                        {!isMobile &&
+                           Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                              (page) => (
+                                 <PaginationItem key={page}>
+                                    <PaginationLink
+                                       onClick={() => setCurrentPage(page)}
+                                       isActive={currentPage === page}
+                                    >
+                                       {page}
+                                    </PaginationLink>
+                                 </PaginationItem>
+                              )
+                           )}
+
+                        {isMobile && (
+                           <PaginationItem>
+                              <span className="text-sm">
+                                 Página {currentPage} de {totalPages}
+                              </span>
                            </PaginationItem>
-                        ))}
+                        )}
+
                         <PaginationItem>
                            <PaginationNext
                               onClick={() =>
-                                 setCurrentPage((p) => Math.min(p + 1, totalPages))
-                              }
-                              className={
-                                 currentPage === totalPages
-                                    ? 'pointer-events-none opacity-40'
-                                    : ''
+                                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                               }
                            />
                         </PaginationItem>
