@@ -38,10 +38,12 @@ function Button({
    className,
    variant,
    size,
+   disableScale = false,
    asChild = false,
    ...props
-}: React.ComponentProps<'button'> &
-   VariantProps<typeof buttonVariants> & {
+}: React.ComponentProps<'button'> & { disableScale?: boolean } & VariantProps<
+      typeof buttonVariants
+   > & {
       asChild?: boolean
    }) {
    const Comp = asChild ? Slot : 'button'
@@ -51,7 +53,8 @@ function Button({
          data-slot="button"
          className={cn(
             buttonVariants({ variant, size, className }),
-            'cursor-pointer hover:scale-105'
+            !disableScale && 'transition-transform duration-200 hover:scale-105',
+            'cursor-pointer'
          )}
          {...props}
       />
