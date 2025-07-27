@@ -12,11 +12,11 @@ import {
 
 const navigation = [
    { name: 'Dashboard', link: '/admin', icon: Home },
-   { name: 'Pedidos', link: '/admin/pedidos', icon: ShoppingCart },
    { name: 'Blogs', link: '/admin/blogs', icon: FileText },
-   { name: 'Artículos', link: '/admin/articulos', icon: Archive },
-   { name: 'Pagos', link: '/admin/pagos', icon: DollarSign },
-   { name: 'Configuración', link: '/admin/configuracion', icon: Settings },
+   // { name: 'Pedidos', link: '/admin/pedidos', icon: ShoppingCart },
+   // { name: 'Artículos', link: '/admin/articulos', icon: Archive },
+   // { name: 'Pagos', link: '/admin/pagos', icon: DollarSign },
+   // { name: 'Configuración', link: '/admin/configuracion', icon: Settings },
 ]
 const Sidebar = () => {
    const { pathname } = useLocation()
@@ -59,7 +59,8 @@ const Sidebar = () => {
          <div className="p-4 border-t border-gray-200">
             <Button
                variant="ghost"
-               className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+               disableScale
+               className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50!"
                onClick={() => alert('Cerrar sesión')}
             >
                <LogOut className="mr-2 h-4 w-4" />

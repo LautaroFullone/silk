@@ -117,8 +117,10 @@ const Dashboard = () => {
    return (
       <div className="space-y-8">
          <div>
-            <h1 className="text-4xl text-gray-900 mb-2">Dashboard</h1>
-            <p className="text-gray-600">Bienvenido al panel de administración de SILK</p>
+            <h1 className="text-4xl font-serif text-gray-900 mb-2">Panel de Control</h1>
+            <p className="text-muted-foreground">
+               Bienvenido al panel de administración de SILK
+            </p>
          </div>
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
