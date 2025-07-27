@@ -23,7 +23,7 @@ const HeroSection = () => {
    return (
       <section
          ref={bannerRef}
-         className="flex items-center justify-center relative transition-all duration-1000 h-[600px] select-none"
+         className="flex items-center justify-center relative transition-all duration-1000 h-[600px]"
       >
          {images.map((img, idx) => (
             <img

@@ -24,14 +24,14 @@ const Sidebar = () => {
    return (
       <div className="flex flex-col w-64 bg-white border-r border-gray-200 text-gray-700">
          <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-            <div className="flex items-center space-x-2">
-               <div className="text-secondary">
-                  <span className="font-classy-vogue text-5xl">SILK</span>
+            <Link to="/" className="select-none">
+               <div className="flex items-center space-x-2">
+                  <div className="font-classy-vogue text-secondary text-5xl">SILK</div>
+                  <div className="px-2 bg-emerald-800 text-white font-light rounded-sm flex items-center justify-center">
+                     ADMIN
+                  </div>
                </div>
-               <div className="px-2 bg-emerald-800 text-white font-light rounded-sm flex items-center justify-center">
-                  ADMIN
-               </div>
-            </div>
+            </Link>
          </div>
 
          <nav className="flex-1 px-4 py-4 space-y-2">
@@ -43,7 +43,7 @@ const Sidebar = () => {
                         variant={isActive ? 'secondary' : 'ghost'}
                         disableScale
                         className={cn(
-                           'w-full justify-start',
+                           'w-full justify-start select-none',
                            'hover:bg-emerald-50! hover:text-emerald-800',
                            isActive && 'bg-emerald-800 hover:bg-emerald-800 text-white'
                         )}

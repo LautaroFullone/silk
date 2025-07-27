@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ClientLayout from '@shared/ClientLayout'
 import AdminLayout from '@shared/AdminLayout'
-import { AdminBlogs, Blogs, Dashboard, Faq, Home, Services } from './pages'
+import { BlogsPanel, Blogs, Dashboard, Faq, Home, Services } from './pages'
 
 const Router = () => {
    return (
@@ -18,7 +18,7 @@ const Router = () => {
 
             <Route path="/admin" element={<AdminLayout />}>
                <Route index element={<Dashboard />} />
-               <Route path="blogs" element={<AdminBlogs />} />
+               <Route path="blogs" element={<BlogsPanel />} />
                <Route path="*" element={<div>404 Not Found</div>} />
             </Route>
          </Routes>
