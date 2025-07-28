@@ -21,6 +21,12 @@ import {
    SelectValue,
 } from '@shadcn/select'
 import AdminTitle from '@shared/AdminTitle/AdminTitle'
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuTrigger,
+} from '@shadcn/dropdown-menu'
 
 const AdminBlogs = () => {
    const [posts, setPosts] = useState([
@@ -147,6 +153,7 @@ const AdminBlogs = () => {
             />
             <Button
                onClick={handleNewPost}
+               size="lg"
                className="bg-emerald-800 hover:bg-emerald-900 text-white"
             >
                <Plus className="w-4 h-4 mr-2" />
@@ -155,8 +162,8 @@ const AdminBlogs = () => {
          </div>
 
          {/* Search and Sort Controls */}
-         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <div className="flex-1 max-w-md">
+         <div className="flex flex-col md:flex-row gap-4 items-start ">
+            <div className="flex-1 max-w-lg w-full">
                <Input
                   placeholder="Buscar posts por título, autor o categoría..."
                   value={searchTerm}
@@ -172,13 +179,14 @@ const AdminBlogs = () => {
                <span className="text-sm text-gray-600 whitespace-nowrap">
                   Ordenar por:
                </span>
+
                <Select
                   value={sortBy}
                   onValueChange={(value: 'date' | 'title' | 'author' | 'status') =>
                      setSortBy(value)
                   }
                >
-                  <SelectTrigger className="w-[140px]">
+                  <SelectTrigger className="w-30">
                      <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -191,9 +199,8 @@ const AdminBlogs = () => {
 
                <Button
                   variant="outline"
-                  size="sm"
                   onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 bg-white!"
                >
                   <ArrowUpDown className="w-4 h-4" />
                   {sortOrder === 'asc' ? (
@@ -202,12 +209,6 @@ const AdminBlogs = () => {
                      <ChevronDown className="w-3 h-3" />
                   )}
                </Button>
-            </div>
-
-            <div className="text-sm text-gray-500 whitespace-nowrap">
-               {filteredAndSortedPosts.length} post
-               {filteredAndSortedPosts.length !== 1 ? 's' : ''} encontrado
-               {filteredAndSortedPosts.length !== 1 ? 's' : ''}
             </div>
          </div>
 

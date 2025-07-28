@@ -1,3 +1,4 @@
+import { Calendar, Edit, Eye, EyeOff, MoreHorizontal, Trash2, User } from 'lucide-react'
 import { Button, Card, CardContent } from '@shadcn'
 import { Badge } from '@shadcn/badge'
 import {
@@ -6,7 +7,7 @@ import {
    DropdownMenuItem,
    DropdownMenuTrigger,
 } from '@shadcn/dropdown-menu'
-import { Calendar, Edit, Eye, MoreHorizontal, Trash, Trash2, User } from 'lucide-react'
+import { useState } from 'react'
 
 interface BlogCardProps {
    id: string
@@ -29,18 +30,14 @@ const BlogCard: React.FC<BlogCardProps> = ({
    image,
    status,
 }) => {
+   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
    const isDisabled = status === 'draft'
 
    return (
-      // <Card
-      //    className={`overflow-hidden transition-all p-0 cursor-pointer ${
-      //       isDisabled ? 'opacity-60 bg-gray-50 ' : 'opacity-100 bg-white '
-      //    }`}
-      // >
-      <Card className="overflow-hidden flex flex-col h-full transition-all p-0 cursor-pointer bg-white">
+      <Card className="overflow-hidden flex flex-col transition-all p-0 cursor-pointer h-45">
          <CardContent className="p-0 flex flex-col h-full">
             <div className="flex h-full">
-               <div className="w-48 h-48 bg-red-200 flex-shrink-0 overflow-hidden">
+               <div className="w-48 bg-red-200 flex-shrink-0 overflow-hidden">
                   <img
                      src={image || '/placeholder.svg'}
                      alt={title}
@@ -49,53 +46,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
                </div>
 
                <div className="flex-1 p-4 sm:p-6 w-full relative">
-                  {/* Mobile/Tablet Actions - positioned at top right */}
-                  <div className="xl:hidden absolute top-4 right-4">
-                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                           <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-8 w-8 p-0 bg-white shadow-sm"
-                           >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Abrir menú</span>
-                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                           <DropdownMenuItem onClick={() => {}}>
-                              <Edit className="mr-2 h-4 w-4" />
-                              <span>Editar</span>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" />
-                              <span>Ver</span>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem
-                              onClick={() => {}}
-                              className={
-                                 status === 'draft' ? 'text-green-600' : 'text-orange-600'
-                              }
-                           >
-                              <Eye className="mr-2 h-4 w-4" />
-                              <span>
-                                 {status === 'published' ? 'Desactivar' : 'Activar'}
-                              </span>
-                           </DropdownMenuItem>
-                           <DropdownMenuItem
-                              onClick={() => {}}
-                              className="text-red-600 focus:text-red-600"
-                           >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              <span>Eliminar</span>
-                           </DropdownMenuItem>
-                        </DropdownMenuContent>
-                     </DropdownMenu>
-                  </div>
-
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                      <div className="flex-1 pr-12 lg:pr-0">
-                        {/* Title and Status */}
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
                            <h3 className="text-lg sm:text-xl font-serif text-gray-900">
                               {title}
@@ -112,7 +64,6 @@ const BlogCard: React.FC<BlogCardProps> = ({
                            </Badge>
                         </div>
 
-                        {/* Author and Date */}
                         <div className="flex flex-col sm:flex-row sm:items-center text-sm mb-3 gap-2 sm:gap-4 text-gray-600">
                            <div className="flex items-center">
                               <User className="w-4 h-4 mr-1" />
@@ -124,21 +75,74 @@ const BlogCard: React.FC<BlogCardProps> = ({
                            </div>
                         </div>
 
-                        {/* Excerpt */}
                         <p className="text-sm line-clamp-2 text-gray-600">{excerpt}</p>
                      </div>
 
-                     {/* Desktop Actions - visible on large screens */}
+                     <div className="xl:hidden absolute top-4 right-4">
+                        <DropdownMenu
+                           open={isDropdownOpen}
+                           onOpenChange={setIsDropdownOpen}
+                        >
+                           <DropdownMenuTrigger asChild>
+                              <Button
+                                 size="icon"
+                                 variant="ghost"
+                                 className="h-8 w-8 p-0 "
+                              >
+                                 <MoreHorizontal className="h-4 w-4" />
+                                 <span className="sr-only">Abrir menú</span>
+                              </Button>
+                           </DropdownMenuTrigger>
+
+                           <DropdownMenuContent align="end" className="xl:hidden">
+                              <DropdownMenuItem onClick={() => {}}>
+                                 <Edit className="mr-3 h-4 w-4" />
+                                 <span className="font-medium  text-gray-500">
+                                    Editar
+                                 </span>
+                              </DropdownMenuItem>
+
+                              <DropdownMenuItem onClick={() => {}}>
+                                 <Eye className="mr-3 h-4 w-4 text-accent-foreground" />
+                                 <span className="font-medium">
+                                    {isDisabled ? 'Mostrar' : 'Ocultar'} post
+                                 </span>
+                              </DropdownMenuItem>
+
+                              <DropdownMenuItem
+                                 onClick={() => {}}
+                                 className="text-red-600! hover:bg-red-50!"
+                              >
+                                 <Trash2 className="mr-3 h-4 w-4 text-red-600" />
+                                 <span className="font-medium">Eliminar</span>
+                              </DropdownMenuItem>
+                           </DropdownMenuContent>
+                        </DropdownMenu>
+                     </div>
+
                      <div className="hidden xl:flex gap-2 lg:ml-6">
-                        <Button variant="outline" onClick={() => {}} title="Editar post">
+                        <Button variant="ghost" onClick={() => {}}>
                            <Edit className="w-4 h-4" />
                            <span className="ml-1">Editar</span>
                         </Button>
 
+                        <Button variant="secondary" onClick={() => {}}>
+                           {isDisabled ? (
+                              <>
+                                 <Eye className="w-4 h-4" />
+                                 <span className="ml-1">Mostrar post</span>
+                              </>
+                           ) : (
+                              <>
+                                 <EyeOff className="w-4 h-4" />
+                                 <span className="ml-1">Ocultar post</span>
+                              </>
+                           )}
+                        </Button>
+
                         <Button
-                           variant="outline"
+                           variant="destructive"
                            onClick={() => {}}
-                           className="text-red-600 hover:text-red-700"
                            title="Eliminar post"
                         >
                            <Trash2 className="w-4 h-4" />
