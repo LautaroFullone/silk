@@ -1,5 +1,5 @@
 import { FileText, Home, LogOut, Menu, Settings, X } from 'lucide-react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
