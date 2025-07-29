@@ -1,16 +1,16 @@
 import { Calendar, Edit, Eye, EyeOff, MoreHorizontal, Trash2, User } from 'lucide-react'
 import { Button, Card, CardContent } from '@shadcn'
 import { Badge } from '@shadcn/badge'
+import { useState } from 'react'
 import {
    DropdownMenu,
    DropdownMenuContent,
    DropdownMenuItem,
    DropdownMenuTrigger,
 } from '@shadcn/dropdown-menu'
-import { useState } from 'react'
 
 interface BlogCardProps {
-   id: string
+   // id: string
    title: string
    author: string
    date: string
@@ -22,7 +22,7 @@ interface BlogCardProps {
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
-   id,
+   // id,
    title,
    author,
    date,

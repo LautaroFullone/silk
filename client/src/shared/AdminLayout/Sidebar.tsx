@@ -1,17 +1,7 @@
+import { FileText, Home, LogOut, Menu, Settings, X } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Button, cn, Sheet, SheetContent, SheetTrigger } from '@shadcn'
-import {
-   Archive,
-   DollarSign,
-   FileText,
-   Home,
-   LogOut,
-   Menu,
-   Settings,
-   ShoppingCart,
-   X,
-} from 'lucide-react'
 import useMobile from '@hooks/useMobile'
+import { Button, cn } from '@shadcn'
 import { useState } from 'react'
 
 const navigation = [
@@ -23,9 +13,8 @@ const navigation = [
    // { name: 'Configuración', link: '/admin/configuracion', icon: Settings },
 ]
 const Sidebar = () => {
-   const { pathname } = useLocation()
-   const navigate = useNavigate()
    const isMobile = useMobile()
+   const { pathname } = useLocation()
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
    const HeaderBrand = () => (

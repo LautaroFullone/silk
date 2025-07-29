@@ -7,12 +7,15 @@ const navLinks = [
    { label: 'SERVICIOS', to: '/servicios' },
    { label: 'FAQ', to: '/preguntas-frecuentes' },
    { label: 'NOSOTROS', to: '/nosotros' },
-   import.meta.env.MODE === 'development' && { label: 'ADMIN', to: '/admin' },
 ]
 
 const Header = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const location = useLocation()
+
+   if (import.meta.env.MODE === 'development') {
+      navLinks.push({ label: 'ADMIN', to: '/admin' })
+   }
 
    useEffect(() => {
       const handleScroll = () => {
