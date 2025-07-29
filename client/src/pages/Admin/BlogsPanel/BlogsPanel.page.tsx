@@ -27,11 +27,11 @@ const posts = [
    },
    {
       id: '2',
-      title: 'Tendencias de Moda 2024',
+      title: 'Tendencias de dadsa sadasdsadasdsd adsad Moda 2024',
       author: 'Ana García',
       date: '2023-12-10',
       excerpt:
-         'Descubre las tendencias que marcarán el próximo año en el mundo de la moda...',
+         'Descubre las tendencias que marcarán el próximo año en el mundo de la moda dsfsdf sdfdfsfdsfsdf dfsdfdsf sdfsdf sdfdsf',
       content: '<p>Las tendencias de moda para 2024 prometen ser revolucionarias...</p>',
       image: '/Banner-5.png',
       status: 'draft',
@@ -106,7 +106,7 @@ const AdminBlogs = () => {
                />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+            <div className="flex items-center gap-2">
                <span className="text-sm text-gray-600 whitespace-nowrap">
                   Ordenar por:
                </span>

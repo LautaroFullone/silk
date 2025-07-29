@@ -14,7 +14,8 @@ const Header = forwardRef<HTMLElement>((_, ref) => {
    const location = useLocation()
 
    if (import.meta.env.MODE === 'development') {
-      navLinks.push({ label: 'ADMIN', to: '/admin' })
+      const link = navLinks.find((link) => link.to === '/admin')
+      if (!link) navLinks.push({ label: 'ADMIN', to: '/admin' })
    }
 
    useEffect(() => {
