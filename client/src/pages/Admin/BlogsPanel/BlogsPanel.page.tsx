@@ -16,8 +16,8 @@ const posts = [
       id: '1',
       title: 'The live is life',
       author: 'Luciano Aldana',
-      date: '2023-12-15',
-      excerpt:
+      date: '2025-12-15',
+      description:
          'El arte de crear experiencias digitales es más que simplemente escribir líneas de código...',
       content:
          '<p>El arte de crear experiencias digitales es más que simplemente escribir líneas de código...</p>',
@@ -27,10 +27,10 @@ const posts = [
    },
    {
       id: '2',
-      title: 'Tendencias de dadsa sadasdsadasdsd adsad Moda 2024',
+      title: 'Tendencias de Moda 2025',
       author: 'Ana García',
-      date: '2023-12-10',
-      excerpt:
+      date: '2025-12-10',
+      description:
          'Descubre las tendencias que marcarán el próximo año en el mundo de la moda dsfsdf sdfdfsfdsfsdf dfsdfdsf sdfsdf sdfdsf',
       content: '<p>Las tendencias de moda para 2024 prometen ser revolucionarias...</p>',
       image: '/Banner-5.png',
@@ -39,7 +39,7 @@ const posts = [
    },
 ]
 
-const AdminBlogs = () => {
+const BlogsPanel = () => {
    const [sortBy, setSortBy] = useState<'date' | 'title' | 'author' | 'status'>('date')
    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
@@ -168,4 +168,4 @@ const AdminBlogs = () => {
       </div>
    )
 }
-export default AdminBlogs
+export default BlogsPanel

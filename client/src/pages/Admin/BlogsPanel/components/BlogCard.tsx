@@ -8,12 +8,14 @@ import {
    DropdownMenuItem,
    DropdownMenuTrigger,
 } from '@shadcn/dropdown-menu'
+import { useNavigate } from 'react-router-dom'
 
 interface BlogCardProps {
+   id: string
    title: string
    author: string
    date: string
-   excerpt: string
+   description: string
    content: string
    image: string
    status: string
@@ -21,13 +23,15 @@ interface BlogCardProps {
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
+   id,
    title,
    author,
    date,
-   excerpt,
+   description,
    image,
    status,
 }) => {
+   const navigate = useNavigate()
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
    const isDisabled = status === 'draft'
 
@@ -67,30 +71,27 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   </Badge>
                   {/* Acciones (xl+) */}
                   <div className="flex-shrink-0 hidden xl:flex gap-2">
-                     <Button variant="ghost" onClick={() => {}}>
+                     <Button
+                        variant="ghost"
+                        onClick={() => navigate(`/admin/blogs/${id}`)}
+                     >
                         <Edit className="w-4 h-4" />
-                        {/* <span className="ml-1">Editar</span> */}
                      </Button>
+
                      <Button variant="secondary" onClick={() => {}}>
                         {isDisabled ? (
-                           <>
-                              <EyeOff className="w-4 h-4" />
-                              {/* <span className="ml-1">Mostrar post</span> */}
-                           </>
+                           <EyeOff className="w-4 h-4" />
                         ) : (
-                           <>
-                              <Eye className="w-4 h-4" />
-                              {/* <span className="ml-1">Ocultar post</span> */}
-                           </>
+                           <Eye className="w-4 h-4" />
                         )}
                      </Button>
+
                      <Button
                         variant="destructive"
                         onClick={() => {}}
                         title="Eliminar post"
                      >
                         <Trash2 className="w-4 h-4" />
-                        {/* <span className="ml-1">Eliminar</span> */}
                      </Button>
                   </div>
 
@@ -138,8 +139,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   </div>
                </div>
 
-               {/* Excerpt */}
-               <p className="text-sm text-gray-600 line-clamp-2 min-w-0">{excerpt}</p>
+               {/* description */}
+               <p className="text-sm text-gray-600 line-clamp-2 min-w-0">{description}</p>
             </div>
          </CardContent>
       </Card>
