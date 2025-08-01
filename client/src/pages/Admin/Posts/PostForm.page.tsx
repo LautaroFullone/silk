@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { ArrowLeft, Save, Eye, Upload } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { OutputData } from '@editorjs/editorjs'
@@ -17,111 +17,13 @@ import {
 } from '@shadcn'
 import { Label } from '@shadcn/label'
 import { Textarea } from '@shadcn/textarea'
-import TextEditor from '@shared/TextEditor/TextEditor'
+import { EditorJSComponent } from '@shared/TextEditor/TextEditor'
 
-interface BlogPost {
-   id: string
-   title: string
-   author: string
-   date: string
-   description: string
-   content: OutputData
-   subject: string
-   image: string
-   isVisible: boolean
-}
-
-const mockPosts: BlogPost[] = [
-   {
-      id: '1',
-      title: 'The live is life',
-      author: 'Luciano Aldana',
-      date: '2025-12-14',
-      description:
-         'El arte de crear experiencias digitales es más que simplemente escribir líneas de código...',
-      content: {
-         blocks: [
-            {
-               type: 'header',
-               data: {
-                  text: 'Introducción',
-                  level: 2,
-               },
-            },
-            {
-               type: 'paragraph',
-               data: {
-                  text: 'El arte de crear experiencias digitales es más que simplemente escribir líneas de código. Es sobre entender las necesidades humanas, las emociones y crear conexiones significativas a través de la tecnología.',
-               },
-            },
-            {
-               type: 'header',
-               data: {
-                  text: 'La importancia del diseño centrado en el usuario',
-                  level: 3,
-               },
-            },
-            {
-               type: 'paragraph',
-               data: {
-                  text: 'Cuando desarrollamos productos digitales, debemos pensar primero en las personas que los van a usar. Cada decisión de diseño debe estar respaldada por una comprensión profunda de nuestros usuarios.',
-               },
-            },
-         ],
-      },
-      image: '/placeholder.svg?height=400&width=600',
-      subject: 'Estilo',
-      isVisible: true,
-   },
-   {
-      id: '2',
-      title: 'Tendencias de Moda 2025',
-      author: 'Ana García',
-      date: '2025-12-09',
-      description:
-         'Descubre las tendencias que marcarán el próximo año en el mundo de la moda...',
-      content: {
-         blocks: [
-            {
-               type: 'header',
-               data: {
-                  text: 'Las tendencias que definirán 2025',
-                  level: 2,
-               },
-            },
-            {
-               type: 'paragraph',
-               data: {
-                  text: 'El mundo de la moda está en constante evolución, y 2025 promete ser un año revolucionario con nuevas tendencias que combinarán sostenibilidad, tecnología y expresión personal.',
-               },
-            },
-            {
-               type: 'list',
-               data: {
-                  style: 'unordered',
-                  items: [
-                     'Sostenibilidad como prioridad',
-                     'Tecnología wearable',
-                     'Personalización extrema',
-                  ],
-               },
-            },
-         ],
-      },
-      image: '/recomendacion-lauti.png',
-      subject: 'draft',
-      isVisible: true,
-   },
-]
-
-const BlogForm = () => {
-   const { idBlog } = useParams()
-   console.log('## Blog ID:', idBlog)
+const PostForm = () => {
+   const { idPost } = useParams()
+   console.log('## Post ID:', idPost)
 
    const navigate = useNavigate()
-   const [post, setPost] = useState<BlogPost | null>(null)
-
-   const params = useParams()
 
    const [formData, setFormData] = useState({
       title: '',
@@ -142,23 +44,6 @@ const BlogForm = () => {
       image: '',
       isVisible: false,
    })
-
-   useEffect(() => {
-      const foundPost = mockPosts.find((p) => p.id === params.id)
-      if (foundPost) {
-         setPost(foundPost)
-         setFormData({
-            title: foundPost.title,
-            author: foundPost.author,
-            date: foundPost.date,
-            description: foundPost.description,
-            content: foundPost.content,
-            subject: foundPost.subject,
-            image: foundPost.image,
-            isVisible: foundPost.isVisible,
-         })
-      }
-   }, [params.id])
 
    const handleContentChange = (data: OutputData) => {
       setFormData({ ...formData, content: data })
@@ -226,6 +111,7 @@ const BlogForm = () => {
                               }
                            />
                         </div>
+
                         <div className="space-y-2">
                            <Label htmlFor="category">Categoría</Label>
                            <Select
@@ -258,6 +144,7 @@ const BlogForm = () => {
                               }
                               placeholder="URL de la imagen"
                            />
+
                            <Button variant="outline" size="icon">
                               <Upload className="w-4 h-4" />
                            </Button>
@@ -266,6 +153,7 @@ const BlogForm = () => {
 
                      <div className="space-y-2">
                         <Label htmlFor="description">Descripción</Label>
+
                         <Textarea
                            id="description"
                            value={formData.description}
@@ -280,7 +168,13 @@ const BlogForm = () => {
                      {/* Content Editor - Directly after description */}
                      <div className="space-y-2">
                         <Label htmlFor="content">Contenido</Label>
-                        <TextEditor
+
+                        {/* <TextEditor
+                           data={formData.content}
+                           onChange={handleContentChange}
+                           keyReset={idPost}
+                        /> */}
+                        <EditorJSComponent
                            data={formData.content}
                            onChange={handleContentChange}
                            placeholder="Edita el contenido de tu post..."
@@ -347,4 +241,4 @@ const BlogForm = () => {
    )
 }
 
-export default BlogForm
+export default PostForm

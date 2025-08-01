@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 const navigation = [
    { name: 'Dashboard', link: '/admin', icon: Home },
-   { name: 'Blogs', link: '/admin/blogs', icon: FileText },
+   { name: 'Posts', link: '/admin/posts', icon: FileText },
    // { name: 'Pedidos', link: '/admin/pedidos', icon: ShoppingCart },
    // { name: 'Artículos', link: '/admin/articulos', icon: Archive },
    // { name: 'Pagos', link: '/admin/pagos', icon: DollarSign },

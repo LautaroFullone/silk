@@ -1,7 +1,7 @@
 import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import AdminTitle from '@shared/AdminTitle/AdminTitle'
-import BlogCard from './components/BlogCard'
-import { Blog } from '@models/Blog.model'
+import PostCard from './components/PostCard'
+import { Post } from '@models/Post.model'
 import { useState } from 'react'
 import {
    Button,
@@ -13,7 +13,7 @@ import {
    SelectValue,
 } from '@shadcn'
 
-const mockBlogs: Blog[] = [
+const mockPosts: Post[] = [
    {
       id: '1',
       title: 'The live is life',
@@ -69,7 +69,7 @@ const mockBlogs: Blog[] = [
 
 type SortFieldsType = 'date' | 'title' | 'author' | 'subject'
 
-const BlogsPanel = () => {
+const PostsPanel = () => {
    const [sortBy, setSortBy] = useState<SortFieldsType>('date')
    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
@@ -77,7 +77,7 @@ const BlogsPanel = () => {
    // const [currentPage, setCurrentPage] = useState(1)
    // const [postsPerPage] = useState(5)
 
-   const filteredAndSortedBlogs = mockBlogs
+   const filteredAndSortedPosts = mockPosts
       .filter(
          (post) =>
             post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,8 +110,8 @@ const BlogsPanel = () => {
          <div className="flex justify-between items-center">
             <AdminTitle
                hasGoBack
-               title="Gestión de Blogs"
-               description="Crea y administra el contenido de los blogs"
+               title="Gestión de Posts"
+               description="Crea y administra el contenido de los posts"
             />
 
             <Button
@@ -174,8 +174,8 @@ const BlogsPanel = () => {
          </div>
 
          <div className="grid gap-6">
-            {filteredAndSortedBlogs.map((blog, index) => (
-               <BlogCard key={`blog-card-admin-${index}`} blog={blog} />
+            {filteredAndSortedPosts.map((post, index) => (
+               <PostCard key={`post-card-admin-${index}`} post={post} />
             ))}
          </div>
 
@@ -198,4 +198,4 @@ const BlogsPanel = () => {
       </div>
    )
 }
-export default BlogsPanel
+export default PostsPanel

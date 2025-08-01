@@ -8,7 +8,7 @@ import {
    CarouselPrevious,
 } from '@shadcn/carousel'
 
-const mockBlogs = [
+const mockPosts = [
    {
       id: '1',
       img: '/Banner-1.png',
@@ -53,9 +53,9 @@ const mockBlogs = [
    },
 ]
 
-const BlogsSection = () => {
-   const [blogs] = useState(mockBlogs)
-   const showArrows = blogs?.length >= 3
+const PostsSection = () => {
+   const [posts] = useState(mockPosts)
+   const showArrows = posts?.length >= 3
 
    return (
       <section className="bg-tertiary py-20">
@@ -64,7 +64,7 @@ const BlogsSection = () => {
                Lo <span className="italic mr-1">último</span> de nuestro blog
             </h2>
 
-            {!blogs.length ? (
+            {!posts.length ? (
                <p className="text-center text-gray-500 mt-10 text-xl">
                   Aún no hay entradas de blog.
                </p>
@@ -86,31 +86,31 @@ const BlogsSection = () => {
                      {showArrows && <CarouselPrevious />}
 
                      <CarouselContent className="m-0">
-                        {blogs.map((blog) => (
+                        {posts.map(({ id, author, category, img, title }) => (
                            <CarouselItem
-                              key={`blog-slot-${blog.id}`}
+                              key={`post-slot-${id}`}
                               className="basis-full sm:basis-1/2 lg:basis-1/3 px-2 pl-2 pr-2"
                            >
                               <Link
-                                 to={`/blog/${blog.id}`}
+                                 to={`/blog/${id}`}
                                  className="block w-full group text-left"
                               >
                                  <div className="relative mb-3 aspect-square rounded-sm overflow-hidden">
                                     <img
-                                       src={blog.img}
-                                       alt={blog.title}
+                                       src={img}
+                                       alt={title}
                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-200"
                                     />
 
                                     <div className="absolute left-3 bottom-3 bg-white px-3 py-1 rounded text-sm font-semibold uppercase">
-                                       {blog.category}
+                                       {category}
                                     </div>
                                  </div>
 
-                                 <h3 className="text-lg font-bold mb-1">{blog.title}</h3>
+                                 <h3 className="text-lg font-bold mb-1">{title}</h3>
 
                                  <p className="text-xs text-gray-500 mb-1">
-                                    BY {blog.author?.toUpperCase()}
+                                    BY {author?.toUpperCase()}
                                  </p>
                               </Link>
                            </CarouselItem>
@@ -126,4 +126,4 @@ const BlogsSection = () => {
    )
 }
 
-export default BlogsSection
+export default PostsSection

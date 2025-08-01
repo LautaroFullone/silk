@@ -1,14 +1,14 @@
 import { Card, CardContent, Badge } from '@shadcn'
-import BlogCardActions from './BlogCardActions'
 import { Calendar, User } from 'lucide-react'
-import { Blog } from '@models/Blog.model'
+import { Post } from '@models/Post.model'
+import PostCardActions from './PostCardActions'
 
-interface BlogCardProps {
-   blog: Blog
+interface PostCardProps {
+   post: Post
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({
-   blog: { id, title, author, date, description, isVisible, image },
+const PostCard: React.FC<PostCardProps> = ({
+   post: { id, title, author, date, description, isVisible, image },
 }) => {
    return (
       <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 cursor-pointer h-auto md:45">
@@ -39,7 +39,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                      {isVisible ? 'Publicado' : 'Borrador'}
                   </Badge>
 
-                  <BlogCardActions idBlog={id} isVisible={isVisible} />
+                  <PostCardActions idPost={id} isVisible={isVisible} />
                </div>
 
                <div className="flex flex-wrap items-center text-sm mb-2 gap-4 text-gray-600">
@@ -60,4 +60,4 @@ const BlogCard: React.FC<BlogCardProps> = ({
    )
 }
 
-export default BlogCard
+export default PostCard

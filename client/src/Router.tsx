@@ -1,4 +1,4 @@
-import { BlogsPanel, Blogs, Dashboard, Faq, Home, Services, BlogForm } from './pages'
+import { Blog, Dashboard, Faq, Home, Services, PostsPanel, PostForm } from './pages'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ClientLayout from '@shared/ClientLayout'
 import AdminLayout from '@shared/AdminLayout'
@@ -9,7 +9,7 @@ const Router = () => {
          <Routes>
             <Route path="/" element={<ClientLayout />}>
                <Route index element={<Home />} />
-               <Route path="blogs" element={<Blogs />} />
+               <Route path="blog" element={<Blog />} />
                <Route path="servicios" element={<Services />} />
                <Route path="preguntas-frecuentes" element={<Faq />} />
                <Route path="nosotros" element={<div>About Page</div>} />
@@ -18,8 +18,8 @@ const Router = () => {
 
             <Route path="/admin" element={<AdminLayout />}>
                <Route index element={<Dashboard />} />
-               <Route path="blogs" element={<BlogsPanel />} />
-               <Route path="blogs/:idBlog" element={<BlogForm />} />
+               <Route path="posts" element={<PostsPanel />} />
+               <Route path="posts/:idPost" element={<PostForm />} />
                <Route path="*" element={<div>404 Not Found</div>} />
             </Route>
          </Routes>

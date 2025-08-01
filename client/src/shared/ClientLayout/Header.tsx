@@ -2,7 +2,7 @@ import { useState, useEffect, forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const navLinks = [
-   { label: 'BLOGS', to: '/blogs' },
+   { label: 'BLOG', to: '/blog' },
    { label: 'QUIZ', to: '/quiz' },
    { label: 'SERVICIOS', to: '/servicios' },
    { label: 'FAQ', to: '/preguntas-frecuentes' },

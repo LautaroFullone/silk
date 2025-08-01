@@ -1,7 +1,7 @@
 import MiniCarrouselSection from './components/MiniCarrouselSection'
 import ConfidenceSection from './components/ConfidenceSection'
 import FindStyleSection from './components/FindStyleSection'
-import BlogsSection from './components/BlogsSection'
+import PostsSection from './components/PostsSection'
 import HeroSection from './components/HeroSection'
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
          <FindStyleSection />
          <MiniCarrouselSection />
          <ConfidenceSection />
-         <BlogsSection />
+         <PostsSection />
          {/*<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
       </>
    )

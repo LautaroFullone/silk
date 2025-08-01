@@ -1,21 +1,20 @@
+import { Post } from '@models/Post.model'
 import { Link } from 'react-router-dom'
 
-interface BlogCardProps {
-   id: string
-   title: string
-   date: string
-   description: string
-   imageSrc?: string
+interface PostCardProps {
+   post: Post
 }
 
-const BlogCard = ({ id, date, description, title, imageSrc }: BlogCardProps) => {
+const PostCard: React.FC<PostCardProps> = ({
+   post: { id, date, description, title, image },
+}) => {
    return (
-      <Link to={`/blog/${id}`} className="group">
+      <Link to={`/Post/${id}`} className="group">
          <div className="rounded-sm shadow-sm bg-white hover:shadow-lg transition-all overflow-hidden flex flex-col h-full">
-            {imageSrc && (
+            {image && (
                <div className="h-48 overflow-hidden">
                   <img
-                     src={imageSrc}
+                     src={image}
                      alt={title}
                      className="h-full object-cover group-hover:scale-105 transition-transform duration-200"
                   />
@@ -35,4 +34,4 @@ const BlogCard = ({ id, date, description, title, imageSrc }: BlogCardProps) => 
       </Link>
    )
 }
-export default BlogCard
+export default PostCard

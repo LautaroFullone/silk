@@ -19,9 +19,9 @@ const Footer = () => {
 
             <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
                <div className="flex gap-4 ">
-                  <Link to="/nosotros">BLOGS</Link>|<Link to="/nosotros">QUIZ</Link>|
-                  <Link to="/nosotros">SERVICIOS</Link>|<Link to="/nosotros">FAQ</Link>|
-                  <Link to="/nosotros">NOSOTROS</Link>
+                  <Link to="/blog">BLOG</Link>|<Link to="/quiz">QUIZ</Link>|
+                  <Link to="/services">SERVICIOS</Link>|<Link to="/faq">FAQ</Link>|
+                  <Link to="/about-us">NOSOTROS</Link>
                </div>
 
                <div className="flex gap-6">

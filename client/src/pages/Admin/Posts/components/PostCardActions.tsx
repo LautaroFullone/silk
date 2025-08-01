@@ -1,6 +1,6 @@
 import { Edit, Eye, EyeOff, MoreHorizontal, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { Blog } from '@models/Blog.model'
+import { Post } from '@models/Post.model'
 import { Button } from '@shadcn'
 import { useState } from 'react'
 import {
@@ -10,20 +10,20 @@ import {
    DropdownMenuTrigger,
 } from '@shadcn/dropdown-menu'
 
-interface BlogCardActionsProps {
-   idBlog: Blog['id']
-   isVisible: Blog['isVisible']
+interface PostCardActionsProps {
+   idPost: Post['id']
+   isVisible: Post['isVisible']
 }
 
-const BlogCardActions: React.FC<BlogCardActionsProps> = ({ idBlog, isVisible }) => {
+const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) => {
    const navigate = useNavigate()
 
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
    return (
       <>
-         <div className="flex-shrink-0 hidden lg:flex gap-2">
-            <Button variant="ghost" onClick={() => navigate(`/admin/blogs/${idBlog}`)}>
+         <div className="flex-shrink-0 hidden xl:flex gap-2">
+            <Button variant="ghost" onClick={() => navigate(`/admin/post/${idPost}`)}>
                <Edit className="w-4 h-4" />
             </Button>
 
@@ -36,7 +36,7 @@ const BlogCardActions: React.FC<BlogCardActionsProps> = ({ idBlog, isVisible }) 
             </Button>
          </div>
 
-         <div className="flex-shrink-0 flex lg:hidden">
+         <div className="flex-shrink-0 flex xl:hidden">
             <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                <DropdownMenuTrigger asChild>
                   <Button size="icon" variant="ghost" className="h-8 w-8 p-0">
@@ -71,4 +71,4 @@ const BlogCardActions: React.FC<BlogCardActionsProps> = ({ idBlog, isVisible }) 
       </>
    )
 }
-export default BlogCardActions
+export default PostCardActions

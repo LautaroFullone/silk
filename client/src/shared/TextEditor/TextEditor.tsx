@@ -1,14 +1,16 @@
+'use client'
+
 import { useEffect, useRef, useCallback } from 'react'
 import EditorJS, { type OutputData } from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import List from '@editorjs/list'
 import Paragraph from '@editorjs/paragraph'
 import Image from '@editorjs/image'
+import LinkTool from '@editorjs/link'
 import Quote from '@editorjs/quote'
 import Delimiter from '@editorjs/delimiter'
-import Table from '@editorjs/table'
-import Link from '@editorjs/link'
 import Embed from '@editorjs/embed'
+import Table from '@editorjs/table'
 
 interface EditorJSProps {
    data?: OutputData
@@ -16,7 +18,11 @@ interface EditorJSProps {
    placeholder?: string
 }
 
-const TextEditor: React.FC<EditorJSProps> = ({ data, onChange }) => {
+export function EditorJSComponent({
+   data,
+   onChange,
+   placeholder = 'Comienza a escribir tu post...',
+}: EditorJSProps) {
    const editorRef = useRef<EditorJS | null>(null)
    const holderRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +31,7 @@ const TextEditor: React.FC<EditorJSProps> = ({ data, onChange }) => {
 
       const editor = new EditorJS({
          holder: holderRef.current,
-         placeholder: 'Escribi tu contenido aca...',
+         placeholder,
          data: data || {
             blocks: [
                {
@@ -74,7 +80,7 @@ const TextEditor: React.FC<EditorJSProps> = ({ data, onChange }) => {
                },
             },
             linkTool: {
-               class: Link,
+               class: LinkTool,
                config: {
                   endpoint: '/api/link-preview', // Endpoint para preview de links
                },
@@ -125,7 +131,7 @@ const TextEditor: React.FC<EditorJSProps> = ({ data, onChange }) => {
       })
 
       editorRef.current = editor
-   }, [data, onChange])
+   }, [data, onChange, placeholder])
 
    useEffect(() => {
       if (typeof window !== 'undefined') {
@@ -153,5 +159,3 @@ const TextEditor: React.FC<EditorJSProps> = ({ data, onChange }) => {
       </div>
    )
 }
-
-export default TextEditor
