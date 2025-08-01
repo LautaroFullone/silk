@@ -1,5 +1,5 @@
 import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
-import AdminTitle from '@shared/AdminTitle/AdminTitle'
+import AdminTitle from '@shared/AdminTitle'
 import PostCard from './components/PostCard'
 import { Post } from '@models/Post.model'
 import { useState } from 'react'
@@ -12,6 +12,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
+import { useNavigate } from 'react-router-dom'
 
 const mockPosts: Post[] = [
    {
@@ -70,12 +71,11 @@ const mockPosts: Post[] = [
 type SortFieldsType = 'date' | 'title' | 'author' | 'subject'
 
 const PostsPanel = () => {
+   const [searchTerm, setSearchTerm] = useState('')
    const [sortBy, setSortBy] = useState<SortFieldsType>('date')
    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 
-   const [searchTerm, setSearchTerm] = useState('')
-   // const [currentPage, setCurrentPage] = useState(1)
-   // const [postsPerPage] = useState(5)
+   const navigate = useNavigate()
 
    const filteredAndSortedPosts = mockPosts
       .filter(
@@ -106,16 +106,15 @@ const PostsPanel = () => {
       })
 
    return (
-      <div className="space-y-8">
+      <div className="space-y-6">
          <div className="flex justify-between items-center">
             <AdminTitle
-               hasGoBack
                title="Gestión de Posts"
                description="Crea y administra el contenido de los posts"
             />
 
             <Button
-               onClick={() => console.log('Crear nuevo post')}
+               onClick={() => navigate('form')}
                size="lg"
                className="bg-emerald-800 hover:bg-emerald-900 text-white"
             >
@@ -178,23 +177,6 @@ const PostsPanel = () => {
                <PostCard key={`post-card-admin-${index}`} post={post} />
             ))}
          </div>
-
-         {/* <PostEditor
-            open={isEditing}
-            onOpenChange={setIsEditing}
-            post={selectedPost}
-            onSave={handleSavePost}
-         />
-
-         <ConfirmationDialog
-            open={deleteConfirmation.open}
-            onOpenChange={(open) =>
-               setDeleteConfirmation({ ...deleteConfirmation, open })
-            }
-            title="Eliminar Post"
-            description={`¿Estás seguro de que quieres eliminar "${deleteConfirmation.title}"? Esta acción no se puede deshacer.`}
-            onConfirm={() => handleDeletePost(deleteConfirmation.id)}
-         /> */}
       </div>
    )
 }

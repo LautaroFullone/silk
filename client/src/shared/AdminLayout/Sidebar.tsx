@@ -1,21 +1,29 @@
-import { FileText, Home, LogOut, Menu, Settings, X } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
+import {
+   FileText,
+   Home,
+   LogOut,
+   Menu,
+   MessageSquare,
+   Settings,
+   ShoppingBag,
+   X,
+} from 'lucide-react'
 
 const navigation = [
    { name: 'Dashboard', link: '/admin', icon: Home },
    { name: 'Posts', link: '/admin/posts', icon: FileText },
-   // { name: 'Pedidos', link: '/admin/pedidos', icon: ShoppingCart },
-   // { name: 'Artículos', link: '/admin/articulos', icon: Archive },
-   // { name: 'Pagos', link: '/admin/pagos', icon: DollarSign },
-   // { name: 'Configuración', link: '/admin/configuracion', icon: Settings },
+   { name: 'Testimonios', link: '/admin/testimonials', icon: MessageSquare },
+   { name: 'Productos', link: '/admin/products', icon: ShoppingBag },
 ]
 
 const Sidebar = () => {
    const isMobile = useMobile()
    const { pathname } = useLocation()
+   const navigate = useNavigate()
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
    return (
@@ -85,25 +93,23 @@ const Sidebar = () => {
                )}
             </div>
 
-            <nav className="flex-1 px-4 py-4 space-y-2">
+            <nav className="flex-1 p-2 space-y-1">
                {navigation.map((item) => {
                   const isActive = pathname === item.link
                   return (
                      <Button
                         key={item.name}
-                        asChild
                         variant={isActive ? 'secondary' : 'ghost'}
                         disableScale
+                        onClick={() => navigate(item.link)}
                         className={cn(
                            'w-full justify-start select-none',
                            'hover:bg-emerald-50! hover:text-emerald-800',
                            isActive && 'bg-emerald-800 hover:bg-emerald-800 text-white'
                         )}
                      >
-                        <Link to={item.link} onClick={() => {}}>
-                           <item.icon className="mr-2 h-4 w-4" />
-                           {item.name}
-                        </Link>
+                        <item.icon className="h-5! w-5!" />
+                        {item.name}
                      </Button>
                   )
                })}

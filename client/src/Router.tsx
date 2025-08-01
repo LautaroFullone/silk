@@ -19,7 +19,9 @@ const Router = () => {
             <Route path="/admin" element={<AdminLayout />}>
                <Route index element={<Dashboard />} />
                <Route path="posts" element={<PostsPanel />} />
-               <Route path="posts/:idPost" element={<PostForm />} />
+               <Route path="posts/form" element={<PostForm />} />
+               <Route path="testimonials" element={<div>Testimonials</div>} />
+               <Route path="products" element={<div>Products</div>} />
                <Route path="*" element={<div>404 Not Found</div>} />
             </Route>
          </Routes>

@@ -20,10 +20,15 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
 
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
+   const goToEdit = () => {
+      const params = new URLSearchParams({ id: idPost })
+      navigate(`form/?${params}`)
+   }
+
    return (
       <>
          <div className="flex-shrink-0 hidden xl:flex gap-2">
-            <Button variant="ghost" onClick={() => navigate(`/admin/post/${idPost}`)}>
+            <Button variant="ghost" onClick={() => goToEdit()}>
                <Edit className="w-4 h-4" />
             </Button>
 
@@ -46,7 +51,10 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
                </DropdownMenuTrigger>
 
                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => {}} className="text-accent-foreground">
+                  <DropdownMenuItem
+                     onClick={() => goToEdit()}
+                     className="text-accent-foreground"
+                  >
                      <Edit className="mr-3 h-4 w-4 text-accent-foreground" />
                      <span className="font-medium ">Editar</span>
                   </DropdownMenuItem>

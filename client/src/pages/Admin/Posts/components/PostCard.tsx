@@ -12,7 +12,7 @@ const PostCard: React.FC<PostCardProps> = ({
 }) => {
    return (
       <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 cursor-pointer h-auto md:45">
-         <CardContent className="p-0 flex flex-col md:flex-row h-full w-full">
+         <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
             <div className="w-full md:w-48 h-32 md:h-40 bg-red-200 flex-shrink-0 overflow-hidden">
                <img
                   src={image || '/placeholder.svg'}
@@ -47,6 +47,7 @@ const PostCard: React.FC<PostCardProps> = ({
                      <User className="w-4 h-4 mr-1" />
                      <span className="truncate">{author}</span>
                   </div>
+
                   <div className="flex items-center">
                      <Calendar className="w-4 h-4 mr-1" />
                      <span>{new Date(date).toLocaleDateString('es-ES')}</span>

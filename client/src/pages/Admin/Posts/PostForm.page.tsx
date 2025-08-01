@@ -1,136 +1,115 @@
-import { useState } from 'react'
-import { ArrowLeft, Save, Eye, Upload } from 'lucide-react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@shadcn'
+import { EditorJSComponent } from '@shared/EditorJSComponent'
+import { Save, Upload, FileCheck } from 'lucide-react'
 import type { OutputData } from '@editorjs/editorjs'
-import {
-   Button,
-   Card,
-   CardContent,
-   CardHeader,
-   CardTitle,
-   Input,
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@shadcn'
+import { useSearchParams } from 'react-router-dom'
+import TextAreaForm from '@shared/TextAreaForm'
+import AdminTitle from '@shared/AdminTitle'
+import { Post } from '@models/Post.model'
+import { useForm } from 'react-hook-form'
+import InputForm from '@shared/InputForm'
 import { Label } from '@shadcn/label'
-import { Textarea } from '@shadcn/textarea'
-import { EditorJSComponent } from '@shared/TextEditor/TextEditor'
+
+type PostFormData = Partial<Post>
+
+const initialFormData: PostFormData = {
+   title: '',
+   author: '',
+   date: '',
+   description: '',
+   content: {
+      blocks: [
+         {
+            type: 'paragraph',
+            data: {
+               text: '',
+            },
+         },
+      ],
+   } as OutputData,
+   subject: '',
+   image: '',
+   isVisible: false,
+}
 
 const PostForm = () => {
-   const { idPost } = useParams()
-   console.log('## Post ID:', idPost)
+   const [searchParams] = useSearchParams()
+   console.log('## Post ID:', searchParams.get('id'))
 
-   const navigate = useNavigate()
+   const isEdit = Boolean(searchParams.get('id'))
 
-   const [formData, setFormData] = useState({
-      title: '',
-      author: '',
-      date: '',
-      description: '',
-      content: {
-         blocks: [
-            {
-               type: 'paragraph',
-               data: {
-                  text: '',
-               },
-            },
-         ],
-      } as OutputData,
-      subject: '',
-      image: '',
-      isVisible: false,
+   const {
+      watch,
+      setValue,
+      register,
+      reset: resetForm,
+      handleSubmit: handleFormSubmit,
+      formState: { errors, isValid },
+   } = useForm<PostFormData>({
+      mode: 'onChange',
+      defaultValues: initialFormData,
    })
-
-   const handleContentChange = (data: OutputData) => {
-      setFormData({ ...formData, content: data })
-   }
 
    return (
       <div className="space-y-6">
-         {/* Header */}
-         <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-               <Button variant="outline" onClick={() => navigate(-1)}>
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Volver
-               </Button>
-               <div>
-                  <h1 className="text-3xl font-serif text-gray-900">Editar Post</h1>
-                  <p className="text-gray-600">Modificar el contenido del post</p>
-               </div>
-            </div>
-         </div>
+         <AdminTitle
+            title={isEdit ? 'Editar Post' : 'Crear Post'}
+            description={
+               isEdit ? 'Modificá el contenido del post' : 'Ingresá el contenido del post'
+            }
+            hasGoBack
+            goBackRoute="/admin/posts"
+         />
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
-               {/* Basic Info */}
                <Card>
                   <CardHeader>
-                     <CardTitle className="">Información Básica</CardTitle>
+                     <CardTitle>Información Básica</CardTitle>
                   </CardHeader>
+
                   <CardContent className="space-y-4">
                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                           <Label htmlFor="title">Título</Label>
-                           <Input
-                              id="title"
-                              value={formData.title}
-                              onChange={(e) =>
-                                 setFormData({ ...formData, title: e.target.value })
-                              }
-                              placeholder="Título del post"
-                           />
-                        </div>
-                        <div className="space-y-2">
-                           <Label htmlFor="author">Autor</Label>
-                           <Input
-                              id="author"
-                              value={formData.author}
-                              onChange={(e) =>
-                                 setFormData({ ...formData, author: e.target.value })
-                              }
-                              placeholder="Nombre del autor"
-                           />
-                        </div>
+                        <InputForm
+                           type="text"
+                           name="title"
+                           label="Título"
+                           placeholder="Título del post"
+                           register={register('title')}
+                           errors={errors}
+                           disabled={false}
+                        />
+
+                        <InputForm
+                           type="text"
+                           name="author"
+                           label="Autor"
+                           placeholder="Nombre del autor"
+                           register={register('author')}
+                           errors={errors}
+                           disabled={false}
+                        />
                      </div>
 
                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                           <Label htmlFor="date">Fecha</Label>
-                           <Input
-                              id="date"
-                              type="date"
-                              value={formData.date}
-                              onChange={(e) =>
-                                 setFormData({ ...formData, date: e.target.value })
-                              }
-                           />
-                        </div>
+                        <InputForm
+                           type="date"
+                           name="date"
+                           label="Fecha"
+                           register={register('date')}
+                           errors={errors}
+                           disabled={false}
+                        />
 
-                        <div className="space-y-2">
-                           <Label htmlFor="category">Categoría</Label>
-                           <Select
-                              value={formData.subject}
-                              onValueChange={(value) =>
-                                 setFormData({ ...formData, subject: value })
-                              }
-                           >
-                              <SelectTrigger>
-                                 <SelectValue placeholder="Selecciona una categoría" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 <SelectItem value="estilo">Estilo</SelectItem>
-                                 <SelectItem value="tendencias">Tendencias</SelectItem>
-                                 <SelectItem value="consejos">Consejos</SelectItem>
-                                 <SelectItem value="moda">Moda</SelectItem>
-                              </SelectContent>
-                           </Select>
-                        </div>
+                        <InputForm
+                           type="text"
+                           name="subject"
+                           label="Tema"
+                           placeholder="Selecciona un tema"
+                           register={register('subject')}
+                           errors={errors}
+                           disabled={false}
+                        />
                      </div>
 
                      <div className="space-y-2">
@@ -138,45 +117,33 @@ const PostForm = () => {
                         <div className="flex gap-2">
                            <Input
                               id="image"
-                              value={formData.image}
-                              onChange={(e) =>
-                                 setFormData({ ...formData, image: e.target.value })
-                              }
+                              value={''}
+                              onChange={() => {}}
                               placeholder="URL de la imagen"
                            />
 
-                           <Button variant="outline" size="icon">
+                           <Button variant="link" size="icon">
                               <Upload className="w-4 h-4" />
                            </Button>
                         </div>
                      </div>
 
-                     <div className="space-y-2">
-                        <Label htmlFor="description">Descripción</Label>
+                     <TextAreaForm
+                        name="description"
+                        label="Descripción"
+                        placeholder="Breve descripción del post"
+                        register={register('description')}
+                        errors={errors}
+                        disabled={false}
+                     />
 
-                        <Textarea
-                           id="description"
-                           value={formData.description}
-                           onChange={(e) =>
-                              setFormData({ ...formData, description: e.target.value })
-                           }
-                           placeholder="Breve descripción del post"
-                           rows={3}
-                        />
-                     </div>
-
-                     {/* Content Editor - Directly after description */}
                      <div className="space-y-2">
                         <Label htmlFor="content">Contenido</Label>
 
-                        {/* <TextEditor
-                           data={formData.content}
-                           onChange={handleContentChange}
-                           keyReset={idPost}
-                        /> */}
                         <EditorJSComponent
-                           data={formData.content}
-                           onChange={handleContentChange}
+                           onChange={(data) => {
+                              console.log('# form data: ', data)
+                           }}
                            placeholder="Edita el contenido de tu post..."
                         />
                      </div>
@@ -184,54 +151,52 @@ const PostForm = () => {
                </Card>
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-6">
-               {/* Preview */}
                <Card>
                   <CardHeader>
-                     <CardTitle className="text-lg">Vista Previa</CardTitle>
+                     <CardTitle>Vista Previa</CardTitle>
                   </CardHeader>
+
                   <CardContent>
-                     <div className="space-y-3">
+                     <div className="space-y-2">
                         <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-                           {formData.image && (
+                           {watch('image') && (
                               <img
-                                 src={formData.image || '/placeholder.svg'}
+                                 src={'/placeholder.svg'}
                                  alt="Preview"
                                  className="w-full h-full object-cover"
                               />
                            )}
                         </div>
-                        <h3 className="font-serif text-lg">
-                           {formData.title || 'Título del post'}
-                        </h3>
+                        <h3 className="text-lg">{watch('title') || 'Título del post'}</h3>
                         <p className="text-sm text-gray-600">
-                           {formData.description || 'Descripción del post...'}
+                           {watch('description') || 'Descripción del post...'}
                         </p>
                      </div>
                   </CardContent>
                </Card>
 
-               {/* Actions */}
                <Card>
                   <CardHeader>
-                     <CardTitle className="text-lg">Acciones</CardTitle>
+                     <CardTitle>Acciones</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                     <Button
-                        variant="outline"
-                        className="w-full bg-transparent"
-                        onClick={() => console.log('Guardar borrador')}
-                     >
-                        <Save className="w-4 h-4 mr-2" />
-                        Guardar Borrador
-                     </Button>
+
+                  <CardContent className="space-y-2">
                      <Button
                         className="w-full bg-emerald-800 hover:bg-emerald-900"
                         onClick={() => console.log('Publicar post')}
                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        Publicar Post
+                        <FileCheck className="w-4 h-4 mr-2" />
+                        Publicar
+                     </Button>
+
+                     <Button
+                        variant="outline"
+                        className="w-full bg-accent"
+                        onClick={() => console.log('Guardar borrador')}
+                     >
+                        <Save className="w-4 h-4 mr-2" />
+                        Guardar
                      </Button>
                   </CardContent>
                </Card>

@@ -1,3 +1,5 @@
+import { OutputData } from '@editorjs/editorjs'
+
 export interface Post {
    id: string
    title: string
@@ -5,7 +7,7 @@ export interface Post {
    author: string
    description: string
    image: string
-   content: string
+   content: OutputData
    isVisible: boolean
    subject: string
 }
