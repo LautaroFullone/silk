@@ -1,13 +1,11 @@
 export interface Blog {
-   id?: string
+   id: string
    title: string
-   author: string
-   category: string
    date: string
+   author: string
    description: string
-   img: string
-   content1: string
-   content2: string
-   img2?: string
-   img3?: string
+   image: string
+   content: string
+   isVisible: boolean
+   subject: string
 }
