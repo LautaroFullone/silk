@@ -1,16 +1,17 @@
 import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import AdminTitle from '@shared/AdminTitle/AdminTitle'
 import BlogCard from './components/BlogCard'
-import { Button, Input } from '@shadcn'
+import { Blog } from '@models/Blog.model'
 import { useState } from 'react'
 import {
+   Button,
+   Input,
    Select,
    SelectContent,
    SelectItem,
    SelectTrigger,
    SelectValue,
-} from '@shadcn/select'
-import { Blog } from '@models/Blog.model'
+} from '@shadcn'
 
 const mockBlogs: Blog[] = [
    {
@@ -67,6 +68,7 @@ const mockBlogs: Blog[] = [
 ]
 
 type SortFieldsType = 'date' | 'title' | 'author' | 'subject'
+
 const BlogsPanel = () => {
    const [sortBy, setSortBy] = useState<SortFieldsType>('date')
    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
@@ -107,9 +109,11 @@ const BlogsPanel = () => {
       <div className="space-y-8">
          <div className="flex justify-between items-center">
             <AdminTitle
+               hasGoBack
                title="Gestión de Blogs"
                description="Crea y administra el contenido de los blogs"
             />
+
             <Button
                onClick={() => console.log('Crear nuevo post')}
                size="lg"

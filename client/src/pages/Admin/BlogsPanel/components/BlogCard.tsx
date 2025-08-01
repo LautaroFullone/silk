@@ -1,8 +1,7 @@
+import { Card, CardContent, Badge } from '@shadcn'
 import BlogCardActions from './BlogCardActions'
 import { Calendar, User } from 'lucide-react'
-import { Card, CardContent } from '@shadcn'
 import { Blog } from '@models/Blog.model'
-import { Badge } from '@shadcn/badge'
 
 interface BlogCardProps {
    blog: Blog
