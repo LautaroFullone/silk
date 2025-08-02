@@ -1,6 +1,6 @@
-import { Edit, Eye, EyeOff, MoreHorizontal, MoreVertical, Trash2 } from 'lucide-react'
+import { Edit, Eye, EyeOff, MoreHorizontal, Star, StarOff, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { Post } from '@models/Post.model'
+import { Testimonial } from '@models/Testimonial.model'
 import { Button } from '@shadcn'
 import { useState } from 'react'
 import {
@@ -10,55 +10,58 @@ import {
    DropdownMenuTrigger,
 } from '@shadcn/dropdown-menu'
 
-interface PostCardActionsProps {
-   idPost: Post['id']
-   isVisible: Post['isVisible']
+interface TestimonialCardActionsProps {
+   idTestimonial: Testimonial['id']
+   isHighlight: Testimonial['isHighlight']
 }
 
-const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) => {
+const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
+   idTestimonial,
+   isHighlight,
+}) => {
    const navigate = useNavigate()
 
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
    const goToEdit = () => {
-      const params = new URLSearchParams({ id: idPost })
+      const params = new URLSearchParams({ id: idTestimonial })
       navigate(`form/?${params}`)
    }
 
    return (
       <>
-         <div className="flex-shrink-0 hidden lg:flex gap-2">
+         <div className="flex-shrink-0 hidden xl:flex gap-2">
             <Button variant="ghost" onClick={() => goToEdit()}>
                <Edit className="w-4 h-4" />
             </Button>
 
             <Button
                variant="secondary"
-               onClick={() => {}}
                className="border-secondary! bg-white! hover:bg-secondary! group"
+               onClick={() => {}}
             >
-               {isVisible ? (
-                  <EyeOff className="w-4 h-4 text-secondary group-hover:text-white" />
+               {isHighlight ? (
+                  <StarOff className="w-4 h-4 text-secondary group-hover:text-white" />
                ) : (
-                  <Eye className="w-4 h-4 text-secondary group-hover:text-white" />
+                  <Star className="w-4 h-4 text-secondary group-hover:text-white" />
                )}
             </Button>
 
             <Button
-               variant="destructive"
-               onClick={() => {}}
-               title="Eliminar post"
+               variant="outline"
                className="border-destructive! bg-white! hover:bg-destructive! group"
+               onClick={() => {}}
+               title="Eliminar testimonio"
             >
-               <Trash2 className="w-4! h-4! text-destructive group-hover:text-white" />
+               <Trash2 className="w-4 h-4 text-destructive group-hover:text-white" />
             </Button>
          </div>
 
-         <div className="flex-shrink-0 flex lg:hidden">
+         <div className="flex-shrink-0 flex xl:hidden">
             <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                <DropdownMenuTrigger asChild>
                   <Button size="icon" variant="ghost" className="h-8 w-8 p-0">
-                     <MoreVertical className="h-4 w-4" />
+                     <MoreHorizontal className="h-4 w-4" />
                      <span className="sr-only">Abrir menú</span>
                   </Button>
                </DropdownMenuTrigger>
@@ -75,7 +78,7 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
                   <DropdownMenuItem onClick={() => {}} className="text-accent-foreground">
                      <Eye className="mr-3 h-4 w-4 text-accent-foreground" />
                      <span className="font-medium">
-                        {isVisible ? 'Ocultar' : 'Mostrar'} post
+                        {isHighlight ? 'Ocultar' : 'Mostrar'} testimonio
                      </span>
                   </DropdownMenuItem>
 
@@ -92,4 +95,4 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
       </>
    )
 }
-export default PostCardActions
+export default TestimonialCardActions

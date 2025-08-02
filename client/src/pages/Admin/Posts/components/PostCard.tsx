@@ -13,7 +13,7 @@ const PostCard: React.FC<PostCardProps> = ({
    return (
       <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 cursor-pointer h-auto md:45">
          <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
-            <div className="w-full md:w-48 h-32 md:h-40 bg-red-200 flex-shrink-0 overflow-hidden">
+            <div className="w-full md:w-48 h-32 md:h-40 flex-shrink-0 overflow-hidden">
                <img
                   src={image || '/placeholder.svg'}
                   alt={title}
@@ -30,15 +30,6 @@ const PostCard: React.FC<PostCardProps> = ({
                      {title}
                   </h3>
 
-                  <Badge
-                     variant={isVisible ? 'default' : 'secondary'}
-                     className={`flex-shrink-0 ${
-                        isVisible ? 'bg-emerald-800 text-white' : 'bg-gray-500 text-white'
-                     }`}
-                  >
-                     {isVisible ? 'Publicado' : 'Borrador'}
-                  </Badge>
-
                   <PostCardActions idPost={id} isVisible={isVisible} />
                </div>
 
@@ -52,6 +43,15 @@ const PostCard: React.FC<PostCardProps> = ({
                      <Calendar className="w-4 h-4 mr-1" />
                      <span>{new Date(date).toLocaleDateString('es-ES')}</span>
                   </div>
+
+                  <Badge
+                     variant={isVisible ? 'default' : 'secondary'}
+                     className={
+                        isVisible ? 'bg-emerald-800 text-white' : 'bg-gray-500 text-white'
+                     }
+                  >
+                     {isVisible ? 'Publicado' : 'Borrador'}
+                  </Badge>
                </div>
 
                <p className="text-sm text-gray-600 line-clamp-2 min-w-0">{description}</p>

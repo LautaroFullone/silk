@@ -123,9 +123,8 @@ const PostsPanel = () => {
             </Button>
          </div>
 
-         {/* Search and Sort Controls */}
-         <div className="flex flex-col md:flex-row gap-4 items-start ">
-            <div className="flex-1 max-w-lg w-full">
+         <div className="flex flex-col lg:flex-row gap-4 items-start ">
+            <div className="flex-1 max-w-2xl w-full">
                <Input
                   placeholder="Buscar posts por título, autor o categoría..."
                   value={searchTerm}
@@ -149,6 +148,7 @@ const PostsPanel = () => {
                   <SelectTrigger className="w-30">
                      <SelectValue />
                   </SelectTrigger>
+
                   <SelectContent>
                      <SelectItem value="date">Fecha</SelectItem>
                      <SelectItem value="title">Título</SelectItem>
