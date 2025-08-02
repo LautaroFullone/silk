@@ -11,7 +11,7 @@ const PostCard: React.FC<PostCardProps> = ({
    post: { id, title, author, date, description, isVisible, image },
 }) => {
    return (
-      <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 cursor-pointer h-auto md:45">
+      <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 shadow-md cursor-pointer h-auto md:45">
          <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
             <div className="w-full md:w-48 h-32 md:h-40 flex-shrink-0 overflow-hidden">
                <img
@@ -21,10 +21,10 @@ const PostCard: React.FC<PostCardProps> = ({
                />
             </div>
 
-            <div className="p-6 w-full min-w-0 flex flex-col justify-normal md:justify-between">
-               <div className="flex items-center gap-2 min-w-0 mb-2">
+            <div className="p-6 w-full min-w-0 flex flex-col">
+               <div className="flex items-center gap-2 min-w-0">
                   <h3
-                     className="flex-1 min-w-0 text-lg sm:text-xl font-serif text-gray-900 truncate"
+                     className="flex-1 min-w-0 text-xl font-serif text-gray-900 truncate"
                      title={title}
                   >
                      {title}
@@ -54,7 +54,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   </Badge>
                </div>
 
-               <p className="text-sm text-gray-600 line-clamp-2 min-w-0">{description}</p>
+               <p className="text-sm text-gray-500 line-clamp-2 min-w-0">{description}</p>
             </div>
          </CardContent>
       </Card>

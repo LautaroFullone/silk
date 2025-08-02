@@ -106,7 +106,7 @@ const TestimonialsPanel = () => {
       })
 
    return (
-      <div className="space-y-6">
+      <>
          <div className="flex justify-between items-center">
             <AdminTitle
                title="Gestión de Testimonios"
@@ -123,17 +123,13 @@ const TestimonialsPanel = () => {
             </Button>
          </div>
 
-         {/* Search and Sort Controls */}
          <div className="flex flex-col lg:flex-row gap-4 items-start ">
             <div className="flex-1 max-w-2xl w-full">
                <Input
-                  placeholder="Buscar testimonios por nombre, rol o contenido..."
-                  value={searchTerm}
-                  onChange={(e) => {
-                     setSearchTerm(e.target.value)
-                     // setCurrentPage(1)
-                  }}
                   className="w-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Buscar por nombre, rol o contenido..."
                />
             </div>
 
@@ -180,7 +176,7 @@ const TestimonialsPanel = () => {
                />
             ))}
          </div>
-      </div>
+      </>
    )
 }
 export default TestimonialsPanel

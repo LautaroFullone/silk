@@ -51,7 +51,7 @@ const PostForm = () => {
    })
 
    return (
-      <div className="space-y-6">
+      <>
          <AdminTitle
             title={isEdit ? 'Editar Post' : 'Crear Post'}
             description={
@@ -62,7 +62,7 @@ const PostForm = () => {
          />
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2">
                <Card>
                   <CardHeader>
                      <CardTitle>Información Básica</CardTitle>
@@ -196,13 +196,13 @@ const PostForm = () => {
                         onClick={() => console.log('Guardar borrador')}
                      >
                         <Save className="w-4 h-4 mr-2" />
-                        Guardar
+                        Guardar borrador
                      </Button>
                   </CardContent>
                </Card>
             </div>
          </div>
-      </div>
+      </>
    )
 }
 

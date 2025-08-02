@@ -1,35 +1,31 @@
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@shadcn'
-import { EditorJSComponent } from '@shared/EditorJSComponent'
-import { Save, Upload, FileCheck } from 'lucide-react'
+import {
+   Button,
+   Card,
+   CardContent,
+   CardHeader,
+   CardTitle,
+   Checkbox,
+   Input,
+} from '@shadcn'
+import { Save, Upload, FileCheck, Star, User, Quote } from 'lucide-react'
 import type { OutputData } from '@editorjs/editorjs'
 import { useSearchParams } from 'react-router-dom'
 import TextAreaForm from '@shared/TextAreaForm'
 import AdminTitle from '@shared/AdminTitle'
-import { Post } from '@models/Post.model'
 import { useForm } from 'react-hook-form'
 import InputForm from '@shared/InputForm'
 import { Label } from '@shadcn/label'
+import { Testimonial } from '@models/Testimonial.model'
+import CheckboxForm from '@shared/CheckboxForm'
 
-type TestimonialFormData = Partial<Post>
+type TestimonialFormData = Partial<Testimonial>
 
 const initialFormData: TestimonialFormData = {
-   title: '',
-   author: '',
-   date: '',
-   description: '',
-   content: {
-      blocks: [
-         {
-            type: 'paragraph',
-            data: {
-               text: '',
-            },
-         },
-      ],
-   } as OutputData,
-   subject: '',
+   personName: '',
+   personRole: '',
+   content: '',
    image: '',
-   isVisible: false,
+   isHighlight: false,
 }
 
 const TestimonialForm = () => {
@@ -37,7 +33,6 @@ const TestimonialForm = () => {
    console.log('## testimonial ID:', searchParams.get('id'))
 
    const isEdit = Boolean(searchParams.get('id'))
-
    const {
       watch,
       setValue,
@@ -50,12 +45,16 @@ const TestimonialForm = () => {
       defaultValues: initialFormData,
    })
 
+   console.log('# hola: ', watch('isHighlight'))
+
    return (
-      <div className="space-y-6">
+      <>
          <AdminTitle
-            title={isEdit ? 'Editar Post' : 'Crear Post'}
+            title={isEdit ? 'Editar Testimonio' : 'Crear Testimonio'}
             description={
-               isEdit ? 'Modificá el contenido del post' : 'Ingresá el contenido del post'
+               isEdit
+                  ? 'Modificá el contenido del testimonio'
+                  : 'Ingresá el contenido del testimonio'
             }
             hasGoBack
             goBackRoute="/admin/posts"
@@ -72,106 +71,111 @@ const TestimonialForm = () => {
                      <div className="grid grid-cols-2 gap-4">
                         <InputForm
                            type="text"
-                           name="title"
-                           label="Título"
-                           placeholder="Título del post"
-                           register={register('title')}
+                           name="name"
+                           label="Nombre"
+                           placeholder="Nombre del cliente"
+                           register={register('personName')}
                            errors={errors}
                            disabled={false}
                         />
 
                         <InputForm
                            type="text"
-                           name="author"
-                           label="Autor"
-                           placeholder="Nombre del autor"
-                           register={register('author')}
+                           name="role"
+                           label="Profesión o Rol"
+                           placeholder="Profesión o Rol del cliente"
+                           register={register('personRole')}
                            errors={errors}
                            disabled={false}
                         />
                      </div>
 
                      <div className="grid grid-cols-2 gap-4">
-                        <InputForm
-                           type="date"
-                           name="date"
-                           label="Fecha"
-                           register={register('date')}
-                           errors={errors}
-                           disabled={false}
-                        />
+                        <div className="space-y-2">
+                           <Label htmlFor="image">Imagen URL</Label>
+                           <div className="flex gap-2">
+                              <Input
+                                 id="image"
+                                 value={''}
+                                 onChange={() => {}}
+                                 placeholder="URL de la imagen"
+                              />
 
-                        <InputForm
-                           type="text"
-                           name="subject"
-                           label="Tema"
-                           placeholder="Selecciona un tema"
-                           register={register('subject')}
-                           errors={errors}
-                           disabled={false}
-                        />
-                     </div>
-
-                     <div className="space-y-2">
-                        <Label htmlFor="image">Imagen URL</Label>
-                        <div className="flex gap-2">
-                           <Input
-                              id="image"
-                              value={''}
-                              onChange={() => {}}
-                              placeholder="URL de la imagen"
-                           />
-
-                           <Button variant="link" size="icon">
-                              <Upload className="w-4 h-4" />
-                           </Button>
+                              <Button variant="link" size="icon">
+                                 <Upload className="w-4 h-4" />
+                              </Button>
+                           </div>
                         </div>
+
+                        <CheckboxForm
+                           name="isHighlight"
+                           label="Marcar como destacado"
+                           description="Habilitando esta opción el testimonio se mostrará en la web"
+                           value={watch('isHighlight') || false}
+                           onChange={(val) => setValue('isHighlight', val)}
+                           errors={errors}
+                        />
                      </div>
 
                      <TextAreaForm
-                        name="description"
-                        label="Descripción"
-                        placeholder="Breve descripción del post"
-                        register={register('description')}
+                        name="content"
+                        label="Texto"
+                        placeholder="Texto del testimonio"
+                        register={register('content')}
                         errors={errors}
                         disabled={false}
                      />
-
-                     <div className="space-y-2">
-                        <Label htmlFor="content">Contenido</Label>
-
-                        <EditorJSComponent
-                           onChange={(data) => {
-                              console.log('# form data: ', data)
-                           }}
-                           placeholder="Edita el contenido de tu post..."
-                        />
-                     </div>
                   </CardContent>
                </Card>
             </div>
 
             <div className="space-y-6">
-               <Card>
+               <Card className="overflow-hidden">
                   <CardHeader>
                      <CardTitle>Vista Previa</CardTitle>
                   </CardHeader>
 
-                  <CardContent>
-                     <div className="space-y-2">
-                        <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-                           {watch('image') && (
-                              <img
-                                 src={'/placeholder.svg'}
-                                 alt="Preview"
-                                 className="w-full h-full object-cover"
-                              />
-                           )}
+                  <CardContent className="flex flex-col h-full">
+                     <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-4 w-full">
+                           <div className="relative flex-shrink-0 ">
+                              <div className="w-16 h-16  rounded-full overflow-hidden border-3 border-white shadow-lg">
+                                 <img
+                                    src={'/placeholder.svg'}
+                                    alt={'Person image'}
+                                    className="w-16 h-16  object-cover"
+                                 />
+                              </div>
+
+                              {watch('isHighlight') === true && (
+                                 <div className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-full p-1 shadow-lg">
+                                    <Star className="w-3 h-3 text-white fill-current" />
+                                 </div>
+                              )}
+                           </div>
+
+                           <div className="flex-1 min-w-0">
+                              <h3 className="text-xl font-serif text-gray-900 truncate">
+                                 {watch('personName') || 'Nombre de la persona'}
+                              </h3>
+
+                              <div className="flex items-center text-gray-600 text-sm truncate">
+                                 <User className="w-4 h-4 mr-1" />
+                                 <span className="truncate">
+                                    {watch('personRole') || 'Profesión'}
+                                 </span>
+                              </div>
+                           </div>
                         </div>
-                        <h3 className="text-lg">{watch('title') || 'Título del post'}</h3>
-                        <p className="text-sm text-gray-600">
-                           {watch('description') || 'Descripción del post...'}
-                        </p>
+                     </div>
+
+                     <div className="flex-1 flex flex-col">
+                        <div className="relative flex-1">
+                           <Quote className="absolute -top-1 -left-1 w-6 h-6 text-emerald-800" />
+                           <blockquote className="text-gray-700 leading-relaxed pl-5 text-sm italic font-light">
+                              "{watch('content') || 'Contenido de ejemplo'}"
+                           </blockquote>
+                        </div>
                      </div>
                   </CardContent>
                </Card>
@@ -186,15 +190,6 @@ const TestimonialForm = () => {
                         className="w-full bg-emerald-800 hover:bg-emerald-900"
                         onClick={() => console.log('Publicar post')}
                      >
-                        <FileCheck className="w-4 h-4 mr-2" />
-                        Publicar
-                     </Button>
-
-                     <Button
-                        variant="outline"
-                        className="w-full bg-accent"
-                        onClick={() => console.log('Guardar borrador')}
-                     >
                         <Save className="w-4 h-4 mr-2" />
                         Guardar
                      </Button>
@@ -202,7 +197,7 @@ const TestimonialForm = () => {
                </Card>
             </div>
          </div>
-      </div>
+      </>
    )
 }
 

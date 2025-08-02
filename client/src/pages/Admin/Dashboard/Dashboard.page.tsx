@@ -1,4 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
+import StatsCard from './components/StatsCard'
+import AdminTitle from '@shared/AdminTitle'
 import {
    DollarSign,
    FileText,
@@ -7,19 +9,7 @@ import {
    TrendingUp,
    Users,
 } from 'lucide-react'
-import StatsCard from './components/StatsCard'
 
-{
-   /* <div className="space-y-8">
-   
-         <div className="flex flex-col space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Panel de Control</h1>
-            <p className="text-muted-foreground">
-               Bienvenido al Sistema de Gestión de Lavandería Industrial Full-Clean
-            </p>
-         </div>
-      </div> */
-}
 const stats = [
    {
       title: 'Posts Totales',
@@ -115,12 +105,12 @@ const shortcuts = [
 
 const Dashboard = () => {
    return (
-      <div className="space-y-8">
-         <div>
-            <h1 className="text-4xl font-serif text-gray-900 mb-2">Panel de Control</h1>
-            <p className="text-muted-foreground">
-               Bienvenido al panel de administración de SILK
-            </p>
+      <>
+         <div className="mt-5">
+            <AdminTitle
+               title="Panel de Control"
+               description="Bienvenido al panel de administración de SILK"
+            />
          </div>
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -185,7 +175,7 @@ const Dashboard = () => {
                </CardContent>
             </Card>
          </div>
-      </div>
+      </>
    )
 }
 export default Dashboard

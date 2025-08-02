@@ -8,7 +8,9 @@ const AdminLayout = () => {
 
          <main className="flex-1 flex flex-col p-8 overflow-x-hidden overflow-y-auto">
             <div className="h-16 md:hidden" />
-            <Outlet />
+            <div className="space-y-6">
+               <Outlet />
+            </div>
          </main>
       </div>
    )

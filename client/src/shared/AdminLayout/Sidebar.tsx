@@ -106,7 +106,11 @@ const Sidebar = () => {
                         key={item.name}
                         variant={isActive ? 'secondary' : 'ghost'}
                         disableScale
-                        onClick={() => navigate(item.link)}
+                        onClick={() => {
+                           if (isMobile) setMobileMenuOpen(false)
+
+                           navigate(item.link)
+                        }}
                         className={cn(
                            'w-full justify-start select-none',
                            'hover:bg-emerald-50! hover:text-emerald-800',

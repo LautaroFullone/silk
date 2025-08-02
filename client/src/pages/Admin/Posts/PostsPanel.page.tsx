@@ -106,7 +106,7 @@ const PostsPanel = () => {
       })
 
    return (
-      <div className="space-y-6">
+      <>
          <div className="flex justify-between items-center">
             <AdminTitle
                title="Gestión de Posts"
@@ -126,7 +126,7 @@ const PostsPanel = () => {
          <div className="flex flex-col lg:flex-row gap-4 items-start ">
             <div className="flex-1 max-w-2xl w-full">
                <Input
-                  placeholder="Buscar posts por título, autor o categoría..."
+                  placeholder="Buscar por título, autor o categoría..."
                   value={searchTerm}
                   onChange={(e) => {
                      setSearchTerm(e.target.value)
@@ -177,7 +177,7 @@ const PostsPanel = () => {
                <PostCard key={`post-card-admin-${index}`} post={post} />
             ))}
          </div>
-      </div>
+      </>
    )
 }
 export default PostsPanel
