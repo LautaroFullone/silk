@@ -3,6 +3,7 @@ import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
 import {
+   DollarSign,
    FileText,
    Home,
    LogOut,
@@ -10,6 +11,7 @@ import {
    MessageSquare,
    Settings,
    ShoppingBag,
+   UserPlus,
    X,
 } from 'lucide-react'
 
@@ -18,6 +20,9 @@ const navigation = [
    { name: 'Posts', link: '/admin/posts', icon: FileText },
    { name: 'Testimonios', link: '/admin/testimonials', icon: MessageSquare },
    { name: 'Productos', link: '/admin/products', icon: ShoppingBag },
+   { name: 'Solicitudes de Servicio', link: '/admin/requests', icon: UserPlus },
+   { name: 'Órdenes de Compra', link: '/admin/orders', icon: DollarSign },
+   { name: 'Configuración', link: '/admin/config', icon: Settings },
 ]
 
 const Sidebar = () => {
