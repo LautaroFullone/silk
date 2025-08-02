@@ -9,5 +9,5 @@ export interface Post {
    image: string
    content: OutputData
    isVisible: boolean
-   subject: string
+   category: string
 }

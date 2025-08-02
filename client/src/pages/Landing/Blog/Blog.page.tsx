@@ -23,7 +23,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-1.png',
       content: 'Contenido del post sobre cómo elegir tu look ideal.',
       isVisible: true,
-      subject: 'Estilismo',
+      category: 'Estilismo',
    },
    {
       id: '2',
@@ -34,7 +34,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-2.png',
       content: 'Contenido del post sobre errores al combinar prendas.',
       isVisible: true,
-      subject: 'Consejos',
+      category: 'Consejos',
    },
    {
       id: '3',
@@ -45,7 +45,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-3.png',
       content: 'Contenido sobre las tendencias de moda 2025.',
       isVisible: true,
-      subject: 'Tendencias',
+      category: 'Tendencias',
    },
    {
       id: '4',
@@ -56,7 +56,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-4.png',
       content: 'Contenido del post sobre colores para cada tono de piel.',
       isVisible: true,
-      subject: 'Colorimetría',
+      category: 'Colorimetría',
    },
    {
       id: '5',
@@ -67,7 +67,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-5.png',
       content: 'Contenido para crear una cápsula de básicos.',
       isVisible: true,
-      subject: 'Estilo de vida',
+      category: 'Estilo de vida',
    },
    {
       id: '6',
@@ -78,7 +78,7 @@ const ALL_POSTS: Post[] = [
       image: '/Banner-1.png',
       content: 'Contenido sobre el uso de accesorios.',
       isVisible: true,
-      subject: 'Accesorios',
+      category: 'Accesorios',
    },
 ]
 

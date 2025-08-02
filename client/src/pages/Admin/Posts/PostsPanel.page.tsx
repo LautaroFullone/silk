@@ -26,7 +26,7 @@ const mockPosts: Post[] = [
          '<p>El arte de crear experiencias digitales es más que simplemente escribir líneas de código...</p>',
       image: '/Adidas - Beige Sambas.png',
       isVisible: true,
-      subject: 'Estilo',
+      category: 'Estilo',
    },
    {
       id: '2',
@@ -38,7 +38,7 @@ const mockPosts: Post[] = [
       content: '<p>Las tendencias de moda para 2024 prometen ser revolucionarias...</p>',
       image: '/Banner-5.png',
       isVisible: false,
-      subject: 'Tendencias',
+      category: 'Tendencias',
    },
    {
       id: '3',
@@ -51,7 +51,7 @@ const mockPosts: Post[] = [
          '<p>Desde gafas de sol hasta bolsos de rafia, te contamos qué accesorios serán tendencia este verano.</p>',
       image: '/Gorra - Cher.png',
       isVisible: true,
-      subject: 'Accesorios',
+      category: 'Accesorios',
    },
    {
       id: '4',
@@ -64,11 +64,11 @@ const mockPosts: Post[] = [
          '<p>El minimalismo no solo es una tendencia estética, sino una forma de vida que apuesta por la simplicidad y la funcionalidad.</p>',
       image: '/Fotos_sección_pre-blog-05.jpg',
       isVisible: false,
-      subject: 'Lifestyle',
+      category: 'Lifestyle',
    },
 ]
 
-type SortFieldsType = 'date' | 'title' | 'author' | 'subject'
+type SortFieldsType = 'date' | 'title' | 'author'
 
 const PostsPanel = () => {
    const [searchTerm, setSearchTerm] = useState('')
@@ -82,7 +82,7 @@ const PostsPanel = () => {
          (post) =>
             post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             post.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            post.subject.toLowerCase().includes(searchTerm.toLowerCase())
+            post.category.toLowerCase().includes(searchTerm.toLowerCase())
       )
       .sort((a, b) => {
          let comparison = 0
@@ -96,9 +96,6 @@ const PostsPanel = () => {
                break
             case 'author':
                comparison = a.author.localeCompare(b.author)
-               break
-            case 'subject':
-               comparison = a.subject.localeCompare(b.subject)
                break
          }
 
@@ -116,58 +113,67 @@ const PostsPanel = () => {
             <Button
                onClick={() => navigate('form')}
                size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white"
+               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden sm:flex"
             >
                <Plus className="w-4 h-4 mr-2" />
-               Nuevo Post
+               Nuevo
             </Button>
          </div>
 
-         <div className="flex flex-col lg:flex-row gap-4 items-start ">
-            <div className="flex-1 max-w-2xl w-full">
+         <div className="flex flex-col lg:flex-row gap-4 ">
+            <div className="max-w-2xl w-full">
+               <span className="text-sm text-gray-600">Buscador:</span>
                <Input
-                  placeholder="Buscar por título, autor o categoría..."
+                  placeholder="Filtrar por título, autor o categoría..."
                   value={searchTerm}
-                  onChange={(e) => {
-                     setSearchTerm(e.target.value)
-                     // setCurrentPage(1)
-                  }}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full"
                />
             </div>
 
-            <div className="flex items-center gap-2">
-               <span className="text-sm text-gray-600 whitespace-nowrap">
-                  Ordenar por:
-               </span>
+            <div className="flex items-end justify-between md:justify-normal ">
+               <div className="flex items-end gap-2">
+                  <div className="flex flex-col">
+                     <span className="text-sm text-gray-600 whitespace-nowrap">
+                        Ordenar por:
+                     </span>
 
-               <Select
-                  value={sortBy}
-                  onValueChange={(value: SortFieldsType) => setSortBy(value)}
-               >
-                  <SelectTrigger className="w-30">
-                     <SelectValue />
-                  </SelectTrigger>
+                     <Select
+                        value={sortBy}
+                        onValueChange={(value: SortFieldsType) => setSortBy(value)}
+                     >
+                        <SelectTrigger className="sm:w-30">
+                           <SelectValue />
+                        </SelectTrigger>
 
-                  <SelectContent>
-                     <SelectItem value="date">Fecha</SelectItem>
-                     <SelectItem value="title">Título</SelectItem>
-                     <SelectItem value="author">Autor</SelectItem>
-                     <SelectItem value="subject">Subject</SelectItem>
-                  </SelectContent>
-               </Select>
+                        <SelectContent>
+                           <SelectItem value="date">Fecha</SelectItem>
+                           <SelectItem value="title">Título</SelectItem>
+                           <SelectItem value="author">Autor</SelectItem>
+                        </SelectContent>
+                     </Select>
+                  </div>
 
+                  <Button
+                     variant="outline"
+                     onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                     className="flex items-center gap-1 bg-white!"
+                  >
+                     <ArrowUpDown className="w-4 h-4" />
+                     {sortOrder === 'asc' ? (
+                        <ChevronUp className="w-3 h-3" />
+                     ) : (
+                        <ChevronDown className="w-3 h-3" />
+                     )}
+                  </Button>
+               </div>
                <Button
-                  variant="outline"
-                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="flex items-center gap-1 bg-white!"
+                  onClick={() => navigate('form')}
+                  size="lg"
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white sm:hidden"
                >
-                  <ArrowUpDown className="w-4 h-4" />
-                  {sortOrder === 'asc' ? (
-                     <ChevronUp className="w-3 h-3" />
-                  ) : (
-                     <ChevronDown className="w-3 h-3" />
-                  )}
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nuevo
                </Button>
             </div>
          </div>

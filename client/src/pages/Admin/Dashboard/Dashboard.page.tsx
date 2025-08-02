@@ -106,12 +106,10 @@ const shortcuts = [
 const Dashboard = () => {
    return (
       <>
-         <div className="mt-5">
-            <AdminTitle
-               title="Panel de Control"
-               description="Bienvenido al panel de administración de SILK"
-            />
-         </div>
+         <AdminTitle
+            title="Panel de Control"
+            description="Bienvenido al panel de administración de SILK"
+         />
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stats.map((stat, index) => (

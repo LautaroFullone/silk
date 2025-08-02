@@ -71,7 +71,7 @@ const mockTestimonials: Testimonial[] = [
    },
 ]
 
-type SortFieldsType = 'personName' | 'personRole' | 'content'
+type SortFieldsType = 'personName' | 'personRole'
 
 const TestimonialsPanel = () => {
    const [searchTerm, setSearchTerm] = useState('')
@@ -97,9 +97,6 @@ const TestimonialsPanel = () => {
             case 'personRole':
                comparison = a.personRole.localeCompare(b.personRole)
                break
-            case 'content':
-               comparison = a.content.localeCompare(b.content)
-               break
          }
 
          return sortOrder === 'asc' ? comparison : -comparison
@@ -116,54 +113,66 @@ const TestimonialsPanel = () => {
             <Button
                onClick={() => navigate('form')}
                size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white"
+               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden sm:flex"
             >
                <Plus className="w-4 h-4 mr-2" />
-               Nuevo Testimonio
+               Nuevo
             </Button>
          </div>
 
-         <div className="flex flex-col lg:flex-row gap-4 items-start ">
-            <div className="flex-1 max-w-2xl w-full">
+         <div className="flex flex-col lg:flex-row gap-4">
+            <div className="max-w-2xl w-full">
+               <span className="text-sm text-gray-600">Buscador:</span>
                <Input
                   className="w-full"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Buscar por nombre, rol o contenido..."
+                  placeholder="Filtrar por nombre, rol o contenido..."
                />
             </div>
 
-            <div className="flex items-center gap-2">
-               <span className="text-sm text-gray-600 whitespace-nowrap">
-                  Ordenar por:
-               </span>
+            <div className="flex items-end justify-between md:justify-normal ">
+               <div className="flex items-end gap-2">
+                  <div className="flex flex-col">
+                     <span className="text-sm text-gray-600 whitespace-nowrap">
+                        Ordenar por:
+                     </span>
 
-               <Select
-                  value={sortBy}
-                  onValueChange={(value: SortFieldsType) => setSortBy(value)}
-               >
-                  <SelectTrigger className="w-30">
-                     <SelectValue />
-                  </SelectTrigger>
+                     <Select
+                        value={sortBy}
+                        onValueChange={(value: SortFieldsType) => setSortBy(value)}
+                     >
+                        <SelectTrigger className="sm:w-30">
+                           <SelectValue />
+                        </SelectTrigger>
 
-                  <SelectContent>
-                     <SelectItem value="personName">Nombre</SelectItem>
-                     <SelectItem value="personRole">Rol</SelectItem>
-                     <SelectItem value="content">Contenido</SelectItem>
-                  </SelectContent>
-               </Select>
+                        <SelectContent>
+                           <SelectItem value="personName">Nombre</SelectItem>
+                           <SelectItem value="personRole">Rol</SelectItem>
+                        </SelectContent>
+                     </Select>
+                  </div>
 
+                  <Button
+                     variant="outline"
+                     onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                     className="flex items-center gap-1 bg-white!"
+                  >
+                     <ArrowUpDown className="w-4 h-4" />
+                     {sortOrder === 'asc' ? (
+                        <ChevronUp className="w-3 h-3" />
+                     ) : (
+                        <ChevronDown className="w-4 h-4" />
+                     )}
+                  </Button>
+               </div>
                <Button
-                  variant="outline"
-                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                  className="flex items-center gap-1 bg-white!"
+                  onClick={() => navigate('form')}
+                  size="lg"
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white sm:hidden"
                >
-                  <ArrowUpDown className="w-4 h-4" />
-                  {sortOrder === 'asc' ? (
-                     <ChevronUp className="w-3 h-3" />
-                  ) : (
-                     <ChevronDown className="w-3 h-3" />
-                  )}
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nuevo
                </Button>
             </div>
          </div>

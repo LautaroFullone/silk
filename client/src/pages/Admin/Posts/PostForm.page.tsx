@@ -27,7 +27,7 @@ const initialFormData: PostFormData = {
          },
       ],
    } as OutputData,
-   subject: '',
+   category: '',
    image: '',
    isVisible: false,
 }
@@ -103,10 +103,10 @@ const PostForm = () => {
 
                         <InputForm
                            type="text"
-                           name="subject"
-                           label="Tema"
-                           placeholder="Selecciona un tema"
-                           register={register('subject')}
+                           name="category"
+                           label="Categoria"
+                           placeholder="Categoria del post"
+                           register={register('category')}
                            errors={errors}
                            disabled={false}
                         />
