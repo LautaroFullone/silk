@@ -148,7 +148,7 @@ const TestimonialForm = () => {
                               </div>
 
                               {watch('isHighlight') === true && (
-                                 <div className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-full p-1 shadow-lg">
+                                 <div className="absolute -top-1 -right-1 bg-gradient-to-bl from-emerald-600 to-emerald-700 rounded-full p-1 shadow-lg">
                                     <Star className="w-3 h-3 text-white fill-current" />
                                  </div>
                               )}

@@ -13,7 +13,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
    return (
       <Card
          key={id}
-         className="overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-md bg-white h-full flex flex-col"
+         className="overflow-hidden transition-all duration-300  hover:shadow-md bg-white h-full flex flex-col"
       >
          <CardContent className="flex flex-col h-full">
             <div className="flex items-start justify-between mb-4">
@@ -28,7 +28,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                      </div>
 
                      {isHighlight && (
-                        <div className="absolute -top-1 -right-1 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-full p-1 shadow-lg">
+                        <div className="absolute -top-1 -right-1 bg-gradient-to-bl from-emerald-600 to-emerald-800 rounded-full p-1 shadow-lg">
                            <Star className="w-3 h-3 text-white fill-current" />
                         </div>
                      )}
