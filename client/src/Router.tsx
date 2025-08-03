@@ -11,6 +11,7 @@ import {
    PostForm,
    TestimonialsPanel,
    TestimonialForm,
+   RequestsPanel,
 } from './pages'
 
 const Router = () => {
@@ -39,10 +40,9 @@ const Router = () => {
                   <Route path="form" element={<TestimonialForm />} />
                </Route>
 
-               {/* <Route path="products">
-                  <Route index element={<ProductsPanel />} />
-                  <Route path="form" element={<ProductForm />} />
-               </Route> */}
+               <Route path="requests">
+                  <Route index element={<RequestsPanel />} />
+               </Route>
 
                <Route path="*" element={<div>404 Not Found</div>} />
             </Route>

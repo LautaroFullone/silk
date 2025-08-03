@@ -11,6 +11,7 @@ export * from './input'
 export * from './label'
 export * from './pagination'
 export * from './select'
+export * from './table'
 export * from './textarea'
 
 export { cn }

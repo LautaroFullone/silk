@@ -8,6 +8,7 @@ import PostsPanel from './Admin/Posts/PostsPanel.page'
 import PostForm from './Admin/Posts/PostForm.page'
 import TestimonialsPanel from './Admin/Testimonials/TestimonialsPanel.page'
 import TestimonialForm from './Admin/Testimonials/TestimonialForm.page'
+import RequestsPanel from './Admin/Requests/RequestsPanel.page'
 
 export {
    Blog,
@@ -19,4 +20,5 @@ export {
    PostForm,
    TestimonialsPanel,
    TestimonialForm,
+   RequestsPanel,
 }

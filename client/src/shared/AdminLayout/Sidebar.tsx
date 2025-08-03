@@ -3,15 +3,13 @@ import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
 import {
-   DollarSign,
+   ClipboardList,
    FileText,
    Home,
    LogOut,
    Menu,
    MessageSquare,
-   Settings,
    ShoppingBag,
-   UserPlus,
    X,
 } from 'lucide-react'
 
@@ -19,10 +17,14 @@ const navigation = [
    { name: 'Dashboard', link: '/admin', icon: Home },
    { name: 'Posts', link: '/admin/posts', icon: FileText },
    { name: 'Testimonios', link: '/admin/testimonials', icon: MessageSquare },
-   { name: 'Productos', link: '/admin/products', icon: ShoppingBag },
-   { name: 'Solicitudes de Servicio', link: '/admin/requests', icon: UserPlus },
-   { name: 'Órdenes de Compra', link: '/admin/orders', icon: DollarSign },
-   { name: 'Configuración', link: '/admin/config', icon: Settings },
+   // { name: 'Productos', link: '/admin/products', icon: ShoppingBag },
+   {
+      name: 'Solicitudes',
+      link: '/admin/requests',
+      icon: ClipboardList,
+   },
+   // { name: 'Órdenes de Compra', link: '/admin/orders', icon: DollarSign },
+   // { name: 'Configuración', link: '/admin/config', icon: Settings },
 ]
 
 const Sidebar = () => {
@@ -35,31 +37,23 @@ const Sidebar = () => {
       <>
          {/* Header mobile */}
          {isMobile && (
-            <div className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm h-16">
-               <div className="flex items-center justify-between px-4 py-3">
-                  <div className="flex items-center space-x-3">
-                     <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setMobileMenuOpen(true)}
-                        className="hover:bg-gray-100"
-                     >
-                        <Menu className="h-5 w-5" />
-                     </Button>
-
-                     <div className="flex items-center space-x-2">
-                        <h1 className="font-classy-vogue text-secondary text-4xl">
-                           SILK
-                        </h1>
-                        <span className="px-2 bg-emerald-800 text-white text-sm font-light rounded-sm">
-                           ADMIN
-                        </span>
-                     </div>
-                  </div>
-
-                  <Button variant="ghost" size="icon" className="hover:bg-gray-100">
-                     <Settings className="h-5 w-5" />
+            <div className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm h-16 px-4 py-3">
+               <div className="flex items-center space-x-3">
+                  <Button
+                     variant="ghost"
+                     size="icon"
+                     onClick={() => setMobileMenuOpen(true)}
+                     className="hover:bg-gray-100"
+                  >
+                     <Menu className="h-5 w-5" />
                   </Button>
+
+                  <div className="flex items-center space-x-2">
+                     <h1 className="font-classy-vogue text-secondary text-4xl">SILK</h1>
+                     <span className="px-2 bg-emerald-800 text-white text-sm font-light rounded-sm">
+                        ADMIN
+                     </span>
+                  </div>
                </div>
             </div>
          )}
