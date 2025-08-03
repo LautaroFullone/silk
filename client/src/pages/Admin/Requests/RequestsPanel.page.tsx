@@ -1,5 +1,4 @@
 import useSearchAndSort from '@hooks/useSearchAndSort'
-import { Testimonial } from '@models/Testimonial.model'
 import {
    Badge,
    Button,
@@ -30,6 +29,7 @@ import {
    CheckCircle,
    ChevronDown,
    ChevronUp,
+   DollarSign,
    Eye,
    Hash,
    Loader,
@@ -49,11 +49,11 @@ interface ServiceRequest {
    age: number
    date: string
    services: string[]
+   budget: string
    status: 'pending' | 'contacted' | 'completed' | 'cancelled'
    formData: {
       occupation: string
       location: string
-      budget: string
       goals: string
       experience: string
       preferences: string
@@ -62,7 +62,7 @@ interface ServiceRequest {
    }
 }
 
-const mockRequest = [
+const mockRequest: ServiceRequest[] = [
    {
       id: 'REQ-001',
       name: 'María González',
@@ -71,11 +71,11 @@ const mockRequest = [
       age: 32,
       date: '2025-01-15',
       services: ['Consultoría de Imagen Ejecutiva', 'Análisis de Color Personal'],
+      budget: '500-1000€',
       status: 'pending',
       formData: {
          occupation: 'Directora de Marketing',
          location: 'Madrid, España',
-         budget: '500-1000€',
          goals: 'Mejorar mi imagen profesional para presentaciones importantes',
          experience: 'Primera vez con consultoría de imagen',
          preferences: 'Estilo clásico y elegante',
@@ -91,11 +91,11 @@ const mockRequest = [
       age: 28,
       date: '2025-01-14',
       services: ['Transformación Completa'],
+      budget: '1000-2000€',
       status: 'contacted',
       formData: {
          occupation: 'Emprendedor',
          location: 'Barcelona, España',
-         budget: '1000-2000€',
          goals: 'Cambio completo de imagen para nueva etapa profesional',
          experience: 'He trabajado con estilistas antes',
          preferences: 'Moderno y sofisticado',
@@ -111,11 +111,11 @@ const mockRequest = [
       age: 45,
       date: '2025-01-13',
       services: ['Consultoría Virtual'],
+      budget: '200-500€',
       status: 'completed',
       formData: {
          occupation: 'Consultora de Negocios',
          location: 'Valencia, España',
-         budget: '200-500€',
          goals: 'Optimizar mi guardarropa actual',
          experience: 'Segunda consultoría',
          preferences: 'Práctico y versátil',
@@ -131,16 +131,36 @@ const mockRequest = [
       age: 38,
       date: '2025-01-12',
       services: ['Análisis de Color Personal', 'Consultoría de Imagen Ejecutiva'],
+      budget: '800-1200€',
       status: 'pending',
       formData: {
          occupation: 'Abogado',
          location: 'Sevilla, España',
-         budget: '800-1200€',
          goals: 'Renovar mi imagen para el bufete',
          experience: 'Nunca he tenido consultoría profesional',
          preferences: 'Conservador pero actual',
          availability: 'Sábados por la mañana',
          additionalInfo: 'Soy socio del bufete y necesito proyectar autoridad',
+      },
+   },
+   {
+      id: 'REQ-005',
+      name: 'Elena Ruiz',
+      email: 'elena.ruiz@email.com',
+      phone: '+34 611 222 333',
+      age: 29,
+      date: '2025-01-11',
+      services: ['Análisis de Color Personal'],
+      budget: '300-600€',
+      status: 'cancelled',
+      formData: {
+         occupation: 'Diseñadora Gráfica',
+         location: 'Bilbao, España',
+         goals: 'Encontrar mi paleta de colores perfecta',
+         experience: 'Primera consultoría',
+         preferences: 'Creativo y único',
+         availability: 'Tardes entre semana',
+         additionalInfo: 'Trabajo en una agencia creativa',
       },
    },
 ]
@@ -253,40 +273,40 @@ const RequestsPanel = () => {
          <Card className="p-0 overflow-hidden">
             <CardContent className="p-0">
                <Table>
-                  <TableHeader>
-                     <TableRow className="bg-gray-50">
+                  <TableHeader className="bg-gray-100">
+                     <TableRow>
                         <TableHead className="font-semibold">
                            <div className="flex items-center gap-2">
-                              <User className="w-4 h-4" />
+                              <User className="w-4 h-4 text-emerald-800" />
                               Nombre
                            </div>
                         </TableHead>
 
                         <TableHead className="font-semibold">
                            <div className="flex items-center gap-2">
-                              <Mail className="w-4 h-4" />
+                              <Mail className="w-4 h-4 text-emerald-800" />
                               Email
                            </div>
                         </TableHead>
 
                         <TableHead className="font-semibold">
                            <div className="flex items-center gap-2">
-                              <Calendar className="w-4 h-4" />
+                              <Calendar className="w-4 h-4 text-emerald-800" />
                               Fecha
                            </div>
                         </TableHead>
 
                         <TableHead className="font-semibold">
                            <div className="flex items-center gap-2">
-                              <Sparkles className="w-4 h-4" />
+                              <Sparkles className="w-4 h-4 text-emerald-800" />
                               Servicios
                            </div>
                         </TableHead>
 
                         <TableHead className="font-semibold">
                            <div className="flex items-center gap-2">
-                              <Hash className="w-4 h-4" />
-                              Edad
+                              <DollarSign className="w-4 h-4 text-emerald-800" />
+                              Presupuesto
                            </div>
                         </TableHead>
 
@@ -320,12 +340,12 @@ const RequestsPanel = () => {
                            </TableCell>
 
                            <TableCell>
-                              <div className="space-y-1">
+                              <div className="flex flex-col space-y-1">
                                  {request.services.slice(0, 2).map((service, index) => (
                                     <Badge
                                        key={index}
                                        variant="outline"
-                                       className="text-xs"
+                                       className="text-secondary border-gray-200 bg-accent rounded-sm"
                                     >
                                        {service}
                                     </Badge>
@@ -338,11 +358,7 @@ const RequestsPanel = () => {
                               </div>
                            </TableCell>
 
-                           <TableCell>
-                              <span className="text-sm text-gray-900">
-                                 {request.age} años
-                              </span>
-                           </TableCell>
+                           <TableCell>{request.budget}</TableCell>
 
                            <TableCell>
                               <Badge

@@ -69,7 +69,9 @@ const PostCard: React.FC<PostCardProps> = ({
 
                   <Badge
                      variant="default"
-                     className={'bg-emerald-800 text-white uppercase '}
+                     className={
+                        'bg-emerald-800 text-white uppercase rounded-xs border-none'
+                     }
                   >
                      {category}
                   </Badge>
