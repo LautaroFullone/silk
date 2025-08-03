@@ -1,5 +1,7 @@
+import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import TestimonialCard from './components/TestimonialCard'
 import { Testimonial } from '@models/Testimonial.model'
+import useSearchAndSort from '@hooks/useSearchAndSort'
 import { useNavigate } from 'react-router-dom'
 import AdminTitle from '@shared/AdminTitle'
 import {
@@ -11,8 +13,6 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
-import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
-import { useState } from 'react'
 
 const mockTestimonials: Testimonial[] = [
    {
@@ -71,36 +71,22 @@ const mockTestimonials: Testimonial[] = [
    },
 ]
 
-type SortFieldsType = 'personName' | 'personRole'
-
 const TestimonialsPanel = () => {
-   const [searchTerm, setSearchTerm] = useState('')
-   const [sortBy, setSortBy] = useState<SortFieldsType>('personName')
-   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
-
    const navigate = useNavigate()
 
-   const filteredAndSortedTestimonials = mockTestimonials
-      .filter(
-         (post) =>
-            post.personName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            post.personRole.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            post.content.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      .sort((a, b) => {
-         let comparison = 0
-
-         switch (sortBy) {
-            case 'personName':
-               comparison = a.personName.localeCompare(b.personName)
-               break
-            case 'personRole':
-               comparison = a.personRole.localeCompare(b.personRole)
-               break
-         }
-
-         return sortOrder === 'asc' ? comparison : -comparison
-      })
+   const {
+      searchTerm,
+      setSearchTerm,
+      sortBy,
+      setSortBy,
+      sortOrder,
+      toggleSortOrder,
+      filteredData: filteredAndSortedTestimonials,
+   } = useSearchAndSort<Testimonial>({
+      data: mockTestimonials,
+      searchableFields: ['personName', 'personRole', 'content'],
+      sortableFields: ['personName', 'personRole'],
+   })
 
    return (
       <>
@@ -113,7 +99,7 @@ const TestimonialsPanel = () => {
             <Button
                onClick={() => navigate('form')}
                size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden sm:flex"
+               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden lg:flex"
             >
                <Plus className="w-4 h-4 mr-2" />
                Nuevo
@@ -123,6 +109,7 @@ const TestimonialsPanel = () => {
          <div className="flex flex-col lg:flex-row gap-4">
             <div className="max-w-2xl w-full">
                <span className="text-sm text-gray-600">Buscador:</span>
+
                <Input
                   className="w-full"
                   value={searchTerm}
@@ -131,7 +118,7 @@ const TestimonialsPanel = () => {
                />
             </div>
 
-            <div className="flex items-end justify-between md:justify-normal ">
+            <div className="flex items-end justify-between lg:justify-normal ">
                <div className="flex items-end gap-2">
                   <div className="flex flex-col">
                      <span className="text-sm text-gray-600 whitespace-nowrap">
@@ -140,7 +127,7 @@ const TestimonialsPanel = () => {
 
                      <Select
                         value={sortBy}
-                        onValueChange={(value: SortFieldsType) => setSortBy(value)}
+                        onValueChange={(value: keyof Testimonial) => setSortBy(value)}
                      >
                         <SelectTrigger className="sm:w-30">
                            <SelectValue />
@@ -155,7 +142,7 @@ const TestimonialsPanel = () => {
 
                   <Button
                      variant="outline"
-                     onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                     onClick={() => toggleSortOrder()}
                      className="flex items-center gap-1 bg-white!"
                   >
                      <ArrowUpDown className="w-4 h-4" />
@@ -166,10 +153,11 @@ const TestimonialsPanel = () => {
                      )}
                   </Button>
                </div>
+
                <Button
                   onClick={() => navigate('form')}
                   size="lg"
-                  className="bg-emerald-800 hover:bg-emerald-900 text-white sm:hidden"
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
                >
                   <Plus className="w-4 h-4 mr-2" />
                   Nuevo
