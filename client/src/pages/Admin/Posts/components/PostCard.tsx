@@ -47,7 +47,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <div className="p-6 w-full min-w-0 flex flex-col">
                <div className="flex items-center gap-2 min-w-0">
                   <h3
-                     className="flex-1 min-w-0 text-xl font-serif text-gray-900 truncate"
+                     className="flex-1 min-w-0 text-xl font-serif text-secondary truncate"
                      title={title}
                   >
                      {title}

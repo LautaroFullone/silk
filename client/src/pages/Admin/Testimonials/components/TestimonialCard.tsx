@@ -16,8 +16,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
          className="overflow-hidden transition-all duration-300  hover:shadow-md bg-white h-full flex flex-col"
       >
          <CardContent className="flex flex-col h-full">
-            <div className="flex items-start justify-between mb-4">
-               <div className="flex items-center space-x-4">
+            <div className="flex items-start justify-between mb-4 min-w-0">
+               {/* Izquierda: avatar + nombre/rol */}
+               <div className="flex items-center gap-4 min-w-0 flex-1">
                   <div className="relative flex-shrink-0">
                      <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-lg">
                         <img
@@ -26,7 +27,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                            className="w-16 h-16 object-cover"
                         />
                      </div>
-
                      {isHighlight && (
                         <div className="absolute -top-1 -right-1 bg-gradient-to-bl from-emerald-600 to-emerald-800 rounded-full p-1 shadow-lg">
                            <Star className="w-3 h-3 text-white fill-current" />
@@ -34,22 +34,25 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                      )}
                   </div>
 
-                  <div className="flex-1 min-w-0">
+                  <div className="flex flex-col min-w-0 flex-1">
                      <h3
-                        className="flex-1 min-w-0 text-xl font-serif text-gray-900 truncate"
+                        className="text-xl font-serif text-secondary truncate min-w-0"
                         title={personName}
                      >
                         {personName}
                      </h3>
 
-                     <div className="flex items-center text-gray-600 text-sm">
+                     <div className="flex items-center text-gray-600 text-sm min-w-0">
                         <User className="w-4 h-4 mr-1" />
                         <span className="truncate">{personRole}</span>
                      </div>
                   </div>
                </div>
 
-               <TestimonialCardActions idTestimonial={id} isHighlight={isHighlight} />
+               {/* Derecha: acciones */}
+               <div className="flex-shrink-0 flex items-center ml-2">
+                  <TestimonialCardActions idTestimonial={id} isHighlight={isHighlight} />
+               </div>
             </div>
 
             <div className="flex-1 flex flex-col">

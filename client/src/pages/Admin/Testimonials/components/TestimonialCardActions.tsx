@@ -30,7 +30,7 @@ const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
 
    return (
       <>
-         <div className="flex-shrink-0 hidden xl:flex gap-2">
+         <div className="flex-shrink-0 gap-2 hidden md:flex xl:flex 2xl:hidden">
             <Button variant="ghost" onClick={() => goToEdit()}>
                <Edit className="w-4 h-4" />
             </Button>
@@ -57,7 +57,7 @@ const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
             </Button>
          </div>
 
-         <div className="flex-shrink-0 flex xl:hidden">
+         <div className="flex-shrink-0 flex md:hidden xl:hidden 2xl:flex">
             <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                <DropdownMenuTrigger asChild>
                   <Button size="icon" variant="ghost" className="h-8 w-8 p-0">
@@ -79,7 +79,7 @@ const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
                         <Star className="mr-3 w-4 h-4 text-secondary" />
                      )}
                      <span className="font-medium">
-                        {isHighlight ? 'Destacar' : 'Desmarcar'} testimonio
+                        {isHighlight ? 'Desmarcar' : 'Destacar'} testimonio
                      </span>
                   </DropdownMenuItem>
 
