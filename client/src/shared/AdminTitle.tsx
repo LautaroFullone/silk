@@ -26,10 +26,10 @@ const AdminTitle: React.FC<AdminTitleProps> = ({
          )}
 
          <div>
-            <h1 className="text-3xl sm:text-4xl font-serif text-gray-900 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-serif text-secondary mb-2">
                {title}
             </h1>
-            <p className="text-sm sm:text-base text-muted-foreground ">{description}</p>
+            <p className="text-sm sm:text-base text-muted-foreground">{description}</p>
          </div>
       </div>
    )

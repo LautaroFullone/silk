@@ -67,11 +67,17 @@ const PostCard: React.FC<PostCardProps> = ({
                      <span>{new Date(date).toLocaleDateString('es-ES')}</span>
                   </div>
 
-                  <Badge
+                  {/* <Badge
                      variant="default"
                      className={
                         'bg-emerald-800 text-white uppercase rounded-xs border-none'
                      }
+                  >
+                     {category}
+                  </Badge> */}
+                  <Badge
+                     variant="outline"
+                     className="text-secondary border-gray-200 bg-accent rounded-sm uppercase"
                   >
                      {category}
                   </Badge>

@@ -69,7 +69,7 @@ const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
                <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => goToEdit()} className="text-secondary">
                      <Edit className="mr-3 h-4 w-4 text-secondary" />
-                     <span className="font-medium ">Editar</span>
+                     Editar
                   </DropdownMenuItem>
 
                   <DropdownMenuItem onClick={() => {}} className="text-secondary">
@@ -78,17 +78,15 @@ const TestimonialCardActions: React.FC<TestimonialCardActionsProps> = ({
                      ) : (
                         <Star className="mr-3 w-4 h-4 text-secondary" />
                      )}
-                     <span className="font-medium">
-                        {isHighlight ? 'Desmarcar' : 'Destacar'} testimonio
-                     </span>
+                     {isHighlight ? 'Desmarcar' : 'Destacar'} testimonio
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
                      onClick={() => {}}
-                     className="text-red-600! hover:bg-red-50!"
+                     className="text-destructive! hover:bg-red-50!"
                   >
-                     <Trash2 className="mr-3 h-4 w-4 text-red-600" />
-                     <span className="font-medium">Eliminar</span>
+                     <Trash2 className="mr-3 h-4 w-4 text-destructive" />
+                     Eliminar
                   </DropdownMenuItem>
                </DropdownMenuContent>
             </DropdownMenu>

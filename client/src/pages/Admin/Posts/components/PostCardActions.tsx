@@ -66,26 +66,24 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
                <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => goToEdit()} className="text-secondary">
                      <Edit className="mr-3 h-4 w-4 text-secondary" />
-                     <span className="font-medium ">Editar</span>
+                     Editar
                   </DropdownMenuItem>
 
                   <DropdownMenuItem onClick={() => {}} className="text-secondary">
                      {isVisible ? (
                         <EyeOff className="mr-3 w-4 h-4 text-secondary" />
                      ) : (
-                        <Eye className="w-4 h-4 text-secondary" />
+                        <Eye className="mr-3 w-4 h-4 text-secondary" />
                      )}
-                     <span className="font-medium">
-                        {isVisible ? 'Ocultar' : 'Mostrar'} post
-                     </span>
+                     {isVisible ? 'Ocultar' : 'Mostrar'} post
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
                      onClick={() => {}}
-                     className="text-red-600! hover:bg-red-50!"
+                     className="text-destructive! hover:bg-red-50!"
                   >
-                     <Trash2 className="mr-3 h-4 w-4 text-red-600" />
-                     <span className="font-medium">Eliminar</span>
+                     <Trash2 className="mr-3 text-destructive" />
+                     Eliminar
                   </DropdownMenuItem>
                </DropdownMenuContent>
             </DropdownMenu>

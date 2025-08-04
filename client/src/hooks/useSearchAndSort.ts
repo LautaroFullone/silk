@@ -62,7 +62,6 @@ const useSearchAndSort = <T>({
       sortBy,
       setSortBy,
       sortOrder,
-      setSortOrder,
       toggleSortOrder,
       filteredData,
    }
