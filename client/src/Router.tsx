@@ -21,10 +21,19 @@ const Router = () => {
             <Route path="/" element={<ClientLayout />}>
                <Route index element={<Home />} />
                <Route path="blog" element={<Blog />} />
+               <Route
+                  path="quiz"
+                  element={<div className="flex justify-center text-primary">Quiz</div>}
+               />
                <Route path="servicios" element={<Services />} />
                <Route path="preguntas-frecuentes" element={<Faq />} />
                <Route path="nosotros" element={<div>About Page</div>} />
-               <Route path="*" element={<div>404 Not Found</div>} />
+               <Route
+                  path="*"
+                  element={
+                     <div className="flex justify-center text-primary">404 Not Found</div>
+                  }
+               />
             </Route>
 
             <Route path="/admin" element={<AdminLayout />}>
@@ -44,7 +53,14 @@ const Router = () => {
                   <Route index element={<RequestsPanel />} />
                </Route>
 
-               <Route path="*" element={<div>404 Not Found</div>} />
+               <Route
+                  path="*"
+                  element={
+                     <div className="flex justify-center text-secondary">
+                        404 Not Found
+                     </div>
+                  }
+               />
             </Route>
          </Routes>
       </BrowserRouter>

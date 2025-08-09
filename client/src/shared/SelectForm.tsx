@@ -23,6 +23,7 @@ interface SelectFormProps {
    placeholder?: string
    errors?: FieldErrors
    className?: string
+   labelClassName?: string
 }
 
 const SelectForm: React.FC<SelectFormProps> = ({
@@ -34,6 +35,7 @@ const SelectForm: React.FC<SelectFormProps> = ({
    placeholder = 'Selecciona una opción',
    errors = {},
    className = '',
+   labelClassName = '',
 }) => {
    // eslint-disable-next-line
    const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors as any)
@@ -41,7 +43,7 @@ const SelectForm: React.FC<SelectFormProps> = ({
 
    return (
       <div>
-         <Label htmlFor={name} className="mb-2">
+         <Label htmlFor={name} className={`mb-2 ${labelClassName}`}>
             {label}
          </Label>
 

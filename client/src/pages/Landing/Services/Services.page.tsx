@@ -4,6 +4,8 @@ import {
    AccordionItem,
    AccordionTrigger,
 } from '@shadcn/accordion'
+import ContactForm from '@shared/ContactForm'
+import Faq from '../Faq/Faq.page'
 
 const servicios = [
    {
@@ -223,6 +225,10 @@ const Services = () => {
                </div>
             ))}
          </div>
+
+         <ContactForm isServiceInputEnabled />
+
+         <Faq />
 
          {/* <div className="flex justify-center ">
             <button
