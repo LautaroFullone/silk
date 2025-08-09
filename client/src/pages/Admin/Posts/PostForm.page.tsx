@@ -159,7 +159,7 @@ const PostForm = () => {
 
                   <CardContent>
                      <div className="space-y-2">
-                        <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+                        <div className="aspect-video bg-gray-200 rounded-md overflow-hidden">
                            {watch('image') && (
                               <img
                                  src={'/placeholder.svg'}
@@ -169,6 +169,7 @@ const PostForm = () => {
                            )}
                         </div>
                         <h3 className="text-lg">{watch('title') || 'Título del post'}</h3>
+
                         <p className="text-sm text-gray-600">
                            {watch('description') || 'Descripción del post...'}
                         </p>

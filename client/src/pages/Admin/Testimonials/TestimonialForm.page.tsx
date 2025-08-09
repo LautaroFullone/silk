@@ -1,22 +1,12 @@
-import {
-   Button,
-   Card,
-   CardContent,
-   CardHeader,
-   CardTitle,
-   Checkbox,
-   Input,
-} from '@shadcn'
-import { Save, Upload, FileCheck, Star, User, Quote } from 'lucide-react'
-import type { OutputData } from '@editorjs/editorjs'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@shadcn'
+import { Save, Upload, Star, User, Quote } from 'lucide-react'
+import { Testimonial } from '@models/Testimonial.model'
 import { useSearchParams } from 'react-router-dom'
 import TextAreaForm from '@shared/TextAreaForm'
+import CheckboxForm from '@shared/CheckboxForm'
 import AdminTitle from '@shared/AdminTitle'
 import { useForm } from 'react-hook-form'
 import InputForm from '@shared/InputForm'
-import { Label } from '@shadcn/label'
-import { Testimonial } from '@models/Testimonial.model'
-import CheckboxForm from '@shared/CheckboxForm'
 
 type TestimonialFormData = Partial<Testimonial>
 

@@ -1,5 +1,10 @@
+import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
+import { ServiceRequest } from '@models/Request.model'
 import useSearchAndSort from '@hooks/useSearchAndSort'
+import RequestsTable from './components/RequestsTable'
+import RequestModal from './components/RequestModal'
 import AdminTitle from '@shared/AdminTitle'
+import { useState } from 'react'
 import {
    Button,
    Input,
@@ -9,10 +14,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
-import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
-import { useState } from 'react'
-import { ServiceRequest } from '@models/Request.model'
-import RequestsTable from './components/RequestsTable'
+import useRequests from '@hooks/useRequests'
 
 const mockRequest: ServiceRequest[] = [
    {
@@ -64,7 +66,7 @@ const mockRequest: ServiceRequest[] = [
       date: '2025-01-13',
       services: ['Consultoría Virtual'],
       budget: '$500.000',
-      status: 'completed',
+      status: 'contracted',
       formData: {
          occupation: 'Consultora de Negocios',
          location: 'Valencia, España',
@@ -123,6 +125,10 @@ const mockRequest: ServiceRequest[] = [
 
 const RequestsPanel = () => {
    const [requests, setRequests] = useState(mockRequest)
+   const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
+
+   const { statusConfig } = useRequests()
+
    const {
       searchTerm,
       setSearchTerm,
@@ -130,21 +136,24 @@ const RequestsPanel = () => {
       setSortBy,
       sortOrder,
       toggleSortOrder,
+      filterValue,
+      setFilterValue,
       filteredData: filteredAndSortedRequests,
    } = useSearchAndSort<ServiceRequest>({
       data: requests,
-      searchableFields: ['name', 'email', 'status'],
-      sortableFields: ['date', 'name', 'status'],
+      searchableFields: ['name', 'email'],
+      sortableFields: ['date', 'name'],
+      filterField: 'status',
    })
 
    return (
       <>
          <AdminTitle
-            title="Gestión de Testimonios"
-            description="Crea y administra los testimonios de la web"
+            title="Gestión de Solicitudes"
+            description="Visualizá y administrá las respuestas recibidas del formulario de captación."
          />
 
-         <div className="flex flex-col lg:flex-row gap-4">
+         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
             <div className="max-w-2xl w-full">
                <span className="text-sm text-gray-600">Buscador:</span>
 
@@ -152,12 +161,12 @@ const RequestsPanel = () => {
                   className="w-full"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Filtrar por nombre, rol o estado..."
+                  placeholder="Filtrar por nombre o email..."
                />
             </div>
 
             <div className="flex items-end justify-between lg:justify-normal ">
-               <div className="flex items-end gap-2">
+               <div className="flex items-end gap-4">
                   <div className="flex flex-col">
                      <span className="text-sm text-gray-600 whitespace-nowrap">
                         Ordenar por:
@@ -174,7 +183,29 @@ const RequestsPanel = () => {
                         <SelectContent>
                            <SelectItem value="date">Fecha</SelectItem>
                            <SelectItem value="name">Nombre</SelectItem>
-                           <SelectItem value="stauts">Estado</SelectItem>
+                        </SelectContent>
+                     </Select>
+                  </div>
+
+                  <div className="flex flex-col">
+                     <span className="text-sm text-gray-600 whitespace-nowrap">
+                        Estado:
+                     </span>
+
+                     <Select
+                        value={filterValue}
+                        onValueChange={(value) => setFilterValue(value)}
+                     >
+                        <SelectTrigger className="sm:w-30">
+                           <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectItem value="all">Todos</SelectItem>
+                           {Object.entries(statusConfig).map(([status, { label }]) => (
+                              <SelectItem key={status} value={status}>
+                                 {label}
+                              </SelectItem>
+                           ))}
                         </SelectContent>
                      </Select>
                   </div>
@@ -195,7 +226,16 @@ const RequestsPanel = () => {
             </div>
          </div>
 
-         <RequestsTable requests={filteredAndSortedRequests} />
+         <RequestsTable
+            requests={filteredAndSortedRequests}
+            onSelectRequest={setSelectedRequest}
+         />
+
+         <RequestModal
+            selectedRequest={selectedRequest}
+            onStatusChange={() => {}}
+            onClose={() => setSelectedRequest(null)}
+         />
       </>
    )
 }

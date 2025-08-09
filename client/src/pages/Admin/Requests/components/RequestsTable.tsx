@@ -1,31 +1,17 @@
 import { ServiceRequest } from '@models/Request.model'
 import {
-   AlertCircle,
    Calendar,
-   CheckCircle,
    CircleDashed,
-   CircleDot,
    DollarSign,
-   Eye,
    FileText,
-   Info,
    Mail,
-   MoreVertical,
    Sparkles,
-   Trash,
-   Trash2,
    User,
-   XCircle,
 } from 'lucide-react'
 import {
    Badge,
-   Button,
    Card,
    CardContent,
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuTrigger,
    Table,
    TableBody,
    TableCell,
@@ -33,6 +19,8 @@ import {
    TableHeader,
    TableRow,
 } from '@shadcn'
+import RequestStatusHandler from './RequestStatusHandler'
+import useRequests from '@hooks/useRequests'
 
 const tableHeaders = [
    { name: 'Nombre', icon: User },
@@ -46,63 +34,11 @@ const tableHeaders = [
 
 interface RequestTableProps {
    requests: ServiceRequest[]
+   onSelectRequest: (request: ServiceRequest) => void
 }
 
-const RequestsTable: React.FC<RequestTableProps> = ({ requests }) => {
-   const getStatusColor = (status: ServiceRequest['status']) => {
-      switch (status) {
-         case 'pending':
-            return 'bg-amber-100 text-amber-800'
-         case 'contacted':
-            return 'bg-indigo-100 text-indigo-800'
-         case 'completed':
-            return 'bg-emerald-100 text-emerald-800'
-         case 'cancelled':
-            return 'bg-stone-100 text-stone-800'
-         default:
-            return 'bg-gray-100 text-gray-800'
-      }
-   }
-
-   const getStatusBanner = (status: ServiceRequest['status']) => {
-      switch (status) {
-         case 'pending':
-            return (
-               <Badge className={getStatusColor(status)}>
-                  <AlertCircle className="w-4 h-4 mr-1 text-amber-600" />
-                  Pendiente
-               </Badge>
-            )
-         case 'contacted':
-            return (
-               <Badge className={getStatusColor(status)}>
-                  <CircleDot className="w-4 h-4 mr-1 text-blue-600" />
-                  Contactado
-               </Badge>
-            )
-         case 'completed':
-            return (
-               <Badge className={getStatusColor(status)}>
-                  <CheckCircle className="w-4 h-4 mr-1 text-emerald-600" />
-                  Completado
-               </Badge>
-            )
-         case 'cancelled':
-            return (
-               <Badge className={getStatusColor(status)}>
-                  <XCircle className="w-4 h-4 mr-1 text-muted-foreground" />
-                  Cancelado
-               </Badge>
-            )
-         default:
-            return (
-               <Badge className={getStatusColor(status)}>
-                  <AlertCircle className="w-4 h-4 mr-1 text-amber-600" />
-                  Indefinido
-               </Badge>
-            )
-      }
-   }
+const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest }) => {
+   const { getStatusBanner } = useRequests()
 
    return (
       <Card className="p-0 overflow-hidden">
@@ -134,6 +70,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests }) => {
                            <div className="font-medium text-secondary">
                               {request.name}
                            </div>
+
                            <div className="text-sm text-muted-foreground">
                               {request.id}
                            </div>
@@ -154,7 +91,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests }) => {
 
                         <TableCell>
                            <div className="flex flex-col space-y-1">
-                              {request.services.slice(0, 2).map((service, index) => (
+                              {request.services.slice(0, 3).map((service, index) => (
                                  <Badge
                                     key={index}
                                     variant="outline"
@@ -164,7 +101,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests }) => {
                                  </Badge>
                               ))}
 
-                              {request.services.length > 2 && (
+                              {request.services.length > 3 && (
                                  <Badge
                                     variant="outline"
                                     className="text-secondary border-gray-200 bg-accent rounded-sm"
@@ -177,71 +114,22 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests }) => {
 
                         <TableCell>{request.budget}</TableCell>
 
-                        <TableCell>
-                           {getStatusBanner(request.status as ServiceRequest['status'])}
-                        </TableCell>
+                        <TableCell>{getStatusBanner(request.status)}</TableCell>
 
                         <TableCell>
                            <div className="flex gap-1">
                               <div className="flex space-x-3">
-                                 <FileText className="w-5 h-5 cursor-pointer" />
+                                 <FileText
+                                    onClick={() => onSelectRequest(request)}
+                                    className="w-5 h-5 cursor-pointer transition-all duration-200 hover:scale-105"
+                                 />
 
-                                 <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                       {/* <Button
-                                       variant="outline"
-                                       size="sm"
-                                       className="p-2 bg-transparent"
-                                       title="Cambiar estado"
-                                    >
-                                       <MoreVertical className="w-4 h-4" />
-                                    </Button> */}
-
-                                       <MoreVertical className="h-5 w-5 cursor-pointer" />
-                                    </DropdownMenuTrigger>
-
-                                    <DropdownMenuContent align="end">
-                                       <DropdownMenuItem
-                                          disabled={request.status === 'pending'}
-                                          onClick={() => {}}
-                                       >
-                                          <AlertCircle className="w-4 h-4 mr-2 text-amber-600" />
-                                          Marcar como Pendiente
-                                       </DropdownMenuItem>
-
-                                       <DropdownMenuItem
-                                          disabled={request.status === 'contacted'}
-                                          onClick={() => {}}
-                                       >
-                                          <CircleDot className="w-4 h-4 mr-2 text-blue-600" />
-                                          Marcar como Contactado
-                                       </DropdownMenuItem>
-
-                                       <DropdownMenuItem
-                                          disabled={request.status === 'completed'}
-                                          onClick={() => {}}
-                                       >
-                                          <CheckCircle className="w-4 h-4 mr-2 text-emerald-600" />
-                                          Marcar como Completado
-                                       </DropdownMenuItem>
-
-                                       <DropdownMenuItem
-                                          disabled={request.status === 'cancelled'}
-                                          onClick={() => {}}
-                                       >
-                                          <XCircle className="w-4 h-4 mr-2 text-muted-foreground" />
-                                          Marcar como Cancelado
-                                       </DropdownMenuItem>
-
-                                       <DropdownMenuItem
-                                          onClick={() => {}}
-                                          className="text-destructive! hover:bg-red-50!"
-                                       >
-                                          <Trash2 className="w-4 h-4 mr-3 text-destructive" />
-                                          Eliminar solicitud
-                                       </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                 </DropdownMenu>
+                                 <RequestStatusHandler
+                                    request={request}
+                                    onStatusChange={(status) => {
+                                       console.log('# onStatusChange: ', status)
+                                    }}
+                                 />
                               </div>
                            </div>
                         </TableCell>

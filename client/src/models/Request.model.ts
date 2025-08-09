@@ -7,7 +7,7 @@ export interface ServiceRequest {
    date: string
    services: string[]
    budget: string
-   status: 'pending' | 'contacted' | 'completed' | 'cancelled'
+   status: 'pending' | 'contacted' | 'contracted' | 'cancelled'
    formData: {
       occupation: string
       location: string

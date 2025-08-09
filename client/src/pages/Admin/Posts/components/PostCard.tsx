@@ -56,7 +56,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   <PostCardActions idPost={id} isVisible={isVisible} />
                </div>
 
-               <div className="flex flex-wrap items-center text-sm mb-2 gap-x-4 gap-y-2 text-gray-600">
+               <div className="flex flex-wrap items-center text-sm mb-2 gap-x-4 gap-y-2 text-muted-foreground">
                   <div className="flex items-center">
                      <User className="w-4 h-4 mr-1" />
                      <span className="truncate">{author}</span>
@@ -83,7 +83,9 @@ const PostCard: React.FC<PostCardProps> = ({
                   </Badge>
                </div>
 
-               <p className="text-sm text-gray-500 line-clamp-2 min-w-0">{description}</p>
+               <p className="text-sm text-muted-foreground line-clamp-2 min-w-0">
+                  {description}
+               </p>
             </div>
          </CardContent>
       </Card>

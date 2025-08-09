@@ -81,11 +81,14 @@ const TestimonialsPanel = () => {
       setSortBy,
       sortOrder,
       toggleSortOrder,
+      filterValue,
+      setFilterValue,
       filteredData: filteredAndSortedTestimonials,
    } = useSearchAndSort<Testimonial>({
       data: mockTestimonials,
       searchableFields: ['personName', 'personRole', 'content'],
       sortableFields: ['personName', 'personRole'],
+      filterField: 'isHighlight',
    })
 
    return (
@@ -106,7 +109,16 @@ const TestimonialsPanel = () => {
             </Button>
          </div>
 
-         <div className="flex flex-col lg:flex-row gap-4">
+         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
+            <Button
+               onClick={() => navigate('form')}
+               size="lg"
+               className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
+            >
+               <Plus className="w-4 h-4 mr-2" />
+               Nuevo
+            </Button>
+
             <div className="max-w-2xl w-full">
                <span className="text-sm text-gray-600">Buscador:</span>
 
@@ -119,7 +131,7 @@ const TestimonialsPanel = () => {
             </div>
 
             <div className="flex items-end justify-between lg:justify-normal ">
-               <div className="flex items-end gap-2">
+               <div className="flex items-end gap-4">
                   <div className="flex flex-col">
                      <span className="text-sm text-gray-600 whitespace-nowrap">
                         Ordenar por:
@@ -140,6 +152,26 @@ const TestimonialsPanel = () => {
                      </Select>
                   </div>
 
+                  <div className="flex flex-col">
+                     <span className="text-sm text-gray-600 whitespace-nowrap">
+                        Estado:
+                     </span>
+
+                     <Select
+                        value={filterValue}
+                        onValueChange={(value) => setFilterValue(value)}
+                     >
+                        <SelectTrigger className="sm:w-30">
+                           <SelectValue placeholder="Todos" />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectItem value="all">Todos</SelectItem>
+                           <SelectItem value="true">Destacado</SelectItem>
+                           <SelectItem value="false">No Destacado</SelectItem>
+                        </SelectContent>
+                     </Select>
+                  </div>
+
                   <Button
                      variant="outline"
                      onClick={() => toggleSortOrder()}
@@ -153,15 +185,6 @@ const TestimonialsPanel = () => {
                      )}
                   </Button>
                </div>
-
-               <Button
-                  onClick={() => navigate('form')}
-                  size="lg"
-                  className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
-               >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Nuevo
-               </Button>
             </div>
          </div>
 

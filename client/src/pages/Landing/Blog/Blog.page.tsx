@@ -1,4 +1,6 @@
 import PostCard from './components/PostCard'
+import { Post } from '@models/Post.model'
+import useMobile from '@hooks/useMobile'
 import { FileText } from 'lucide-react'
 import { useState } from 'react'
 import {
@@ -9,8 +11,6 @@ import {
    PaginationNext,
    PaginationPrevious,
 } from '@shadcn/pagination'
-import useMobile from '@hooks/useMobile'
-import { Post } from '@models/Post.model'
 
 const ALL_POSTS: Post[] = [
    {
@@ -100,13 +100,14 @@ const Blog = () => {
             <h1 className="text-secondary text-5xl font-serif text-center mb-12 tracking-wide">
                Posts publicados
             </h1>
+
             {posts.length === 0 ? (
                <div className="flex flex-col items-center justify-center text-primary">
                   <FileText size={80} className="text-4xl mb-2" />
                   <p className="text-2xl font-serif">Aún no hay artículos publicados.</p>
                </div>
             ) : (
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 overflow-y-auto max-h-[100vh] p-3">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 overflow-y-auto max-h-[100vh] p-3 pb-5">
                   {posts.map((post, index) => (
                      <PostCard key={`post-card-client-${index}`} post={post} />
                   ))}

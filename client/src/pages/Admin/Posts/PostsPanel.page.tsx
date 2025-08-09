@@ -78,11 +78,14 @@ const PostsPanel = () => {
       setSortBy,
       sortOrder,
       toggleSortOrder,
+      filterValue,
+      setFilterValue,
       filteredData: filteredAndSortedPosts,
    } = useSearchAndSort<Post>({
       data: mockPosts,
       searchableFields: ['title', 'author', 'category'],
       sortableFields: ['date', 'title', 'author'],
+      filterField: 'isVisible',
    })
 
    return (
@@ -103,7 +106,16 @@ const PostsPanel = () => {
             </Button>
          </div>
 
-         <div className="flex flex-col lg:flex-row gap-4 ">
+         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2 ">
+            <Button
+               onClick={() => navigate('form')}
+               size="lg"
+               className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
+            >
+               <Plus className="w-4 h-4 mr-2" />
+               Nuevo
+            </Button>
+
             <div className="max-w-2xl w-full">
                <span className="text-sm text-gray-600">Buscador:</span>
 
@@ -116,7 +128,7 @@ const PostsPanel = () => {
             </div>
 
             <div className="flex items-end justify-between lg:justify-normal ">
-               <div className="flex items-end gap-2">
+               <div className="flex items-end gap-4">
                   <div className="flex flex-col">
                      <span className="text-sm text-gray-600 whitespace-nowrap">
                         Ordenar por:
@@ -138,6 +150,26 @@ const PostsPanel = () => {
                      </Select>
                   </div>
 
+                  <div className="flex flex-col">
+                     <span className="text-sm text-gray-600 whitespace-nowrap">
+                        Estado:
+                     </span>
+
+                     <Select
+                        value={filterValue} // 'all' | 'true' | 'false'
+                        onValueChange={(value) => setFilterValue(value)}
+                     >
+                        <SelectTrigger className="sm:w-30">
+                           <SelectValue placeholder="Todos" />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectItem value="all">Todos</SelectItem>
+                           <SelectItem value="true">Publicado</SelectItem>
+                           <SelectItem value="false">Borrador</SelectItem>
+                        </SelectContent>
+                     </Select>
+                  </div>
+
                   <Button
                      variant="outline"
                      onClick={() => toggleSortOrder()}
@@ -152,19 +184,10 @@ const PostsPanel = () => {
                      )}
                   </Button>
                </div>
-
-               <Button
-                  onClick={() => navigate('form')}
-                  size="lg"
-                  className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
-               >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Nuevo
-               </Button>
             </div>
          </div>
 
-         <div className="grid gap-6">
+         <div className="grid gap-4">
             {filteredAndSortedPosts.map((post, index) => (
                <PostCard key={`post-card-admin-${index}`} post={post} />
             ))}

@@ -131,12 +131,13 @@ const Dashboard = () => {
                   <CardTitle>Actividad Reciente</CardTitle>
                   <CardDescription>Últimas acciones en tu panel</CardDescription>
                </CardHeader>
+
                <CardContent>
                   <div className="space-y-4">
                      {activities.map((activity, index) => (
                         <div
                            key={index}
-                           className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50"
+                           className="flex items-center space-x-3 p-3 rounded-md bg-gray-50"
                         >
                            <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                            <div className="flex-1">
@@ -156,14 +157,15 @@ const Dashboard = () => {
                   <CardTitle>Accesos Rápidos</CardTitle>
                   <CardDescription>Acciones frecuentes</CardDescription>
                </CardHeader>
+
                <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                      {shortcuts.map((shortcut) => (
                         <button
                            key={shortcut.title}
-                           className="p-4 text-left rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-colors"
+                           className="p-4 text-left rounded-md border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-colors"
                         >
-                           <shortcut.icon className="w-5 h-5 text-emerald-600 mb-2" />
+                           <shortcut.icon className="w-5 h-5 text-emerald-800 mb-2" />
                            <p className="text-sm font-medium text-gray-900">
                               {shortcut.title}
                            </p>

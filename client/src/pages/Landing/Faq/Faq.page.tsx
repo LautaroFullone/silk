@@ -60,9 +60,9 @@ const Faq = () => {
                   <AccordionItem
                      key={index}
                      value={String(index)}
-                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-6"
+                     className="bg-[#e3ddd1] rounded-sm shadow-sm mb-6"
                   >
-                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-md uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
+                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-sm uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
                         {item.pregunta}
                      </AccordionTrigger>
                      <AccordionContent className="px-6 pb-4 text-base cursor-default">
@@ -77,9 +77,9 @@ const Faq = () => {
                   <AccordionItem
                      key={index}
                      value={String(index)}
-                     className="bg-[#e3ddd1] rounded-md shadow-sm mb-6"
+                     className="bg-[#e3ddd1] rounded-sm shadow-sm mb-6"
                   >
-                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-md uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
+                     <AccordionTrigger className="py-4 px-6 font-semibold text-base rounded-sm uppercase transition hover:bg-[#e3ddd1]/10 cursor-pointer">
                         {item.pregunta}
                      </AccordionTrigger>
                      <AccordionContent className="px-6 pb-4 text-base cursor-default">

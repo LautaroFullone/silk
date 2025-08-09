@@ -160,7 +160,7 @@ const servicios = [
                      ¡Próximamente! Anotate en la lista de espera y obtené una guía gratis
                      de <b>Cómo utilizar el color a tu favor.</b>
                   </p>
-                  <button className="bg-primary text-white mt-3 px-4 py-2 rounded-lg text-base hover:bg-primary/90 transition">
+                  <button className="bg-primary text-white mt-3 px-4 py-2 rounded-sm text-base hover:bg-primary/90 transition">
                      Lista de Espera
                   </button>
                </>
@@ -205,7 +205,7 @@ const Services = () => {
                   {/* TODO: pasaria imagen a codigo */}
                   <img
                      src={servicio.image}
-                     className="w-full rounded-xl mb-5 transition-transform duration-200 hover:scale-105"
+                     className="w-full rounded-sm mb-5 transition-transform duration-200 hover:scale-105"
                   />
 
                   <Accordion type="single" collapsible className="w-full mt-2">
@@ -227,7 +227,7 @@ const Services = () => {
          {/* <div className="flex justify-center ">
             <button
                onClick={() => alert('Hacer el quiz!')}
-               className="bg-primary px-5 py-2 sm:px-6 sm:py-3 rounded-md shadow-lg hover:scale-105          
+               className="bg-primary px-5 py-2 sm:px-6 sm:py-3 rounded-sm shadow-lg hover:scale-105          
                   flex items-center cursor-pointer transition-all"
             >
                COMENZÁ HOY

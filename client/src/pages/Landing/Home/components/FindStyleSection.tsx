@@ -1,7 +1,10 @@
-import { Button } from '@shadcn'
+import { useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
+import { Button } from '@shadcn'
 
 const FindStyleSection = () => {
+   const navigate = useNavigate()
+
    return (
       <div className="min-h-[60vh] bg-[url('/Quiz_assets-07.png')] bg-cover bg-center flex items-center justify-center py-20 text-secondary">
          <div className="overflow-hidden bg-secondary border border-secondary rounded-sm w-full max-w-xl mx-4 flex flex-col items-center ">
@@ -26,11 +29,7 @@ const FindStyleSection = () => {
                      Descubrí tu estilo ideal con nuestro <b>quiz</b> personalizado. Es
                      rápido, práctico y el primer paso para transformar tu guardarropa.
                   </p>
-                  <Button
-                     onClick={() => alert('Hacer el quiz!')}
-                     variant="default"
-                     size="xl"
-                  >
+                  <Button onClick={() => navigate('quiz')} variant="default" size="xl">
                      HACER EL QUIZ <ChevronRight className="ml-1" size={19} />
                   </Button>
                </div>

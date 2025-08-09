@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 type SortOrder = 'asc' | 'desc'
 
@@ -6,54 +6,55 @@ interface HookProps<T> {
    data: T[]
    searchableFields: (keyof T)[]
    sortableFields: (keyof T)[]
+   filterField?: keyof T // Campo por el que se va a filtrar (opcional)
 }
 
 const useSearchAndSort = <T>({
    data,
    searchableFields,
    sortableFields,
+   filterField,
 }: HookProps<T>) => {
    const [searchTerm, setSearchTerm] = useState('')
    const [sortBy, setSortBy] = useState<keyof T>(sortableFields[0])
    const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
+   const [filterValue, setFilterValue] = useState<string>('all') // valor por defecto
 
-   // Filtrado y ordenamiento memorizados
    const filteredData = useMemo(() => {
-      // Filtro por searchTerm
       const lowerSearch = searchTerm.toLowerCase()
+
       let filtered = data.filter((item) =>
          searchableFields.some((field) => {
             const value = item[field]
-            if (typeof value === 'string')
-               return value.toLowerCase().includes(lowerSearch)
-            return false
+            return typeof value === 'string' && value.toLowerCase().includes(lowerSearch)
          })
       )
 
-      // Ordenamiento
+      if (filterField && filterValue !== 'all') {
+         filtered = filtered.filter((item) => String(item[filterField]) === filterValue)
+      }
+
       filtered = filtered.sort((a, b) => {
-         const aValue = a[sortBy]
-         const bValue = b[sortBy]
-         if (typeof aValue === 'string' && typeof bValue === 'string') {
-            return sortOrder === 'asc'
-               ? aValue.localeCompare(bValue)
-               : bValue.localeCompare(aValue)
+         const av = a[sortBy]
+         const bv = b[sortBy]
+
+         if (typeof av === 'string' && typeof bv === 'string') {
+            return sortOrder === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av)
          }
-         if (typeof aValue === 'number' && typeof bValue === 'number') {
-            return sortOrder === 'asc' ? aValue - bValue : bValue - aValue
+         if (typeof av === 'number' && typeof bv === 'number') {
+            return sortOrder === 'asc' ? av - bv : bv - av
          }
-         if (aValue instanceof Date && bValue instanceof Date) {
+         if (av instanceof Date && bv instanceof Date) {
             return sortOrder === 'asc'
-               ? aValue.getTime() - bValue.getTime()
-               : bValue.getTime() - aValue.getTime()
+               ? av.getTime() - bv.getTime()
+               : bv.getTime() - av.getTime()
          }
          return 0
       })
 
       return filtered
-   }, [data, searchTerm, sortBy, sortOrder, searchableFields])
+   }, [data, searchTerm, filterValue, filterField, sortBy, sortOrder, searchableFields])
 
-   // Alterna entre 'asc' y 'desc'
    const toggleSortOrder = () => setSortOrder((s) => (s === 'asc' ? 'desc' : 'asc'))
 
    return {
@@ -63,6 +64,8 @@ const useSearchAndSort = <T>({
       setSortBy,
       sortOrder,
       toggleSortOrder,
+      filterValue,
+      setFilterValue,
       filteredData,
    }
 }
