@@ -12,7 +12,6 @@ const Home = () => {
          <MiniCarrouselSection />
          <ConfidenceSection />
          <PostsSection />
-         {/*<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
       </>
    )
 }

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@shadcn'
+import { Dialog, DialogContent, DialogTitle } from '@shadcn'
 import ContactForm from '@shared/ContactForm'
 
 interface ColorimetryModalProps {
@@ -10,6 +10,10 @@ const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClos
    return (
       <Dialog open={isModalOpen} onOpenChange={(open) => open || onClose()}>
          <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden bg-tertiary text-primary">
+            <DialogTitle className="hidden">
+               ANÁLISIS DE COLOR HECHO POR EXPERTOS
+            </DialogTitle>
+
             <div className="container mx-auto px-4 py-6 ">
                <div className="grid lg:grid-cols-2 gap-12 items-center">
                   <div>
