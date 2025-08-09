@@ -1,17 +1,10 @@
 import useRequests from '@hooks/useRequests'
 import { ServiceRequest } from '@models/Request.model'
 import {
-   Badge,
-   Button,
    Card,
    CardContent,
    CardHeader,
    CardTitle,
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuTrigger,
-   Label,
    Dialog,
    DialogContent,
    DialogDescription,
@@ -20,20 +13,13 @@ import {
    ScrollArea,
 } from '@shadcn'
 import {
-   User,
    Mail,
    Phone,
    MapPin,
    Calendar,
    DollarSign,
    Clock,
-   Palette,
-   AlertCircle,
-   Loader,
-   CheckCircle,
-   XCircle,
    FileText,
-   MoreVertical,
    Sparkles,
 } from 'lucide-react'
 import RequestStatusHandler from './RequestStatusHandler'
@@ -44,57 +30,10 @@ interface RequestModalProps {
    onStatusChange: (id: string, status: ServiceRequest['status']) => void
 }
 
-const RequestModal: React.FC<RequestModalProps> = ({
-   selectedRequest,
-   onStatusChange,
-   onClose,
-}) => {
+const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose }) => {
    const { getStatusBanner } = useRequests()
 
-   const getStatusConfig = (status: ServiceRequest['status']) => {
-      switch (status) {
-         case 'pending':
-            return {
-               color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-               icon: AlertCircle,
-               label: 'Pendiente',
-            }
-         case 'contacted':
-            return {
-               color: 'bg-blue-100 text-blue-800 border-blue-200',
-               icon: Loader,
-               label: 'Contactado',
-            }
-         case 'contracted':
-            return {
-               color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-               icon: CheckCircle,
-               label: 'Completado',
-            }
-         case 'cancelled':
-            return {
-               color: 'bg-gray-100 text-gray-800 border-gray-200',
-               icon: XCircle,
-               label: 'Cancelado',
-            }
-      }
-   }
-
-   const getFormTypeConfig = () => {
-      return {
-         title: 'Análisis de Color',
-         description: '¿Estás usando los colores que realmente te favorecen?',
-         icon: Palette,
-         color: 'bg-purple-100 text-purple-800',
-      }
-   }
-
    if (!selectedRequest) return
-
-   const statusConfig = getStatusConfig(selectedRequest?.status)
-   const formTypeConfig = getFormTypeConfig()
-   const StatusIcon = statusConfig.icon
-   const FormTypeIcon = formTypeConfig.icon
 
    return (
       <Dialog open={!!selectedRequest} onOpenChange={(open) => open || onClose()}>
@@ -128,10 +67,7 @@ const RequestModal: React.FC<RequestModalProps> = ({
                         </div>
 
                         <div className="flex items-center gap-3">
-                           <Badge className={`${statusConfig.color} border px-3 py-1`}>
-                              <StatusIcon className="w-4 h-4 mr-2" />
-                              {statusConfig.label}
-                           </Badge>
+                           {getStatusBanner(selectedRequest.status)}
 
                            <RequestStatusHandler
                               request={selectedRequest}
@@ -246,23 +182,22 @@ const RequestModal: React.FC<RequestModalProps> = ({
                   </div>
 
                   {/* Información adicional si existe */}
-                  {true && (
-                     <Card className="shadow-sm border-0 bg-gradient-to-br from-white to-gray-50">
-                        <CardHeader className="pb-4">
-                           <CardTitle className="text-lg flex items-center gap-2">
-                              <FileText className="w-5 h-5 text-emerald-600" />
-                              Información Adicional
-                           </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                           <div className="bg-white rounded-md p-4 border border-gray-100">
-                              <p className="text-sm text-secondary leading-relaxed">
-                                 Algo de texto que puede enviar el cliente
-                              </p>
-                           </div>
-                        </CardContent>
-                     </Card>
-                  )}
+
+                  <Card className="shadow-sm border-0 bg-gradient-to-br from-white to-gray-50">
+                     <CardHeader className="pb-4">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                           <FileText className="w-5 h-5 text-emerald-600" />
+                           Información Adicional
+                        </CardTitle>
+                     </CardHeader>
+                     <CardContent>
+                        <div className="bg-white rounded-md p-4 border border-gray-100">
+                           <p className="text-sm text-secondary leading-relaxed">
+                              Algo de texto que puede enviar el cliente
+                           </p>
+                        </div>
+                     </CardContent>
+                  </Card>
 
                   {/* Timeline de acciones */}
                   <Card className="shadow-sm border-0 bg-gradient-to-br from-white to-gray-50">

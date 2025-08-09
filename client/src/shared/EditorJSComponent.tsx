@@ -1,15 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import EditorJS, { type OutputData } from '@editorjs/editorjs'
 import Header from '@editorjs/header'
-import List from '@editorjs/list'
-import Paragraph from '@editorjs/paragraph'
-import Image from '@editorjs/image'
-import LinkTool from '@editorjs/link'
-import Quote from '@editorjs/quote'
-import Delimiter from '@editorjs/delimiter'
-import Embed from '@editorjs/embed'
-import Table from '@editorjs/table'
 
 interface EditorJSProps {
    data?: OutputData
@@ -18,7 +10,6 @@ interface EditorJSProps {
 }
 
 export function EditorJSComponent({
-   data,
    onChange,
    placeholder = 'Comenzá a escribir tu post...',
 }: EditorJSProps) {

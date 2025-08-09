@@ -40,11 +40,11 @@ const PostForm = () => {
 
    const {
       watch,
-      setValue,
+      // setValue,
       register,
-      reset: resetForm,
-      handleSubmit: handleFormSubmit,
-      formState: { errors, isValid },
+      // reset: resetForm,
+      // handleSubmit: handleFormSubmit,
+      formState: { errors },
    } = useForm<PostFormData>({
       mode: 'onChange',
       defaultValues: initialFormData,

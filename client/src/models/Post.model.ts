@@ -7,7 +7,7 @@ export interface Post {
    author: string
    description: string
    image: string
-   content: OutputData
+   content: OutputData | string
    isVisible: boolean
    category: string
 }

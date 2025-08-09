@@ -27,9 +27,9 @@ const TestimonialForm = () => {
       watch,
       setValue,
       register,
-      reset: resetForm,
-      handleSubmit: handleFormSubmit,
-      formState: { errors, isValid },
+      // reset: resetForm,
+      // handleSubmit: handleFormSubmit,
+      formState: { errors },
    } = useForm<TestimonialFormData>({
       mode: 'onChange',
       defaultValues: initialFormData,
@@ -66,7 +66,6 @@ const TestimonialForm = () => {
                            placeholder="Nombre del cliente"
                            register={register('personName')}
                            errors={errors}
-                           disabled={false}
                         />
 
                         <InputForm
@@ -76,7 +75,6 @@ const TestimonialForm = () => {
                            placeholder="Profesión o Rol del cliente"
                            register={register('personRole')}
                            errors={errors}
-                           disabled={false}
                         />
                      </div>
 
@@ -113,7 +111,6 @@ const TestimonialForm = () => {
                         placeholder="Texto del testimonio"
                         register={register('content')}
                         errors={errors}
-                        disabled={false}
                      />
                   </CardContent>
                </Card>

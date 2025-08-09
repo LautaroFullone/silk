@@ -1,4 +1,4 @@
-import { Edit, Eye, EyeOff, MoreHorizontal, Star, StarOff, Trash2 } from 'lucide-react'
+import { Edit, MoreHorizontal, Star, StarOff, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Testimonial } from '@models/Testimonial.model'
 import { Button } from '@shadcn'

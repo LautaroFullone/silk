@@ -124,7 +124,7 @@ const mockRequest: ServiceRequest[] = [
 ]
 
 const RequestsPanel = () => {
-   const [requests, setRequests] = useState(mockRequest)
+   const [requests] = useState(mockRequest)
    const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
 
    const { statusConfig } = useRequests()
