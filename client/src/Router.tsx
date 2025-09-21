@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import ClientLayout from '@shared/ClientLayout'
-import AdminLayout from '@shared/AdminLayout'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { routesConfig } from '@config/routesConfig'
+import ClientLayout from '@layouts/Client.layout'
+import AdminLayout from '@layouts/Admin.layout'
 import {
    Blog,
    Dashboard,
@@ -12,55 +13,55 @@ import {
    TestimonialsPanel,
    TestimonialForm,
    RequestsPanel,
+   NotFound,
 } from './pages'
 
 const Router = () => {
    return (
       <BrowserRouter>
          <Routes>
-            <Route path="/" element={<ClientLayout />}>
+            {/* CLIENT Routes */}
+            <Route path={routesConfig.CLIENT_HOME} element={<ClientLayout />}>
                <Route index element={<Home />} />
-               <Route path="blog" element={<Blog />} />
-               <Route
-                  path="quiz"
-                  element={<div className="flex justify-center text-primary">Quiz</div>}
-               />
-               <Route path="servicios" element={<Services />} />
-               <Route path="preguntas-frecuentes" element={<Faq />} />
-               <Route path="nosotros" element={<div>About Page</div>} />
-               <Route
-                  path="*"
-                  element={
-                     <div className="flex justify-center text-primary">404 Not Found</div>
-                  }
-               />
+
+               <Route path={routesConfig.CLIENT_BLOG} element={<Blog />} />
+
+               <Route path={routesConfig.CLIENT_QUIZ} element={<>Quiz</>} />
+
+               <Route path={routesConfig.CLIENT_SERVICES} element={<Services />} />
+
+               <Route path={routesConfig.CLIENT_FAQ} element={<Faq />} />
+               <Route path={routesConfig.CLIENT_ABOUT} element={<div>About Page</div>} />
+
+               <Route path="*" element={<Navigate to={routesConfig.CLIENT_HOME} />} />
             </Route>
 
-            <Route path="/admin" element={<AdminLayout />}>
+            {/* ADMIN Routes */}
+            <Route path={routesConfig.ADMIN_DASHBOARD} element={<AdminLayout />}>
                <Route index element={<Dashboard />} />
 
-               <Route path="posts">
+               <Route path={routesConfig.ADMIN_POST_LIST}>
                   <Route index element={<PostsPanel />} />
                   <Route path="form" element={<PostForm />} />
                </Route>
 
-               <Route path="testimonials">
+               <Route path={routesConfig.ADMIN_TESTIMONIAL_LIST}>
                   <Route index element={<TestimonialsPanel />} />
-                  <Route path="form" element={<TestimonialForm />} />
+                  <Route
+                     path={routesConfig.ADMIN_TESTIMONIAL_NEW}
+                     element={<TestimonialForm />}
+                  />
+                  <Route
+                     path={routesConfig.ADMIN_TESTIMONIAL_EDIT}
+                     element={<TestimonialForm />}
+                  />
                </Route>
 
-               <Route path="requests">
+               <Route path={routesConfig.ADMIN_REQUEST_LIST}>
                   <Route index element={<RequestsPanel />} />
                </Route>
 
-               <Route
-                  path="*"
-                  element={
-                     <div className="flex justify-center text-secondary">
-                        404 Not Found
-                     </div>
-                  }
-               />
+               <Route path="*" element={<NotFound />} />
             </Route>
          </Routes>
       </BrowserRouter>

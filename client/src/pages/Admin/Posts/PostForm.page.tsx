@@ -1,14 +1,10 @@
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@shadcn'
-import { EditorJSComponent } from '@shared/EditorJSComponent'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@shadcn'
+import { PageTitle, EditorJSComponent, InputForm, TextAreaForm } from '@shared'
 import { Save, Upload, FileCheck } from 'lucide-react'
 import type { OutputData } from '@editorjs/editorjs'
 import { useSearchParams } from 'react-router-dom'
-import TextAreaForm from '@shared/TextAreaForm'
-import AdminTitle from '@shared/AdminTitle'
 import { Post } from '@models/Post.model'
 import { useForm } from 'react-hook-form'
-import InputForm from '@shared/InputForm'
-import { Label } from '@shadcn/label'
 
 type PostFormData = Partial<Post>
 
@@ -52,13 +48,13 @@ const PostForm = () => {
 
    return (
       <>
-         <AdminTitle
+         <PageTitle
+            hasGoBack
             title={isEdit ? 'Editar Post' : 'Crear Post'}
             description={
                isEdit ? 'Modificá el contenido del post' : 'Ingresá el contenido del post'
             }
-            hasGoBack
-            goBackRoute="/admin/posts"
+            goBackRoute="ADMIN_POST_LIST"
          />
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

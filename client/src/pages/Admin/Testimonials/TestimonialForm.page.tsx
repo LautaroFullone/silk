@@ -1,12 +1,9 @@
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@shadcn'
+import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
 import { Save, Upload, Star, User, Quote } from 'lucide-react'
 import { Testimonial } from '@models/Testimonial.model'
-import { useSearchParams } from 'react-router-dom'
-import TextAreaForm from '@shared/TextAreaForm'
-import CheckboxForm from '@shared/CheckboxForm'
-import AdminTitle from '@shared/AdminTitle'
+import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import InputForm from '@shared/InputForm'
 
 type TestimonialFormData = Partial<Testimonial>
 
@@ -16,13 +13,13 @@ const initialFormData: TestimonialFormData = {
    content: '',
    image: '',
    isHighlight: false,
+   show: true,
 }
 
 const TestimonialForm = () => {
-   const [searchParams] = useSearchParams()
-   console.log('## testimonial ID:', searchParams.get('id'))
+   const { articleId } = useParams()
+   const isEdit = Boolean(articleId)
 
-   const isEdit = Boolean(searchParams.get('id'))
    const {
       watch,
       setValue,
@@ -35,22 +32,38 @@ const TestimonialForm = () => {
       defaultValues: initialFormData,
    })
 
-   console.log('# hola: ', watch('isHighlight'))
+   const handleSaveTestimonial = () => {
+      console.log('Guardar Testimonio', watch())
+   }
 
    return (
       <>
-         <AdminTitle
-            title={isEdit ? 'Editar Testimonio' : 'Crear Testimonio'}
-            description={
-               isEdit
-                  ? 'Modificá el contenido del testimonio'
-                  : 'Ingresá el contenido del testimonio'
-            }
-            hasGoBack
-            goBackRoute="/admin/posts"
-         />
+         <div className="flex justify-between">
+            <PageTitle
+               title={isEdit ? 'Editar Testimonio' : 'Crear Nuevo Testimonio'}
+               hasGoBack
+               goBackRoute="ADMIN_TESTIMONIAL_LIST"
+               description={
+                  isEdit
+                     ? 'Actualiza la información del testimonio'
+                     : 'Ingresá el contenido del testimonio'
+               }
+            />
+
+            <ActionButton
+               size="lg"
+               icon={Save}
+               variant="primary"
+               label={isEdit ? 'Guardar Cambios' : 'Guardar Testimonio'}
+               className="hidden md:flex"
+               isLoading={false}
+               disabled={false}
+               onClick={() => handleSaveTestimonial()}
+            />
+         </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Columna Izquierda */}
             <div className="lg:col-span-2 space-y-6">
                <Card>
                   <CardHeader>
@@ -78,27 +91,36 @@ const TestimonialForm = () => {
                         />
                      </div>
 
-                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                           <Label htmlFor="image">Imagen URL</Label>
-                           <div className="flex gap-2">
-                              <Input
-                                 id="image"
-                                 value={''}
-                                 onChange={() => {}}
-                                 placeholder="URL de la imagen"
-                              />
+                     <div className="space-y-2">
+                        <Label htmlFor="image">Imagen URL</Label>
+                        <div className="flex gap-2">
+                           <Input
+                              id="image"
+                              value={''}
+                              onChange={() => {}}
+                              placeholder="URL de la imagen"
+                           />
 
-                              <Button variant="link" size="icon">
-                                 <Upload className="w-4 h-4" />
-                              </Button>
-                           </div>
+                           <Button variant="link" size="icon">
+                              <Upload className="w-4 h-4" />
+                           </Button>
                         </div>
+                     </div>
+
+                     <div className="grid grid-cols-2 gap-4">
+                        <CheckboxForm
+                           name="show"
+                           label="Mostrar en la web"
+                           description="Habilita que el testimonio aparezca en la landing page."
+                           value={watch('show') || false}
+                           onChange={(val) => setValue('show', val)}
+                           errors={errors}
+                        />
 
                         <CheckboxForm
                            name="isHighlight"
-                           label="Marcar como destacado"
-                           description="Habilitando esta opción el testimonio se mostrará en la web"
+                           label="Testimonio destacado"
+                           description="Permite que el testimonio tenga un distintivo."
                            value={watch('isHighlight') || false}
                            onChange={(val) => setValue('isHighlight', val)}
                            errors={errors}
@@ -116,6 +138,7 @@ const TestimonialForm = () => {
                </Card>
             </div>
 
+            {/* Columna Derecha */}
             <div className="space-y-6">
                <Card className="overflow-hidden">
                   <CardHeader>
@@ -166,23 +189,18 @@ const TestimonialForm = () => {
                      </div>
                   </CardContent>
                </Card>
-
-               <Card>
-                  <CardHeader>
-                     <CardTitle>Acciones</CardTitle>
-                  </CardHeader>
-
-                  <CardContent className="space-y-2">
-                     <Button
-                        className="w-full bg-emerald-800 hover:bg-emerald-900"
-                        onClick={() => console.log('Publicar post')}
-                     >
-                        <Save className="w-4 h-4 mr-2" />
-                        Guardar
-                     </Button>
-                  </CardContent>
-               </Card>
             </div>
+
+            <ActionButton
+               size="lg"
+               icon={Save}
+               variant="primary"
+               label={isEdit ? 'Guardar Cambios' : 'Guardar Testimonio'}
+               className="md:hidden"
+               isLoading={false}
+               disabled={false}
+               onClick={() => handleSaveTestimonial()}
+            />
          </div>
       </>
    )

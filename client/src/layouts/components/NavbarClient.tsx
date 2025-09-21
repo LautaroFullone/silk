@@ -1,20 +1,22 @@
+import { checkIsLinkActive } from '@utils/checkIsLinkActive'
 import { useState, useEffect, forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { routesConfig } from '@config/routesConfig'
 
 const navLinks = [
-   { label: 'BLOG', to: '/blog' },
-   { label: 'QUIZ', to: '/quiz' },
-   { label: 'SERVICIOS', to: '/servicios' },
-   { label: 'FAQ', to: '/preguntas-frecuentes' },
-   { label: 'NOSOTROS', to: '/nosotros' },
+   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
+   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
+   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
+   { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
+   { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
 ]
 
-const Header = forwardRef<HTMLElement>((_, ref) => {
+const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
-   const location = useLocation()
+   const { pathname } = useLocation()
 
-   const link = navLinks.find((link) => link.to === '/admin')
-   if (!link) navLinks.push({ label: 'ADMIN', to: '/admin' })
+   const link = navLinks.find((link) => link.route === '/admin')
+   if (!link) navLinks.push({ label: 'ADMIN', route: routesConfig.ADMIN_DASHBOARD })
 
    useEffect(() => {
       const handleScroll = () => {
@@ -56,17 +58,17 @@ const Header = forwardRef<HTMLElement>((_, ref) => {
                ${isScrolled ? 'hidden' : 'block'}`}
          >
             <ul className="flex gap-9 justify-center items-center w-full m-0 p-0 list-none">
-               {navLinks.map((link, index) => {
-                  const isActive = location.pathname === link.to
+               {navLinks.map(({ label, route }, index) => {
+                  const isActive = checkIsLinkActive(pathname, route)
 
                   return (
                      <li key={`nav-link-${index}`} className="relative group">
                         <Link
-                           to={link.to}
+                           to={route}
                            className={`text-base text-tertiary transition-colors duration-300
                               inline-block relative ${isActive && 'font-semibold'}`}
                         >
-                           {link.label}
+                           {label}
 
                            <span
                               className={`block absolute left-0 -bottom-2 h-[1px] bg-tertiary transition-all duration-300
@@ -82,4 +84,4 @@ const Header = forwardRef<HTMLElement>((_, ref) => {
    )
 })
 
-export default Header
+export default NavbarClient

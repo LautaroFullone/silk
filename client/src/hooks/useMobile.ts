@@ -5,7 +5,7 @@ const useMobile = () => {
 
    useEffect(() => {
       function checkIfMobile() {
-         setIsMobile(window.innerWidth < 768) // 768px es el breakpoint md de Tailwind
+         setIsMobile(window.innerWidth < 640) // 640px is the breakpoint for mobile in Tailwind CSS
       }
 
       checkIfMobile()

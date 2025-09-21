@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
 import StatsCard from './components/StatsCard'
-import AdminTitle from '@shared/AdminTitle'
+import { PageTitle } from '@shared'
 import {
    DollarSign,
    FileText,
@@ -106,7 +106,7 @@ const shortcuts = [
 const Dashboard = () => {
    return (
       <>
-         <AdminTitle
+         <PageTitle
             title="Panel de Control"
             description="Bienvenido al panel de administración de SILK"
          />

@@ -1,4 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { checkIsLinkActive } from '@utils/checkIsLinkActive'
+import { routesConfig } from '@config/routesConfig'
 import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
@@ -13,24 +15,29 @@ import {
 } from 'lucide-react'
 
 const navigation = [
-   { name: 'Dashboard', link: '/admin', icon: Home },
-   { name: 'Posts', link: '/admin/posts', icon: FileText },
-   { name: 'Testimonios', link: '/admin/testimonials', icon: MessageSquare },
-   // { name: 'Productos', link: '/admin/products', icon: ShoppingBag },
+   { label: 'Dashboard', route: routesConfig.ADMIN_DASHBOARD, icon: Home },
+   { label: 'Posts', route: routesConfig.ADMIN_POST_LIST, icon: FileText },
    {
-      name: 'Solicitudes',
-      link: '/admin/requests',
+      label: 'Testimonios',
+      route: routesConfig.ADMIN_TESTIMONIAL_LIST,
+      icon: MessageSquare,
+   },
+   // { label: 'Productos', route: routesConfig.ADMIN_PRODUCTS, icon: ShoppingBag },
+   {
+      label: 'Solicitudes',
+      route: routesConfig.ADMIN_REQUEST_LIST,
       icon: ClipboardList,
    },
-   // { name: 'Órdenes de Compra', link: '/admin/orders', icon: DollarSign },
-   // { name: 'Configuración', link: '/admin/config', icon: Settings },
+   // { label: 'Órdenes de Compra', route: '/admin/orders', icon: DollarSign },
+   // { label: 'Configuración', route: '/admin/config', icon: Settings },
 ]
 
-const Sidebar = () => {
-   const isMobile = useMobile()
+const SidebarAdmin = () => {
+   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
    const { pathname } = useLocation()
    const navigate = useNavigate()
-   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+   const isMobile = useMobile()
 
    return (
       <>
@@ -92,17 +99,18 @@ const Sidebar = () => {
             </div>
 
             <nav className="flex-1 p-2 space-y-1">
-               {navigation.map((item) => {
-                  const isActive = pathname === item.link
+               {navigation.map(({ label, route, icon: Icon }) => {
+                  const isActive = checkIsLinkActive(pathname, route)
+
                   return (
                      <Button
-                        key={item.name}
+                        key={label}
                         variant={isActive ? 'secondary' : 'ghost'}
                         disableScale
                         onClick={() => {
                            if (isMobile) setMobileMenuOpen(false)
 
-                           navigate(item.link)
+                           navigate(route)
                         }}
                         className={cn(
                            'w-full justify-start select-none',
@@ -110,8 +118,8 @@ const Sidebar = () => {
                            isActive && 'bg-emerald-800 hover:bg-emerald-800 text-white'
                         )}
                      >
-                        <item.icon className="h-5! w-5!" />
-                        {item.name}
+                        <Icon className="h-5! w-5!" />
+                        {label}
                      </Button>
                   )
                })}
@@ -141,4 +149,4 @@ const Sidebar = () => {
    )
 }
 
-export default Sidebar
+export default SidebarAdmin

@@ -1,6 +1,15 @@
+import { routesConfig } from '@config/routesConfig'
 import { Link } from 'react-router-dom'
 
-const Footer = () => {
+const navLinks = [
+   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
+   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
+   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
+   { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
+   { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
+]
+
+const FooterClient = () => {
    return (
       <footer className="bg-primary py-20">
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
@@ -19,9 +28,11 @@ const Footer = () => {
 
             <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
                <div className="flex gap-4 ">
-                  <Link to="/blog">BLOG</Link>|<Link to="/quiz">QUIZ</Link>|
-                  <Link to="/services">SERVICIOS</Link>|<Link to="/faq">FAQ</Link>|
-                  <Link to="/about-us">NOSOTROS</Link>
+                  {navLinks.map(({ label, route }) => (
+                     <Link key={label} to={route}>
+                        {label}
+                     </Link>
+                  ))}
                </div>
 
                <div className="flex gap-6">
@@ -84,4 +95,4 @@ const Footer = () => {
       </footer>
    )
 }
-export default Footer
+export default FooterClient

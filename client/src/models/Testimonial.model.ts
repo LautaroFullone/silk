@@ -5,4 +5,5 @@ export interface Testimonial {
    content: string
    image: string
    isHighlight: boolean
+   show: boolean
 }

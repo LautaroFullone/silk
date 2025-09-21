@@ -9,12 +9,16 @@ const buttonVariants = cva(
    {
       variants: {
          variant: {
-            default: 'bg-primary text-tertiary shadow-xs hover:bg-primary/90',
-            tertiary: 'bg-tertiary text-secondary shadow-xs hover:bg-tertiary/90',
+            primary:
+               'bg-emerald-800 text-white shadow-xs active:bg-emerald-800/90 hover:bg-emerald-800/90',
+            default:
+               'bg-primary text-tertiary shadow-xs hover:bg-primary/90 active:bg-primary/90 hover:bg-primary/90',
+            tertiary:
+               'bg-tertiary text-secondary shadow-xs hover:bg-tertiary/90 active:bg-tertiary/90 hover:bg-tertiary/90',
             destructive:
-               'bg-destructive! text-white shadow-xs hover:bg-destructive/80! focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+               'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
             outline:
-               'border bg-background shadow-xs hover:bg-accent hover:text-secondary dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+               'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
             secondary: 'bg-secondary text-tertiary shadow-xs hover:bg-secondary/80',
             ghost: 'border-none hover:bg-accent hover:text-secondary dark:hover:bg-accent/50',
             link: 'text-primary underline-offset-4 hover:underline',
@@ -38,10 +42,10 @@ function Button({
    className,
    variant,
    size,
-   disableScale = false,
+   hoverScale = false,
    asChild = false,
    ...props
-}: React.ComponentProps<'button'> & { disableScale?: boolean } & VariantProps<
+}: React.ComponentProps<'button'> & { hoverScale?: boolean } & VariantProps<
       typeof buttonVariants
    > & {
       asChild?: boolean
@@ -52,10 +56,10 @@ function Button({
       <Comp
          data-slot="button"
          className={cn(
+            'cursor-pointer',
             buttonVariants({ variant, size, className }),
-            !disableScale &&
-               'transition-transform duration-200 hover:scale-105 border border-gray-200',
-            'cursor-pointer'
+            hoverScale &&
+               'transition-transform duration-200 hover:scale-105 border border-gray-200'
          )}
          {...props}
       />

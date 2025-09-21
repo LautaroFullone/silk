@@ -2,8 +2,8 @@ import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import useSearchAndSort from '@hooks/useSearchAndSort'
 import { useNavigate } from 'react-router-dom'
 import PostCard from './components/PostCard'
-import AdminTitle from '@shared/AdminTitle'
 import { Post } from '@models/Post.model'
+import { PageTitle } from '@shared'
 import {
    Button,
    Input,
@@ -91,7 +91,7 @@ const PostsPanel = () => {
    return (
       <>
          <div className="flex justify-between items-center">
-            <AdminTitle
+            <PageTitle
                title="Gestión de Posts"
                description="Crea y administra el contenido de los posts"
             />

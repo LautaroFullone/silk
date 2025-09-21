@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import EditorJS, { type OutputData } from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 
@@ -9,10 +9,10 @@ interface EditorJSProps {
    placeholder?: string
 }
 
-export function EditorJSComponent({
+const EditorJSComponent: React.FC<EditorJSProps> = ({
    onChange,
    placeholder = 'Comenzá a escribir tu post...',
-}: EditorJSProps) {
+}: EditorJSProps) => {
    const editorRef = useRef<EditorJS | null>(null)
    const holderRef = useRef<HTMLDivElement>(null)
 
@@ -85,3 +85,5 @@ export function EditorJSComponent({
       </div>
    )
 }
+
+export default EditorJSComponent

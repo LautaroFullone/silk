@@ -3,7 +3,7 @@ import TestimonialCard from './components/TestimonialCard'
 import { Testimonial } from '@models/Testimonial.model'
 import useSearchAndSort from '@hooks/useSearchAndSort'
 import { useNavigate } from 'react-router-dom'
-import AdminTitle from '@shared/AdminTitle'
+import { ActionButton, PageTitle } from '@shared'
 import {
    Button,
    Input,
@@ -13,6 +13,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
+import { routesConfig } from '@config/routesConfig'
 
 const mockTestimonials: Testimonial[] = [
    {
@@ -23,6 +24,7 @@ const mockTestimonials: Testimonial[] = [
          'SILK transformó completamente mi imagen profesional. El servicio es excepcional y los resultados superaron mis expectativas. Ahora me siento más segura y auténtica en cada presentación.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
+      show: true,
    },
    {
       id: '2',
@@ -32,6 +34,7 @@ const mockTestimonials: Testimonial[] = [
          'El análisis de color fue revelador. Ahora tengo mucha más confianza en mi forma de vestir y recibo muchos más cumplidos de colegas y clientes.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
+      show: true,
    },
    {
       id: '3',
@@ -41,6 +44,7 @@ const mockTestimonials: Testimonial[] = [
          'La atención personalizada y el profesionalismo del equipo de SILK es incomparable. Recomiendo sus servicios al 100%. Una inversión que vale la pena.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
+      show: true,
    },
    {
       id: '4',
@@ -50,6 +54,7 @@ const mockTestimonials: Testimonial[] = [
          'Excelente servicio de consultoría. Me ayudaron a definir mi estilo profesional de manera muy efectiva.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
+      show: true,
    },
    {
       id: '5',
@@ -59,6 +64,7 @@ const mockTestimonials: Testimonial[] = [
          'El proceso fue increíble, desde la primera consulta hasta el resultado final. Mi confianza aumentó notablemente.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
+      show: true,
    },
    {
       id: '6',
@@ -68,6 +74,7 @@ const mockTestimonials: Testimonial[] = [
          'Profesionalismo excepcional. El equipo entendió perfectamente mis necesidades y superó mis expectativas.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
+      show: true,
    },
 ]
 
@@ -94,31 +101,31 @@ const TestimonialsPanel = () => {
    return (
       <>
          <div className="flex justify-between items-center">
-            <AdminTitle
+            <PageTitle
                title="Gestión de Testimonios"
                description="Crea y administra los testimonios de la web"
             />
 
-            <Button
-               onClick={() => navigate('form')}
+            <ActionButton
                size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden lg:flex"
-            >
-               <Plus className="w-4 h-4 mr-2" />
-               Nuevo
-            </Button>
+               icon={Plus}
+               variant="primary"
+               label="Nuevo Testimonio"
+               className="hidden md:flex"
+               onClick={() => navigate(routesConfig.ADMIN_TESTIMONIAL_NEW)}
+            />
          </div>
 
-         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
-            <Button
-               onClick={() => navigate('form')}
-               size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white lg:hidden"
-            >
-               <Plus className="w-4 h-4 mr-2" />
-               Nuevo
-            </Button>
+         <ActionButton
+            size="lg"
+            icon={Plus}
+            variant="primary"
+            label="Nuevo Testimonio"
+            onClick={() => navigate(routesConfig.ADMIN_TESTIMONIAL_NEW)}
+            className="md:hidden w-full"
+         />
 
+         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
             <div className="max-w-2xl w-full">
                <span className="text-sm text-gray-600">Buscador:</span>
 
@@ -188,11 +195,22 @@ const TestimonialsPanel = () => {
             </div>
          </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
+         <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
             {filteredAndSortedTestimonials.map((testimonial, index) => (
                <TestimonialCard
                   key={`testimonial-card-${index}`}
                   testimonial={testimonial}
+                  onEdit={(testimonial) =>
+                     navigate(
+                        routesConfig.ADMIN_TESTIMONIAL_EDIT.replace(
+                           ':testimonialId',
+                           testimonial.id
+                        )
+                     )
+                  }
+                  onDelete={(testimonial) =>
+                     console.log('Delete testimonial:', testimonial)
+                  }
                />
             ))}
          </div>

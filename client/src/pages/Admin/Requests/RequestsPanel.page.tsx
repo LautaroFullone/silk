@@ -3,7 +3,7 @@ import { ServiceRequest } from '@models/Request.model'
 import useSearchAndSort from '@hooks/useSearchAndSort'
 import RequestsTable from './components/RequestsTable'
 import RequestModal from './components/RequestModal'
-import AdminTitle from '@shared/AdminTitle'
+import { PageTitle } from '@shared'
 import { useState } from 'react'
 import {
    Button,
@@ -148,7 +148,7 @@ const RequestsPanel = () => {
 
    return (
       <>
-         <AdminTitle
+         <PageTitle
             title="Gestión de Solicitudes"
             description="Visualizá y administrá las respuestas recibidas del formulario de captación."
          />
