@@ -1,11 +1,22 @@
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@shadcn'
 import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
 import { Save, Upload, Star, User, Quote } from 'lucide-react'
 import { Testimonial } from '@models/Testimonial.model'
 import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import {
+   Button,
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+   Input,
+   Label,
+} from '@shadcn'
 
-type TestimonialFormData = Partial<Testimonial>
+type TestimonialFormData = Partial<Testimonial> & {
+   imageFile?: File
+}
 
 const initialFormData: TestimonialFormData = {
    personName: '',
@@ -67,7 +78,8 @@ const TestimonialForm = () => {
             <div className="lg:col-span-2 space-y-6">
                <Card>
                   <CardHeader>
-                     <CardTitle>Información Básica</CardTitle>
+                     <CardTitle>Información General</CardTitle>
+                     <CardDescription>Detalles básicos del testimonio</CardDescription>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
@@ -91,22 +103,65 @@ const TestimonialForm = () => {
                         />
                      </div>
 
-                     <div className="space-y-2">
-                        <Label htmlFor="image">Imagen URL</Label>
-                        <div className="flex gap-2">
+                     <div className="space-y-1">
+                        <Label htmlFor="image">Imagen del Cliente</Label>
+                        <div className="flex">
                            <Input
                               id="image"
-                              value={''}
-                              onChange={() => {}}
-                              placeholder="URL de la imagen"
+                              readOnly
+                              value={
+                                 watch('imageFile')
+                                    ? watch('imageFile')?.name || 'Archivo seleccionado'
+                                    : ''
+                              }
+                              placeholder="Seleccioná una imagen..."
+                              className="rounded-r-none border-r-0 bg-gray-50"
                            />
 
-                           <Button variant="link" size="icon">
-                              <Upload className="w-4 h-4" />
-                           </Button>
+                           <div className="relative cursor-pointer">
+                              <input
+                                 type="file"
+                                 id="imageFile"
+                                 accept="image/*"
+                                 onChange={(e) => {
+                                    const file = e.target.files?.[0]
+                                    if (file) {
+                                       // Create a temporary URL for preview
+                                       const imageUrl = URL.createObjectURL(file)
+                                       setValue('image', imageUrl)
+                                       setValue('imageFile', file)
+                                    }
+                                 }}
+                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              />
+
+                              <Button
+                                 type="button"
+                                 variant="outline"
+                                 className="rounded-l-none border-l-0 px-3 h-full bg-transparent cursor-pointer"
+                                 asChild
+                              >
+                                 <label
+                                    htmlFor="imageFile"
+                                    className="flex items-center cursor-pointer"
+                                 >
+                                    <Upload className="w-4 h-4 cursor-pointer" />
+                                 </label>
+                              </Button>
+                           </div>
                         </div>
+                        <p className="text-xs text-gray-500">
+                           Formatos soportados: JPG, PNG, GIF (máx. 5MB)
+                        </p>
                      </div>
 
+                     <TextAreaForm
+                        name="content"
+                        label="Texto"
+                        placeholder="Texto del testimonio"
+                        register={register('content')}
+                        errors={errors}
+                     />
                      <div className="grid grid-cols-2 gap-4">
                         <CheckboxForm
                            name="show"
@@ -126,14 +181,6 @@ const TestimonialForm = () => {
                            errors={errors}
                         />
                      </div>
-
-                     <TextAreaForm
-                        name="content"
-                        label="Texto"
-                        placeholder="Texto del testimonio"
-                        register={register('content')}
-                        errors={errors}
-                     />
                   </CardContent>
                </Card>
             </div>
@@ -151,7 +198,7 @@ const TestimonialForm = () => {
                            <div className="relative flex-shrink-0 ">
                               <div className="w-16 h-16  rounded-full overflow-hidden border-3 border-white shadow-lg">
                                  <img
-                                    src={'/placeholder.svg'}
+                                    src={watch('image') || '/placeholder.svg'}
                                     alt={'Person image'}
                                     className="w-16 h-16  object-cover"
                                  />

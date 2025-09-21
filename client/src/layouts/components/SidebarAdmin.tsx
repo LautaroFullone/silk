@@ -106,10 +106,8 @@ const SidebarAdmin = () => {
                      <Button
                         key={label}
                         variant={isActive ? 'secondary' : 'ghost'}
-                        disableScale
                         onClick={() => {
                            if (isMobile) setMobileMenuOpen(false)
-
                            navigate(route)
                         }}
                         className={cn(
@@ -128,7 +126,6 @@ const SidebarAdmin = () => {
             <div className="p-4 border-t border-gray-200">
                <Button
                   variant="ghost"
-                  disableScale
                   className="w-full justify-start text-destructive hover:text-red-700 hover:bg-red-50!"
                   onClick={isMobile ? () => setMobileMenuOpen(false) : undefined}
                >

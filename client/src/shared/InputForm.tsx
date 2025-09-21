@@ -1,7 +1,7 @@
 import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form'
 import { InputHTMLAttributes } from 'react'
-import { OctagonAlert } from 'lucide-react'
-import { Input, Label } from '@shadcn'
+import { OctagonAlert, Loader2 } from 'lucide-react'
+import { Input, Label, Button } from '@shadcn'
 import type { LucideIcon } from 'lucide-react'
 
 interface InputFormProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -11,12 +11,16 @@ interface InputFormProps extends InputHTMLAttributes<HTMLInputElement> {
    errors?: FieldErrors
    isCurrency?: boolean
    labelClassName?: string
-   /** NUEVO: icono opcional */
+   isLoading?: boolean
+
    icon?: LucideIcon
-   /** NUEVO: lado del icono */
    iconSide?: 'left' | 'right'
-   /** NUEVO: clase del icono */
    iconClassName?: string
+
+   button?: {
+      onClick: () => void
+      label: string
+   }
 }
 
 const InputForm: React.FC<InputFormProps> = ({
@@ -32,6 +36,8 @@ const InputForm: React.FC<InputFormProps> = ({
    icon,
    iconSide = 'left',
    iconClassName = '',
+   isLoading,
+   button,
    ...props
 }) => {
    // eslint-disable-next-line
@@ -39,6 +45,7 @@ const InputForm: React.FC<InputFormProps> = ({
    const hasError = !!fieldError
 
    const currencyAvailable = isCurrency && value !== undefined && value !== ''
+   const hasButton = !!button
 
    const Icon = icon
    const hasLeftIcon = !!Icon && iconSide === 'left'
@@ -53,11 +60,17 @@ const InputForm: React.FC<InputFormProps> = ({
       : hasLeftIcon
       ? 'pl-9'
       : ''
-   const rightPad = hasRightIcon ? 'pr-9' : ''
+
+   // Ajustar padding derecho si hay botón o icono
+   const rightPad = hasButton
+      ? '' // Sin padding cuando hay botón
+      : hasRightIcon
+      ? 'pr-9'
+      : ''
 
    const IconNode = Icon ? (
       <span
-         className={`absolute top-1/2 -translate-y-1/2 ${
+         className={`absolute top-1/2 -translate-y-1/2 z-10 ${
             iconSide === 'left' ? 'left-3' : 'right-3'
          }`}
       >
@@ -66,14 +79,14 @@ const InputForm: React.FC<InputFormProps> = ({
    ) : null
 
    return (
-      <div className="space-y-2">
+      <div className="space-y-1">
          <Label htmlFor={`input-${name}`} className={labelClassName}>
             {label}
          </Label>
 
-         <div className="relative">
+         <div className={`relative ${hasButton ? 'flex' : ''}`}>
             {currencyAvailable && (
-               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground z-10">
                   $
                </span>
             )}
@@ -88,12 +101,25 @@ const InputForm: React.FC<InputFormProps> = ({
                   hasError
                      ? 'border-red-500 focus:border-0 focus-visible:ring-red-500'
                      : ''
-               } ${className}`}
+               } ${hasButton ? 'rounded-r-none border-r-0 flex-1' : ''} ${className}`}
                {...register}
                {...props}
             />
 
-            {hasRightIcon && IconNode}
+            {hasButton && (
+               <Button
+                  type="button"
+                  onClick={button.onClick}
+                  disabled={isLoading}
+                  className="rounded-l-none border-l-0 px-4 py-2 h-10"
+               >
+                  {isLoading ? (
+                     <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                     button.label
+                  )}
+               </Button>
+            )}
          </div>
 
          {hasError && (
@@ -107,72 +133,3 @@ const InputForm: React.FC<InputFormProps> = ({
 }
 
 export default InputForm
-
-// import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form'
-// import { InputHTMLAttributes } from 'react'
-// import { OctagonAlert } from 'lucide-react'
-// import { Input, Label } from '@shadcn'
-
-// interface InputFormProps extends InputHTMLAttributes<HTMLInputElement> {
-//    name: string
-//    label: string
-//    register?: UseFormRegisterReturn
-//    errors?: FieldErrors
-//    isCurrency?: boolean
-//    labelClassName?: string
-// }
-
-// const InputForm: React.FC<InputFormProps> = ({
-//    name,
-//    label,
-//    register,
-//    errors = {},
-//    isCurrency = false,
-//    placeholder,
-//    className = '',
-//    labelClassName = '',
-//    value,
-//    ...props
-// }) => {
-//    // eslint-disable-next-line
-//    const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors as any)
-//    const hasError = !!fieldError
-
-//    const currencyAvaliable = isCurrency && value
-
-//    return (
-//       <div className="space-y-2">
-//          <Label htmlFor={`input-${name}`} className={labelClassName}>
-//             {label}
-//          </Label>
-//          <div className="relative">
-//             {currencyAvaliable && (
-//                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-//                   $
-//                </span>
-//             )}
-//             <Input
-//                value={value}
-//                id={`input-${name}`}
-//                placeholder={placeholder}
-//                className={`mb-0 ${currencyAvaliable ? 'pl-6' : ''} ${
-//                   hasError
-//                      ? 'border-red-500 focus:border-0 focus-visible:ring-red-500'
-//                      : ''
-//                } ${className}`}
-//                {...register}
-//                {...props}
-//             />
-//          </div>
-
-//          {hasError && (
-//             <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-//                <OctagonAlert size={13} />
-//                {fieldError.message}
-//             </p>
-//          )}
-//       </div>
-//    )
-// }
-
-// export default InputForm
