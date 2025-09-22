@@ -15,9 +15,6 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const { pathname } = useLocation()
 
-   const link = navLinks.find((link) => link.route === '/admin')
-   if (!link) navLinks.push({ label: 'ADMIN', route: routesConfig.ADMIN_DASHBOARD })
-
    useEffect(() => {
       const handleScroll = () => {
          setIsScrolled(window.scrollY > 50)
@@ -78,6 +75,18 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
                      </li>
                   )
                })}
+
+               {process.env.NODE_ENV !== 'production' && (
+                  <li className="relative group">
+                     <Link
+                        to={routesConfig.ADMIN_DASHBOARD}
+                        className="text-base text-tertiary transition-colors duration-300 inline-block relative"
+                     >
+                        ADMIN
+                        <span className="block absolute left-0 -bottom-2 h-[1px] bg-tertiary transition-all duration-300 w-0 group-hover:w-full" />
+                     </Link>
+                  </li>
+               )}
             </ul>
          </nav>
       </header>

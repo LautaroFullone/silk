@@ -21,10 +21,10 @@ type TestimonialFormData = Partial<Testimonial> & {
 const initialFormData: TestimonialFormData = {
    personName: '',
    personRole: '',
-   content: '',
+   description: '',
    image: '',
    isHighlight: false,
-   show: true,
+   isActive: true,
 }
 
 const TestimonialForm = () => {
@@ -151,24 +151,24 @@ const TestimonialForm = () => {
                            </div>
                         </div>
                         <p className="text-xs text-gray-500">
-                           Formatos soportados: JPG, PNG, GIF (máx. 5MB)
+                           Formatos soportados: JPG, PNG (máx. 5MB)
                         </p>
                      </div>
 
                      <TextAreaForm
-                        name="content"
                         label="Texto"
+                        name="description"
                         placeholder="Texto del testimonio"
-                        register={register('content')}
+                        register={register('description')}
                         errors={errors}
                      />
                      <div className="grid grid-cols-2 gap-4">
                         <CheckboxForm
-                           name="show"
                            label="Mostrar en la web"
+                           name="isActive"
                            description="Habilita que el testimonio aparezca en la landing page."
-                           value={watch('show') || false}
-                           onChange={(val) => setValue('show', val)}
+                           value={watch('isActive') || false}
+                           onChange={(val) => setValue('isActive', val)}
                            errors={errors}
                         />
 
@@ -230,7 +230,7 @@ const TestimonialForm = () => {
                         <div className="relative flex-1">
                            <Quote className="absolute -top-1 -left-1 w-6 h-6 text-emerald-800" />
                            <blockquote className="text-gray-700 leading-relaxed pl-5 text-sm italic font-light">
-                              "{watch('content') || 'Contenido de ejemplo'}"
+                              "{watch('description') || 'Contenido de ejemplo'}"
                            </blockquote>
                         </div>
                      </div>

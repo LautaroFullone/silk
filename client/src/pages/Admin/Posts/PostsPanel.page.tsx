@@ -1,9 +1,10 @@
 import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import useSearchAndSort from '@hooks/useSearchAndSort'
+import { routesConfig } from '@config/routesConfig'
+import { ActionButton, PageTitle } from '@shared'
 import { useNavigate } from 'react-router-dom'
 import PostCard from './components/PostCard'
 import { Post } from '@models/Post.model'
-import { PageTitle } from '@shared'
 import {
    Button,
    Input,
@@ -25,7 +26,7 @@ const mockPosts: Post[] = [
       content:
          '<p>El arte de crear experiencias digitales es más que simplemente escribir líneas de código...</p>',
       image: '/Adidas - Beige Sambas.png',
-      isVisible: true,
+      isActive: true,
       category: 'Estilo',
    },
    {
@@ -37,7 +38,7 @@ const mockPosts: Post[] = [
          'Descubre las tendencias que marcarán el próximo año en el mundo de la moda dsfsdf sdfdfsfdsfsdf dfsdfdsf sdfsdf sdfdsf',
       content: '<p>Las tendencias de moda para 2024 prometen ser revolucionarias...</p>',
       image: '/Banner-5.png',
-      isVisible: false,
+      isActive: false,
       category: 'Tendencias',
    },
    {
@@ -50,7 +51,7 @@ const mockPosts: Post[] = [
       content:
          '<p>Desde gafas de sol hasta bolsos de rafia, te contamos qué accesorios serán tendencia este verano.</p>',
       image: '/Gorra - Cher.png',
-      isVisible: true,
+      isActive: true,
       category: 'Accesorios',
    },
    {
@@ -63,7 +64,7 @@ const mockPosts: Post[] = [
       content:
          '<p>El minimalismo no solo es una tendencia estética, sino una forma de vida que apuesta por la simplicidad y la funcionalidad.</p>',
       image: '/Fotos_sección_pre-blog-05.jpg',
-      isVisible: false,
+      isActive: false,
       category: 'Lifestyle',
    },
 ]
@@ -85,7 +86,7 @@ const PostsPanel = () => {
       data: mockPosts,
       searchableFields: ['title', 'author', 'category'],
       sortableFields: ['date', 'title', 'author'],
-      filterField: 'isVisible',
+      filterField: 'isActive',
    })
 
    return (
@@ -96,14 +97,14 @@ const PostsPanel = () => {
                description="Crea y administra el contenido de los posts"
             />
 
-            <Button
-               onClick={() => navigate('form')}
+            <ActionButton
                size="lg"
-               className="bg-emerald-800 hover:bg-emerald-900 text-white hidden lg:flex"
-            >
-               <Plus className="w-4 h-4 mr-2" />
-               Nuevo
-            </Button>
+               icon={Plus}
+               variant="primary"
+               label="Nuevo Post"
+               className="hidden md:flex"
+               onClick={() => navigate(routesConfig.ADMIN_POST_NEW)}
+            />
          </div>
 
          <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2 ">

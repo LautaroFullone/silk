@@ -1,0 +1,24 @@
+{
+  // 🎨 Colores del proyecto Silk
+  "workbench.colorCustomizations": {
+    // Barra superior (Title bar)
+    "titleBar.activeBackground": "#065f46", // tu emerald-800
+    "titleBar.activeForeground": "#ffffff", // texto cuando la ventana está activa
+    "titleBar.inactiveBackground": "#047857", // un verde más claro para cuando no está activa
+    "titleBar.inactiveForeground": "#d1d5db", // gris claro para el texto inactivo
+
+    // Activity bar (barra izquierda)
+    "activityBar.background": "#065f46",
+    "activityBar.foreground": "#ffffff",
+    "activityBar.inactiveForeground": "#b3b3b3",
+    "activityBar.activeBorder": "#34d399", // emerald-400 para resaltar
+
+    // Status bar (barra inferior)
+    "statusBar.background": "#065f46",
+    "statusBar.foreground": "#ffffff",
+    "statusBar.debuggingBackground": "#047857" // emerald-700
+  },
+
+  // ⚡ Editor
+  "editor.fontLigatures": true
+}

@@ -2,8 +2,8 @@ export interface Testimonial {
    id: string
    personName: string
    personRole: string
-   content: string
+   description: string
    image: string
    isHighlight: boolean
-   show: boolean
+   isActive: boolean
 }

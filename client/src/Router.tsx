@@ -42,7 +42,8 @@ const Router = () => {
 
                <Route path={routesConfig.ADMIN_POST_LIST}>
                   <Route index element={<PostsPanel />} />
-                  <Route path="form" element={<PostForm />} />
+                  <Route path={routesConfig.ADMIN_POST_NEW} element={<PostForm />} />
+                  <Route path={routesConfig.ADMIN_POST_EDIT} element={<PostForm />} />
                </Route>
 
                <Route path={routesConfig.ADMIN_TESTIMONIAL_LIST}>

@@ -2,8 +2,9 @@ import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import TestimonialCard from './components/TestimonialCard'
 import { Testimonial } from '@models/Testimonial.model'
 import useSearchAndSort from '@hooks/useSearchAndSort'
-import { useNavigate } from 'react-router-dom'
+import { routesConfig } from '@config/routesConfig'
 import { ActionButton, PageTitle } from '@shared'
+import { useNavigate } from 'react-router-dom'
 import {
    Button,
    Input,
@@ -13,68 +14,67 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
-import { routesConfig } from '@config/routesConfig'
 
 const mockTestimonials: Testimonial[] = [
    {
       id: '1',
       personName: 'María González',
       personRole: 'Directora Ejecutiva',
-      content:
+      description:
          'SILK transformó completamente mi imagen profesional. El servicio es excepcional y los resultados superaron mis expectativas. Ahora me siento más segura y auténtica en cada presentación.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
-      show: true,
+      isActive: true,
    },
    {
       id: '2',
       personName: 'Carlos Rodríguez',
       personRole: 'Empresario',
-      content:
+      description:
          'El análisis de color fue revelador. Ahora tengo mucha más confianza en mi forma de vestir y recibo muchos más cumplidos de colegas y clientes.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
-      show: true,
+      isActive: true,
    },
    {
       id: '3',
       personName: 'Ana Martínez',
       personRole: 'Consultora de Imagen',
-      content:
+      description:
          'La atención personalizada y el profesionalismo del equipo de SILK es incomparable. Recomiendo sus servicios al 100%. Una inversión que vale la pena.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
-      show: true,
+      isActive: true,
    },
    {
       id: '4',
       personName: 'Luis Fernández',
       personRole: 'Consultor de Negocios',
-      content:
+      description:
          'Excelente servicio de consultoría. Me ayudaron a definir mi estilo profesional de manera muy efectiva.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
-      show: true,
+      isActive: true,
    },
    {
       id: '5',
       personName: 'Patricia Silva',
       personRole: 'Arquitecta',
-      content:
+      description:
          'El proceso fue increíble, desde la primera consulta hasta el resultado final. Mi confianza aumentó notablemente.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: false,
-      show: true,
+      isActive: true,
    },
    {
       id: '6',
       personName: 'Roberto Méndez',
       personRole: 'Médico Especialista',
-      content:
+      description:
          'Profesionalismo excepcional. El equipo entendió perfectamente mis necesidades y superó mis expectativas.',
       image: '/placeholder.svg?height=100&width=100',
       isHighlight: true,
-      show: true,
+      isActive: true,
    },
 ]
 
@@ -93,7 +93,7 @@ const TestimonialsPanel = () => {
       filteredData: filteredAndSortedTestimonials,
    } = useSearchAndSort<Testimonial>({
       data: mockTestimonials,
-      searchableFields: ['personName', 'personRole', 'content'],
+      searchableFields: ['personName', 'personRole', 'description'],
       sortableFields: ['personName', 'personRole'],
       filterField: 'isHighlight',
    })

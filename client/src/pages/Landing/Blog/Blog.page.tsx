@@ -22,7 +22,7 @@ const ALL_POSTS: Post[] = [
          'Descubrí los secretos para potenciar tu imagen personal con estos consejos de estilismo.',
       image: '/Banner-1.png',
       content: 'Contenido del post sobre cómo elegir tu look ideal.',
-      isVisible: true,
+      isActive: true,
       category: 'Estilismo',
    },
    {
@@ -33,7 +33,7 @@ const ALL_POSTS: Post[] = [
       description: 'Evitá estos errores clásicos y llevá tu estilo al siguiente nivel.',
       image: '/Banner-2.png',
       content: 'Contenido del post sobre errores al combinar prendas.',
-      isVisible: true,
+      isActive: true,
       category: 'Consejos',
    },
    {
@@ -44,7 +44,7 @@ const ALL_POSTS: Post[] = [
       description: 'Lo último en moda y cómo adaptarlo a tu guardarropa.',
       image: '/Banner-3.png',
       content: 'Contenido sobre las tendencias de moda 2025.',
-      isVisible: true,
+      isActive: true,
       category: 'Tendencias',
    },
    {
@@ -55,7 +55,7 @@ const ALL_POSTS: Post[] = [
       description: 'Descubrí qué colores realzan tu imagen y te hacen lucir mejor.',
       image: '/Banner-4.png',
       content: 'Contenido del post sobre colores para cada tono de piel.',
-      isVisible: true,
+      isActive: true,
       category: 'Colorimetría',
    },
    {
@@ -66,7 +66,7 @@ const ALL_POSTS: Post[] = [
       description: 'Tips para un guardarropa versátil y funcional.',
       image: '/Banner-5.png',
       content: 'Contenido para crear una cápsula de básicos.',
-      isVisible: true,
+      isActive: true,
       category: 'Estilo de vida',
    },
    {
@@ -77,7 +77,7 @@ const ALL_POSTS: Post[] = [
       description: 'Aprendé a usar accesorios para sumar personalidad a tu look.',
       image: '/Banner-1.png',
       content: 'Contenido sobre el uso de accesorios.',
-      isVisible: true,
+      isActive: true,
       category: 'Accesorios',
    },
 ]

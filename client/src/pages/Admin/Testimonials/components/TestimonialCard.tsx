@@ -129,7 +129,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                <div className="relative flex-1">
                   <Quote className="absolute -top-1 -left-1 w-6 h-6 text-emerald-800" />
                   <blockquote className="text-gray-700 leading-relaxed pl-5 text-sm italic font-light">
-                     "{testimonial.content}"
+                     "{testimonial.description}"
                   </blockquote>
                </div>
             </div>

@@ -1,10 +1,26 @@
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@shadcn'
-import { PageTitle, EditorJSComponent, InputForm, TextAreaForm } from '@shared'
-import { Save, Upload, FileCheck } from 'lucide-react'
 import type { OutputData } from '@editorjs/editorjs'
-import { useSearchParams } from 'react-router-dom'
-import { Post } from '@models/Post.model'
+import { useParams } from 'react-router-dom'
+import { Save, Upload } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { Post } from '@models/Post.model'
+import {
+   Button,
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+   Input,
+   Label,
+} from '@shadcn'
+import {
+   PageTitle,
+   EditorJSComponent,
+   InputForm,
+   TextAreaForm,
+   CheckboxForm,
+   ActionButton,
+} from '@shared'
 
 type PostFormData = Partial<Post>
 
@@ -25,18 +41,16 @@ const initialFormData: PostFormData = {
    } as OutputData,
    category: '',
    image: '',
-   isVisible: false,
+   isActive: false,
 }
 
 const PostForm = () => {
-   const [searchParams] = useSearchParams()
-   console.log('## Post ID:', searchParams.get('id'))
-
-   const isEdit = Boolean(searchParams.get('id'))
+   const { postId } = useParams()
+   const isEdit = Boolean(postId)
 
    const {
       watch,
-      // setValue,
+      setValue,
       register,
       // reset: resetForm,
       // handleSubmit: handleFormSubmit,
@@ -46,26 +60,47 @@ const PostForm = () => {
       defaultValues: initialFormData,
    })
 
+   const handleSavePost = () => {
+      console.log('## Guardar post', watch())
+   }
+
    return (
       <>
-         <PageTitle
-            hasGoBack
-            title={isEdit ? 'Editar Post' : 'Crear Post'}
-            description={
-               isEdit ? 'Modificá el contenido del post' : 'Ingresá el contenido del post'
-            }
-            goBackRoute="ADMIN_POST_LIST"
-         />
+         <div className="flex justify-between">
+            <PageTitle
+               title={isEdit ? 'Editar Post' : 'Crear Nuevo Post'}
+               hasGoBack
+               goBackRoute="ADMIN_POST_LIST"
+               description={
+                  isEdit
+                     ? 'Actualiza la información del post'
+                     : 'Ingresá el contenido del post'
+               }
+            />
+
+            <ActionButton
+               size="lg"
+               icon={Save}
+               variant="primary"
+               label={isEdit ? 'Guardar Cambios' : 'Guardar Post'}
+               className="hidden md:flex"
+               isLoading={false}
+               disabled={false}
+               onClick={() => handleSavePost()}
+            />
+         </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Columna Izquierda */}
             <div className="lg:col-span-2">
                <Card>
                   <CardHeader>
-                     <CardTitle>Información Básica</CardTitle>
+                     <CardTitle>Información General</CardTitle>
+                     <CardDescription>Detalle completo del post</CardDescription>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
-                     <div className="grid grid-cols-2 gap-4">
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <InputForm
                            type="text"
                            name="title"
@@ -86,8 +121,7 @@ const PostForm = () => {
                            disabled={false}
                         />
                      </div>
-
-                     <div className="grid grid-cols-2 gap-4">
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <InputForm
                            type="date"
                            name="date"
@@ -108,22 +142,31 @@ const PostForm = () => {
                         />
                      </div>
 
-                     <div className="space-y-2">
-                        <Label htmlFor="image">Imagen URL</Label>
-                        <div className="flex gap-2">
-                           <Input
-                              id="image"
-                              value={''}
-                              onChange={() => {}}
-                              placeholder="URL de la imagen"
-                           />
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                        <div className="space-y-2">
+                           <Label htmlFor="image">Imagen URL</Label>
+                           <div className="flex gap-2">
+                              <Input
+                                 id="image"
+                                 value={''}
+                                 onChange={() => {}}
+                                 placeholder="URL de la imagen"
+                              />
 
-                           <Button variant="link" size="icon">
-                              <Upload className="w-4 h-4" />
-                           </Button>
+                              <Button variant="link" size="icon">
+                                 <Upload className="w-4 h-4" />
+                              </Button>
+                           </div>
                         </div>
+                        <CheckboxForm
+                           name="show"
+                           label="Mostrar en la web"
+                           description="Habilita que el post aparezca en la landing page."
+                           value={watch('isActive') || false}
+                           onChange={(val) => setValue('isActive', val)}
+                           errors={errors}
+                        />
                      </div>
-
                      <TextAreaForm
                         name="description"
                         label="Descripción"
@@ -132,7 +175,6 @@ const PostForm = () => {
                         errors={errors}
                         disabled={false}
                      />
-
                      <div className="space-y-2">
                         <Label htmlFor="content">Contenido</Label>
 
@@ -147,6 +189,7 @@ const PostForm = () => {
                </Card>
             </div>
 
+            {/* Columna Derecha */}
             <div className="space-y-6">
                <Card>
                   <CardHeader>
@@ -173,7 +216,7 @@ const PostForm = () => {
                   </CardContent>
                </Card>
 
-               <Card>
+               {/* <Card>
                   <CardHeader>
                      <CardTitle>Acciones</CardTitle>
                   </CardHeader>
@@ -196,8 +239,19 @@ const PostForm = () => {
                         Guardar borrador
                      </Button>
                   </CardContent>
-               </Card>
+               </Card> */}
             </div>
+
+            <ActionButton
+               size="lg"
+               icon={Save}
+               variant="primary"
+               label={isEdit ? 'Guardar Cambios' : 'Guardar Post'}
+               className="md:hidden"
+               isLoading={false}
+               disabled={false}
+               onClick={() => handleSavePost()}
+            />
          </div>
       </>
    )

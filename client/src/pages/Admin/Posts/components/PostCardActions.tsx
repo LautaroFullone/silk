@@ -1,28 +1,28 @@
 import { Edit, Eye, EyeOff, MoreVertical, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Post } from '@models/Post.model'
-import { Button } from '@shadcn'
 import { useState } from 'react'
 import {
+   Button,
    DropdownMenu,
    DropdownMenuContent,
    DropdownMenuItem,
    DropdownMenuTrigger,
-} from '@shadcn/dropdown-menu'
+} from '@shadcn'
+import { routesConfig } from '@config/routesConfig'
 
 interface PostCardActionsProps {
    idPost: Post['id']
-   isVisible: Post['isVisible']
+   isActive: Post['isActive']
 }
 
-const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) => {
+const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isActive }) => {
    const navigate = useNavigate()
 
    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
    const goToEdit = () => {
-      const params = new URLSearchParams({ id: idPost })
-      navigate(`form/?${params}`)
+      navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', idPost))
    }
 
    return (
@@ -37,7 +37,7 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
                onClick={() => {}}
                className="border-secondary! bg-white! hover:bg-secondary! group"
             >
-               {isVisible ? (
+               {isActive ? (
                   <EyeOff className="w-4 h-4 text-secondary group-hover:text-white" />
                ) : (
                   <Eye className="w-4 h-4 text-secondary group-hover:text-white" />
@@ -70,12 +70,12 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isVisible }) 
                   </DropdownMenuItem>
 
                   <DropdownMenuItem onClick={() => {}} className="text-secondary">
-                     {isVisible ? (
+                     {isActive ? (
                         <EyeOff className="mr-3 w-4 h-4 text-secondary" />
                      ) : (
                         <Eye className="mr-3 w-4 h-4 text-secondary" />
                      )}
-                     {isVisible ? 'Ocultar' : 'Mostrar'} post
+                     {isActive ? 'Ocultar' : 'Mostrar'} post
                   </DropdownMenuItem>
 
                   <DropdownMenuItem

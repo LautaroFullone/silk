@@ -8,6 +8,6 @@ export interface Post {
    description: string
    image: string
    content: OutputData | string
-   isVisible: boolean
+   isActive: boolean
    category: string
 }

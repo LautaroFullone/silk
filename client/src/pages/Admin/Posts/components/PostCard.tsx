@@ -8,13 +8,13 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({
-   post: { id, title, author, date, description, isVisible, image, category },
+   post: { id, title, author, date, description, isActive, image, category },
 }) => {
    return (
       <Card
          className={cn(
             'overflow-hidden flex flex-col md:flex-row transition-all p-0 hover:shadow-md cursor-pointer h-auto md:45',
-            isVisible ? 'border-l-6 border-l-emerald-700' : 'border-l-6 border-l-gray-600'
+            isActive ? 'border-l-6 border-l-emerald-700' : 'border-l-6 border-l-gray-600'
          )}
       >
          <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
@@ -26,7 +26,7 @@ const PostCard: React.FC<PostCardProps> = ({
                />
 
                <div className="absolute top-2 left-2">
-                  {isVisible ? (
+                  {isActive ? (
                      <Badge
                         variant="default"
                         className="bg-gradient-to-b from-emerald-600 to-emerald-800 text-white border-none"
@@ -53,7 +53,7 @@ const PostCard: React.FC<PostCardProps> = ({
                      {title}
                   </h3>
 
-                  <PostCardActions idPost={id} isVisible={isVisible} />
+                  <PostCardActions idPost={id} isActive={isActive} />
                </div>
 
                <div className="flex flex-wrap items-center text-sm mb-2 gap-x-4 gap-y-2 text-muted-foreground">
