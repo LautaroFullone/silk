@@ -1,13 +1,22 @@
-import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
-import TestimonialCard from './components/TestimonialCard'
+import TestimonialsTable from './components/TestimonialsTable'
 import { Testimonial } from '@models/Testimonial.model'
-import useSearchAndSort from '@hooks/useSearchAndSort'
+import { useEffect, useMemo, useState } from 'react'
+import { usePagination } from '@hooks/usePagination'
+import normalizeString from '@utils/normalizeString'
 import { routesConfig } from '@config/routesConfig'
 import { ActionButton, PageTitle } from '@shared'
+import { useDebounce } from '@hooks/useDebounce'
 import { useNavigate } from 'react-router-dom'
+import { Plus, Search } from 'lucide-react'
 import {
    Button,
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
    Input,
+   Label,
    Select,
    SelectContent,
    SelectItem,
@@ -15,7 +24,7 @@ import {
    SelectValue,
 } from '@shadcn'
 
-const mockTestimonials: Testimonial[] = [
+const testimonials: Testimonial[] = [
    {
       id: '1',
       personName: 'María González',
@@ -79,31 +88,62 @@ const mockTestimonials: Testimonial[] = [
 ]
 
 const TestimonialsPanel = () => {
+   const [highlightFilter, setHighlightFilter] = useState<string>('all')
+   const [searchTerm, setSearchTerm] = useState('')
+
    const navigate = useNavigate()
+   const debouncedSearch = useDebounce(searchTerm, 400)
+   // const { testimonial, isLoadingTestimonials } = useFetchTestimonials()
+   const isLoadingTestimonials = false
+
+   useEffect(() => {
+      if (currentPage !== 1) goToPage(1)
+   }, [debouncedSearch, highlightFilter]) // eslint-disable-line
+
+   const filteredTestimonials = useMemo(() => {
+      return testimonials.filter((testimonial) => {
+         const normalizedSearch = normalizeString(debouncedSearch)
+
+         const byHighlight =
+            highlightFilter === 'all' ||
+            testimonial.isHighlight === Boolean(highlightFilter)
+
+         const byPersonName = normalizeString(testimonial.personName).includes(
+            normalizedSearch
+         )
+         const byPersonRole = normalizeString(testimonial.personRole).includes(
+            normalizedSearch
+         )
+         const matchesSearch =
+            normalizedSearch.length === 0 ? true : byPersonName || byPersonRole
+
+         return matchesSearch && byHighlight
+      })
+   }, [testimonials, debouncedSearch, highlightFilter]) //eslint-disable-line
 
    const {
-      searchTerm,
-      setSearchTerm,
-      sortBy,
-      setSortBy,
-      sortOrder,
-      toggleSortOrder,
-      filterValue,
-      setFilterValue,
-      filteredData: filteredAndSortedTestimonials,
-   } = useSearchAndSort<Testimonial>({
-      data: mockTestimonials,
-      searchableFields: ['personName', 'personRole', 'description'],
-      sortableFields: ['personName', 'personRole'],
-      filterField: 'isHighlight',
+      currentPage,
+      totalPages,
+      startIndex,
+      endIndex,
+      goToPage,
+      canGoNext,
+      canGoPrevious,
+      itemsPerPage,
+      setItemsPerPage,
+   } = usePagination({
+      totalItems: filteredTestimonials.length,
+      itemsPerPage: 10,
    })
+
+   const paginatedTestimonials = filteredTestimonials.slice(startIndex, endIndex)
 
    return (
       <>
          <div className="flex justify-between items-center">
             <PageTitle
                title="Gestión de Testimonios"
-               description="Crea y administra los testimonios de la web"
+               description="Administrá los testimonios de la web"
             />
 
             <ActionButton
@@ -125,52 +165,39 @@ const TestimonialsPanel = () => {
             className="md:hidden w-full"
          />
 
-         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
-            <div className="max-w-2xl w-full">
-               <span className="text-sm text-gray-600">Buscador:</span>
+         <Card>
+            <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                  Listado de Testimonios
+               </CardTitle>
+               <CardDescription>Filtrá por Nombre, Rol y/o estado</CardDescription>
+            </CardHeader>
 
-               <Input
-                  className="w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Filtrar por nombre, rol o contenido..."
-               />
-            </div>
+            <CardContent className="space-y-4">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                     <Label htmlFor="search-filter">Buscar por Nombre o Rol</Label>
 
-            <div className="flex items-end justify-between lg:justify-normal ">
-               <div className="flex items-end gap-4">
-                  <div className="flex flex-col">
-                     <span className="text-sm text-gray-600 whitespace-nowrap">
-                        Ordenar por:
-                     </span>
-
-                     <Select
-                        value={sortBy}
-                        onValueChange={(value: keyof Testimonial) => setSortBy(value)}
-                     >
-                        <SelectTrigger className="sm:w-30">
-                           <SelectValue />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                           <SelectItem value="personName">Nombre</SelectItem>
-                           <SelectItem value="personRole">Rol</SelectItem>
-                        </SelectContent>
-                     </Select>
+                     <div className="relative mt-1">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                           id="search-filter"
+                           value={searchTerm}
+                           disabled={isLoadingTestimonials}
+                           className="pl-8 bg-white"
+                           placeholder="Ej: Germán Beder"
+                           onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                     </div>
                   </div>
 
-                  <div className="flex flex-col">
-                     <span className="text-sm text-gray-600 whitespace-nowrap">
-                        Estado:
-                     </span>
-
-                     <Select
-                        value={filterValue}
-                        onValueChange={(value) => setFilterValue(value)}
-                     >
-                        <SelectTrigger className="sm:w-30">
+                  <div>
+                     <Label htmlFor="highlight-filter">Estado</Label>
+                     <Select value={highlightFilter} onValueChange={setHighlightFilter}>
+                        <SelectTrigger className="mt-1 w-full" id="highlight-filter">
                            <SelectValue placeholder="Todos" />
                         </SelectTrigger>
+
                         <SelectContent>
                            <SelectItem value="all">Todos</SelectItem>
                            <SelectItem value="true">Destacado</SelectItem>
@@ -179,41 +206,73 @@ const TestimonialsPanel = () => {
                      </Select>
                   </div>
 
-                  <Button
-                     variant="outline"
-                     onClick={() => toggleSortOrder()}
-                     className="flex items-center gap-1 bg-white!"
-                  >
-                     <ArrowUpDown className="w-4 h-4" />
-                     {sortOrder === 'asc' ? (
-                        <ChevronUp className="w-3 h-3" />
-                     ) : (
-                        <ChevronDown className="w-4 h-4" />
-                     )}
-                  </Button>
-               </div>
-            </div>
-         </div>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between col-span-full gap-4">
+                     <div className="text-sm text-gray-600">
+                        {paginatedTestimonials.length === 0
+                           ? 'Mostrando 0 de 0 testimonios'
+                           : `Mostrando ${startIndex + 1}-${Math.min(
+                                endIndex,
+                                paginatedTestimonials.length
+                             )} de ${paginatedTestimonials.length} testimonios`}
+                     </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            {filteredAndSortedTestimonials.map((testimonial, index) => (
-               <TestimonialCard
-                  key={`testimonial-card-${index}`}
-                  testimonial={testimonial}
-                  onEdit={(testimonial) =>
-                     navigate(
-                        routesConfig.ADMIN_TESTIMONIAL_EDIT.replace(
-                           ':testimonialId',
-                           testimonial.id
-                        )
-                     )
-                  }
-                  onDelete={(testimonial) =>
-                     console.log('Delete testimonial:', testimonial)
+                     <div className="flex items-center gap-4 justify-between">
+                        <div className="flex items-center gap-2">
+                           <Label
+                              htmlFor="items-per-page"
+                              className="text-sm whitespace-nowrap"
+                           >
+                              Mostrar:
+                           </Label>
+
+                           <Select
+                              value={itemsPerPage.toString()}
+                              disabled={isLoadingTestimonials}
+                              onValueChange={(v) => setItemsPerPage(Number(v))}
+                           >
+                              <SelectTrigger id="items-per-page">
+                                 <SelectValue />
+                              </SelectTrigger>
+
+                              <SelectContent>
+                                 <SelectItem value="5">5</SelectItem>
+                                 <SelectItem value="10">10</SelectItem>
+                                 <SelectItem value="25">25</SelectItem>
+                                 <SelectItem value="*">Todos</SelectItem>
+                              </SelectContent>
+                           </Select>
+                        </div>
+
+                        <Button
+                           variant="default"
+                           onClick={() => {
+                              setSearchTerm('')
+                              setHighlightFilter('all')
+                           }}
+                           disabled={isLoadingTestimonials}
+                        >
+                           Limpiar Filtros
+                        </Button>
+                     </div>
+                  </div>
+               </div>
+
+               <TestimonialsTable
+                  paginatedTestimonials={paginatedTestimonials}
+                  isLoading={isLoadingTestimonials}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  canGoNext={canGoNext}
+                  canGoPrevious={canGoPrevious}
+                  onPageChange={goToPage}
+                  emptyMessage={
+                     debouncedSearch || highlightFilter !== 'all'
+                        ? `No hay testimonios que coincidan con los filtros, probá limpiarlos o intentá con otros términos de búsqueda`
+                        : 'Hacé clic en "Nuevo Testimonio" para crear el primero'
                   }
                />
-            ))}
-         </div>
+            </CardContent>
+         </Card>
       </>
    )
 }

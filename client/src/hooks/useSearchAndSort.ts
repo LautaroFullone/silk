@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useDebounce } from './useDebounce'
 
 type SortOrder = 'asc' | 'desc'
 
@@ -9,6 +10,15 @@ interface HookProps<T> {
    filterField?: keyof T // Campo por el que se va a filtrar (opcional)
 }
 
+/**
+ * Se encarga de buscar y ordenar una lista de objetos.
+ * Permite buscar en varios campos, ordenar por varios campos y filtrar por un campo específico.
+ * @param data Lista de objetos a buscar y ordenar
+ * @param searchableFields Campos en los que se puede buscar
+ * @param sortableFields Campos por los que se puede ordenar
+ * @param filterField Campo por el que se puede filtrar (opcional)
+ * @returns Un objeto con el término de búsqueda, campo de orden, orden, valor de filtro y la lista filtrada
+ */
 const useSearchAndSort = <T>({
    data,
    searchableFields,
@@ -20,8 +30,11 @@ const useSearchAndSort = <T>({
    const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
    const [filterValue, setFilterValue] = useState<string>('all') // valor por defecto
 
+   // Aplicar debounce al término de búsqueda
+   const debouncedSearchTerm = useDebounce(searchTerm, 400)
+
    const filteredData = useMemo(() => {
-      const lowerSearch = searchTerm.toLowerCase()
+      const lowerSearch = debouncedSearchTerm.toLowerCase()
 
       let filtered = data.filter((item) =>
          searchableFields.some((field) => {
@@ -53,7 +66,15 @@ const useSearchAndSort = <T>({
       })
 
       return filtered
-   }, [data, searchTerm, filterValue, filterField, sortBy, sortOrder, searchableFields])
+   }, [
+      data,
+      debouncedSearchTerm,
+      filterValue,
+      filterField,
+      sortBy,
+      sortOrder,
+      searchableFields,
+   ])
 
    const toggleSortOrder = () => setSortOrder((s) => (s === 'asc' ? 'desc' : 'asc'))
 

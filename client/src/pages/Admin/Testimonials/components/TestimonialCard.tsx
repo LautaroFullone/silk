@@ -11,6 +11,7 @@ import {
    DropdownMenuContent,
    DropdownMenuItem,
    DropdownMenuTrigger,
+   Skeleton,
 } from '@shadcn'
 
 interface TestimonialCardProps {
@@ -25,11 +26,8 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
    const navigate = useNavigate()
 
    return (
-      <Card
-         key={testimonial.id}
-         className="overflow-hidden transition-all duration-300  hover:shadow-md bg-white h-full flex flex-col"
-      >
-         <CardContent className="flex flex-col h-full">
+      <Card className="overflow-hidden hover:shadow-md">
+         <CardContent>
             <div className="flex items-start justify-between mb-4 min-w-0">
                {/* Avatar y nombre */}
                <div className="flex items-center gap-4 min-w-0 flex-1">
@@ -66,7 +64,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
 
                {/* Acciones */}
                <div className="flex-shrink-0 flex items-center ml-2">
-                  <div className="flex-shrink-0 gap-2 hidden md:flex">
+                  <div className="flex-shrink-0 gap-2 hidden md:flex lg:hidden xl:flex">
                      <Button
                         variant="ghost"
                         size="sm"
@@ -87,7 +85,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                      </Button>
                   </div>
 
-                  <div className="flex-shrink-0 flex md:hidden">
+                  <div className="flex-shrink-0 flex md:hidden lg:flex xl:hidden">
                      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                         <DropdownMenuTrigger asChild>
                            <Button size="icon" variant="ghost" className="h-8 w-8 p-0">
@@ -131,6 +129,49 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                   <blockquote className="text-gray-700 leading-relaxed pl-5 text-sm italic font-light">
                      "{testimonial.description}"
                   </blockquote>
+               </div>
+            </div>
+         </CardContent>
+      </Card>
+   )
+}
+
+TestimonialCard.Skeleton = function TestimonialCardSkeleton() {
+   return (
+      <Card>
+         <CardContent>
+            <div className="flex items-start justify-between mb-4 min-w-0">
+               <div className="flex items-center gap-4 min-w-0 flex-1">
+                  <div className="relative flex-shrink-0">
+                     <Skeleton className="w-16 h-16 rounded-full" />
+                  </div>
+
+                  <div className="flex flex-col min-w-0 flex-1 space-y-2">
+                     <Skeleton className="h-6 w-32" />
+
+                     <Skeleton className="h-4 w-24" />
+                  </div>
+               </div>
+
+               <div className="flex items-center ml-2">
+                  <div className="hidden md:flex lg:hidden xl:flex gap-2">
+                     <Skeleton className="h-7 w-20" />
+                     <Skeleton className="h-7 w-20" />
+                  </div>
+
+                  <div className="flex md:hidden lg:flex xl:hidden">
+                     <Skeleton className="h-8 w-8 rounded" />
+                  </div>
+               </div>
+            </div>
+
+            <div className="flex-1 flex flex-col">
+               <div className="relative flex-1 space-y-2">
+                  <div className="pl-5 space-y-2">
+                     <Skeleton className="h-4 w-full" />
+                     <Skeleton className="h-4 w-full" />
+                     <Skeleton className="h-4 w-3/4" />
+                  </div>
                </div>
             </div>
          </CardContent>
