@@ -25,11 +25,13 @@ const FindStyleSection = () => {
                   <h1 className="font-bold text-3xl sm:text-4xl text-center mb-4">
                      ¿Todavía no <br /> encontraste tu estilo?
                   </h1>
+
                   <p className="text-center text-xl mb-8">
                      Descubrí tu estilo ideal con nuestro <b>quiz</b> personalizado. Es
                      rápido, práctico y el primer paso para transformar tu guardarropa.
                   </p>
-                  <Button onClick={() => navigate('quiz')} variant="default" size="xl">
+
+                  <Button onClick={() => navigate('quiz')} variant="primary" size="xl">
                      HACER EL QUIZ <ChevronRight className="ml-1" size={19} />
                   </Button>
                </div>
