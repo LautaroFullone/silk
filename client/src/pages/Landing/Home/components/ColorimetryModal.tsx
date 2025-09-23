@@ -9,7 +9,7 @@ interface ColorimetryModalProps {
 const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClose }) => {
    return (
       <Dialog open={isModalOpen} onOpenChange={(open) => open || onClose()}>
-         <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden bg-tertiary text-primary">
+         <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden bg-silk-tertiary text-silk-primary">
             <DialogTitle className="hidden">
                ANÁLISIS DE COLOR HECHO POR EXPERTOS
             </DialogTitle>
@@ -25,26 +25,26 @@ const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClos
                         <span className="italic"> favorecen</span>?
                      </h2>
 
-                     <p className="mt-4 text-primary/80">
+                     <p className="mt-4 text-silk-primary/80">
                         Vamos a analizar tu tono de piel y te guiaremos con combinaciones
                         que resalten tu estilo.
                      </p>
 
-                     <ul className="mt-6 space-y-2 text-primary">
+                     <ul className="mt-6 space-y-2 text-silk-primary">
                         <li className="flex items-center gap-2">
-                           <span className="h-5 w-5 rounded-full bg-primary text-white grid place-items-center text-xs">
+                           <span className="h-5 w-5 rounded-full bg-silk-primary text-white grid place-items-center text-xs">
                               1
                            </span>
                            Completá tus datos
                         </li>
                         <li className="flex items-center gap-2">
-                           <span className="h-5 w-5 rounded-full bg-primary text-white grid place-items-center text-xs">
+                           <span className="h-5 w-5 rounded-full bg-silk-primary text-white grid place-items-center text-xs">
                               2
                            </span>
                            Responde preguntas simples
                         </li>
                         <li className="flex items-center gap-2">
-                           <span className="h-5 w-5 rounded-full bg-primary text-white grid place-items-center text-xs">
+                           <span className="h-5 w-5 rounded-full bg-silk-primary text-white grid place-items-center text-xs">
                               3
                            </span>
                            Obtené tu paleta personalizada

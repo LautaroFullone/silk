@@ -34,12 +34,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
          <CardContent className="h-full">
             <>
                <div className="text-center">
-                  <h3 className="text-2xl md:text-3xl font-semibold text-primary">
+                  <h3 className="text-2xl md:text-3xl font-semibold text-silk-primary">
                      Tomá el primer paso
                   </h3>
                </div>
 
-               <p className="text-center text-[13px] tracking-wide text-primary/80 uppercase">
+               <p className="text-center text-xs tracking-wide text-silk-primary/80 uppercase">
                   Completa tus datos para recibir tu diagnóstico
                </p>
 
@@ -48,7 +48,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                      type="text"
                      name="name"
                      label="Nombre Completo"
-                     labelClassName="text-primary"
+                     labelClassName="text-silk-primary"
                      placeholder="Ingresá tu nombre"
                      register={register('name')}
                      errors={errors}
@@ -60,7 +60,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         type="text"
                         name="ubication"
                         label="Ubicación"
-                        labelClassName="text-primary"
+                        labelClassName="text-silk-primary"
                         placeholder="Ingresá tu ubicación"
                         register={register('age')}
                         errors={errors}
@@ -72,7 +72,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         type="tel"
                         name="phone"
                         label="Teléfono"
-                        labelClassName="text-primary"
+                        labelClassName="text-silk-primary"
                         placeholder="Ingresá tu teléfono"
                         register={register('phone')}
                         errors={errors}
@@ -85,7 +85,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                      type="email"
                      name="email"
                      label="Email"
-                     labelClassName="text-primary"
+                     labelClassName="text-silk-primary"
                      placeholder="Ingresá tu email"
                      register={register('email')}
                      errors={errors}
@@ -97,7 +97,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         value=""
                         onChange={(value) => console.log('# service: ', value)}
                         label="¿Que tipo de servicio estas buscando?"
-                        labelClassName="text-primary"
+                        labelClassName="text-silk-primary"
                         name="service"
                         placeholder="Seleccionar"
                         options={[
@@ -118,7 +118,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         value=""
                         onChange={(value) => console.log('# budget: ', value)}
                         label="¿Cual es tu presupuesto para ropa y accesorios?"
-                        labelClassName="text-primary"
+                        labelClassName="text-silk-primary"
                         name="budget"
                         placeholder="Seleccionar"
                         options={[
@@ -153,7 +153,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         value=""
                         onChange={(value) => console.log('# startDate: ', value)}
                         label="¿Cuándo te gustaría empezar?"
-                        labelClassName="text-primary"
+                        labelClassName="text-silk-primary"
                         name="startMoment"
                         placeholder="Seleccionar"
                         options={[

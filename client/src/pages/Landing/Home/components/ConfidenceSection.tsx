@@ -27,7 +27,7 @@ const items = [
 
 const ConfidenceSection = () => {
    return (
-      <section className="bg-secondary py-20">
+      <section className="bg-silk-secondary py-20">
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
             <h2 className="font-very-vogue text-6xl text-center mb-10">
                En <span className="font-classy-vogue">SILK</span> creamos más que looks:

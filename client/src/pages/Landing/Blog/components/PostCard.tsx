@@ -13,11 +13,11 @@ const PostCard: React.FC<PostCardProps> = ({
    return (
       <Link to={`/Post/${id}`} className="group">
          <div
-            className="bg-secondary border border-secondary rounded-sm shadow-lg 
+            className="bg-silk-secondary border border-silk-secondary rounded-sm shadow-lg 
                transition-all overflow-hidden flex flex-col h-full"
          >
             {/* Barra tipo ventana */}
-            <div className="w-full flex items-center px-2 py-2 bg-secondary justify-between">
+            <div className="w-full flex items-center px-2 py-2 bg-silk-secondary justify-between">
                <div className="flex space-x-1.5">
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
@@ -30,10 +30,10 @@ const PostCard: React.FC<PostCardProps> = ({
             </div>
 
             {/* Contenido */}
-            <div className="flex flex-col flex-1 bg-secondary">
+            <div className="flex flex-col flex-1 bg-silk-secondary">
                {/* Imagen */}
                {image && (
-                  <div className="h-48 overflow-hidden border-b border-secondary">
+                  <div className="h-48 overflow-hidden border-b border-silk-secondary">
                      <img
                         src={image}
                         alt={title}
@@ -44,7 +44,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
                {/* Info */}
                <div className="p-5 flex flex-col flex-1 bg-white">
-                  <h2 className="text-2xl mb-2 text-secondary font-serif leading-tight">
+                  <h2 className="text-2xl mb-2 text-silk-secondary font-serif leading-tight">
                      {title}
                   </h2>
 
@@ -52,19 +52,19 @@ const PostCard: React.FC<PostCardProps> = ({
                      <span className="text-muted-foreground text-sm">{date}</span>
                      <Badge
                         variant="default"
-                        className="bg-primary text-white border-none rounded-xs uppercase"
+                        className="bg-silk-primary text-white border-none rounded-xs uppercase"
                      >
                         {category}
                      </Badge>
 
-                     {/* <span className="inline-block border border-primary text-primary bg-white px-2 py-0.5 rounded font-semibold text-xs uppercase tracking-wide">
+                     {/* <span className="inline-block border border-silk-primary text-silk-primary bg-white px-2 py-0.5 rounded font-semibold text-xs uppercase tracking-wide">
                         {category}
                      </span> */}
                   </div>
 
                   <p className="text-muted-foreground flex-1 mb-4">{description}</p>
 
-                  <span className="flex items-center gap-1 text-primary font-medium group-hover:underline transition-all mt-auto">
+                  <span className="flex items-center gap-1 text-silk-primary font-medium group-hover:underline transition-all mt-auto">
                      Leer más <ChevronRight size={16} />
                   </span>
                </div>
@@ -72,30 +72,5 @@ const PostCard: React.FC<PostCardProps> = ({
          </div>
       </Link>
    )
-   // return (
-   //    <Link to={`/Post/${id}`} className="group">
-   //       <div className="rounded-sm shadow-sm bg-white hover:shadow-lg transition-all overflow-hidden flex flex-col h-full">
-   //          {image && (
-   //             <div className="h-48 overflow-hidden">
-   //                <img
-   //                   src={image}
-   //                   alt={title}
-   //                   className="h-full object-cover group-hover:scale-105 transition-transform duration-200"
-   //                />
-   //             </div>
-   //          )}
-   //          <div className="p-5 flex flex-col flex-1">
-   //             <h2 className="text-xl font-bold mb-2 text-primary transition-colors">
-   //                {title}
-   //             </h2>
-   //             <div className="text-gray-400 text-xs mb-3">{date}</div>
-   //             <p className="text-gray-700 flex-1 mb-3">{description}</p>
-   //             <span className="text-green-900 font-medium group-hover:underline transition-all">
-   //                Leer más →
-   //             </span>
-   //          </div>
-   //       </div>
-   //    </Link>
-   // )
 }
 export default PostCard

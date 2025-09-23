@@ -47,7 +47,7 @@ const PostCard: React.FC<PostCardProps> = ({
             <div className="p-6 w-full min-w-0 flex flex-col">
                <div className="flex items-center gap-2 min-w-0">
                   <h3
-                     className="flex-1 min-w-0 text-xl font-serif text-secondary truncate"
+                     className="flex-1 min-w-0 text-xl font-serif text-silk-secondary truncate"
                      title={title}
                   >
                      {title}
@@ -77,7 +77,7 @@ const PostCard: React.FC<PostCardProps> = ({
                   </Badge> */}
                   <Badge
                      variant="outline"
-                     className="text-secondary border-gray-200 bg-accent rounded-sm uppercase"
+                     className="text-silk-secondary border-gray-200 bg-accent rounded-sm uppercase"
                   >
                      {category}
                   </Badge>

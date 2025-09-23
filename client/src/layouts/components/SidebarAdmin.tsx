@@ -55,7 +55,9 @@ const SidebarAdmin = () => {
                   </Button>
 
                   <div className="flex items-center space-x-2">
-                     <h1 className="font-classy-vogue text-secondary text-4xl">SILK</h1>
+                     <h1 className="font-classy-vogue text-silk-secondary text-4xl">
+                        SILK
+                     </h1>
                      <span className="px-2 bg-emerald-800 text-white text-sm font-light rounded-sm">
                         ADMIN
                      </span>
@@ -79,7 +81,9 @@ const SidebarAdmin = () => {
             <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
                <Link to="/" className="select-none">
                   <div className="flex items-center space-x-2">
-                     <h1 className="font-classy-vogue text-secondary text-4xl">SILK</h1>
+                     <h1 className="font-classy-vogue text-silk-secondary text-4xl">
+                        SILK
+                     </h1>
                      <span className="px-2 bg-emerald-800 text-white text-sm font-light rounded-sm">
                         ADMIN
                      </span>

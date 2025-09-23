@@ -30,7 +30,7 @@ const PageTitle: React.FC<PageTitleProps> = ({
          )}
 
          <div>
-            <h1 className="text-secondary font-bold text-3xl mb-2">{title}</h1>
+            <h1 className="text-silk-secondary font-bold text-3xl mb-2">{title}</h1>
             {description && (
                <p className="text-sm sm:text-base text-muted-foreground">{description}</p>
             )}

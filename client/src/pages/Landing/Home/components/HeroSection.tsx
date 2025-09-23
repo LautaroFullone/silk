@@ -37,7 +37,7 @@ const HeroSection = () => {
                />
             ))}
 
-            <div className="absolute inset-0 bg-secondary/70 z-20 pointer-events-none" />
+            <div className="absolute inset-0 bg-silk-secondary/70 z-20 pointer-events-none" />
 
             <div className="z-30 w-full">
                <div className="max-w-5xl mx-auto flex flex-col items-center justify-center px-4 py-10">
@@ -52,7 +52,7 @@ const HeroSection = () => {
                   </h1>
 
                   <p className="mt-6 text-base text-center">
-                     <span className="border-b border-tertiary/70 hover:border-tertiary transition-all">
+                     <span className="border-b border-silk-tertiary/70 hover:border-silk-tertiary transition-all">
                         EMPEZÁ HOY CON UN ANÁLISIS DE COLOR GRATIS
                      </span>
                   </p>

@@ -6,8 +6,8 @@ const FindStyleSection = () => {
    const navigate = useNavigate()
 
    return (
-      <div className="min-h-[60vh] bg-[url('/Quiz_assets-07.png')] bg-cover bg-center flex items-center justify-center py-20 text-secondary">
-         <div className="overflow-hidden bg-secondary border border-secondary rounded-sm w-full max-w-xl mx-4 flex flex-col items-center ">
+      <div className="min-h-[60vh] bg-[url('/Quiz_assets-07.png')] bg-cover bg-center flex items-center justify-center py-20 text-silk-secondary">
+         <div className="overflow-hidden bg-silk-secondary border border-silk-secondary rounded-sm w-full max-w-xl mx-4 flex flex-col items-center ">
             <div className="w-full flex items-center px-2 py-2 ">
                <div className="flex space-x-1.5 mr-3">
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
@@ -15,7 +15,7 @@ const FindStyleSection = () => {
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
                </div>
             </div>
-            <div className="bg-tertiary ">
+            <div className="bg-silk-tertiary ">
                <div className="flex justify-between w-full text-xs font-semibold p-2 font-classy-vogue">
                   <span>ESTUDIOSILK</span>
                   <span>EVERYDAY LUXURY</span>

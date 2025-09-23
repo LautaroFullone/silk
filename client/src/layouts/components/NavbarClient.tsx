@@ -31,7 +31,7 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
       <header
          ref={ref}
          className={`fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300
-            bg-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} select-none`}
+            bg-silk-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} select-none`}
       >
          <div className="flex justify-center transition-all duration-300">
             <Link to="/" onClick={scrollToTop}>
@@ -62,13 +62,13 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
                      <li key={`nav-link-${index}`} className="relative group">
                         <Link
                            to={route}
-                           className={`text-base text-tertiary transition-colors duration-300
+                           className={`text-base text-silk-tertiary transition-colors duration-300
                               inline-block relative ${isActive && 'font-semibold'}`}
                         >
                            {label}
 
                            <span
-                              className={`block absolute left-0 -bottom-2 h-[1px] bg-tertiary transition-all duration-300
+                              className={`block absolute left-0 -bottom-2 h-[1px] bg-silk-tertiary transition-all duration-300
                                     ${isActive ? 'w-full' : 'w-0'} group-hover:w-full`}
                            />
                         </Link>
@@ -80,10 +80,10 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
                   <li className="relative group">
                      <Link
                         to={routesConfig.ADMIN_DASHBOARD}
-                        className="text-base text-tertiary transition-colors duration-300 inline-block relative"
+                        className="text-base text-silk-tertiary transition-colors duration-300 inline-block relative"
                      >
                         ADMIN
-                        <span className="block absolute left-0 -bottom-2 h-[1px] bg-tertiary transition-all duration-300 w-0 group-hover:w-full" />
+                        <span className="block absolute left-0 -bottom-2 h-[1px] bg-silk-tertiary transition-all duration-300 w-0 group-hover:w-full" />
                      </Link>
                   </li>
                )}

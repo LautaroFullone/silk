@@ -35,12 +35,12 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isActive }) =
             <Button
                variant="secondary"
                onClick={() => {}}
-               className="border-secondary! bg-white! hover:bg-secondary! group"
+               className="border-silk-secondary! bg-white! hover:bg-silk-secondary! group"
             >
                {isActive ? (
-                  <EyeOff className="w-4 h-4 text-secondary group-hover:text-white" />
+                  <EyeOff className="w-4 h-4 text-silk-secondary group-hover:text-white" />
                ) : (
-                  <Eye className="w-4 h-4 text-secondary group-hover:text-white" />
+                  <Eye className="w-4 h-4 text-silk-secondary group-hover:text-white" />
                )}
             </Button>
 
@@ -64,16 +64,19 @@ const PostCardActions: React.FC<PostCardActionsProps> = ({ idPost, isActive }) =
                </DropdownMenuTrigger>
 
                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => goToEdit()} className="text-secondary">
-                     <Edit className="mr-3 h-4 w-4 text-secondary" />
+                  <DropdownMenuItem
+                     onClick={() => goToEdit()}
+                     className="text-silk-secondary"
+                  >
+                     <Edit className="mr-3 h-4 w-4 text-silk-secondary" />
                      Editar
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem onClick={() => {}} className="text-secondary">
+                  <DropdownMenuItem onClick={() => {}} className="text-silk-secondary">
                      {isActive ? (
-                        <EyeOff className="mr-3 w-4 h-4 text-secondary" />
+                        <EyeOff className="mr-3 w-4 h-4 text-silk-secondary" />
                      ) : (
-                        <Eye className="mr-3 w-4 h-4 text-secondary" />
+                        <Eye className="mr-3 w-4 h-4 text-silk-secondary" />
                      )}
                      {isActive ? 'Ocultar' : 'Mostrar'} post
                   </DropdownMenuItem>

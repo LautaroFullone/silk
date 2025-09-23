@@ -97,12 +97,12 @@ const Blog = () => {
    return (
       <div className="min-h-screen px-6 pb-10">
          <div className="max-w-6xl mx-auto pt-12">
-            <h1 className="text-secondary text-5xl font-serif text-center mb-12 tracking-wide">
+            <h1 className="text-silk-secondary text-5xl font-serif text-center mb-12 tracking-wide">
                Posts publicados
             </h1>
 
             {posts.length === 0 ? (
-               <div className="flex flex-col items-center justify-center text-primary">
+               <div className="flex flex-col items-center justify-center text-silk-primary">
                   <FileText size={80} className="text-4xl mb-2" />
                   <p className="text-2xl font-serif">Aún no hay artículos publicados.</p>
                </div>
@@ -115,7 +115,7 @@ const Blog = () => {
             )}
 
             {totalPages > 1 && (
-               <div className="mt-12 flex justify-center text-secondary">
+               <div className="mt-12 flex justify-center text-silk-secondary">
                   <Pagination>
                      <PaginationContent className="cursor-pointer select-none">
                         <PaginationItem>

@@ -67,7 +67,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
                   {requests.map((request) => (
                      <TableRow key={request.id} className="hover:bg-gray-50">
                         <TableCell>
-                           <div className="font-medium text-secondary">
+                           <div className="font-medium text-silk-secondary">
                               {request.name}
                            </div>
 
@@ -77,14 +77,16 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
                         </TableCell>
 
                         <TableCell>
-                           <div className="text-sm text-secondary">{request.email}</div>
+                           <div className="text-sm text-silk-secondary">
+                              {request.email}
+                           </div>
                            <div className="text-xs text-muted-foreground">
                               {request.phone}
                            </div>
                         </TableCell>
 
                         <TableCell>
-                           <div className="text-sm text-secondary">
+                           <div className="text-sm text-silk-secondary">
                               {new Date(request.date).toLocaleDateString('es-ES')}
                            </div>
                         </TableCell>
@@ -95,7 +97,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
                                  <Badge
                                     key={index}
                                     variant="outline"
-                                    className="text-secondary border-gray-200 bg-accent rounded-sm"
+                                    className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
                                  >
                                     {service}
                                  </Badge>
@@ -104,7 +106,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
                               {request.services.length > 3 && (
                                  <Badge
                                     variant="outline"
-                                    className="text-secondary border-gray-200 bg-accent rounded-sm"
+                                    className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
                                  >
                                     +{request.services.length - 2} más
                                  </Badge>

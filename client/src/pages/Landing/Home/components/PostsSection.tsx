@@ -39,8 +39,8 @@ const PostsSection = () => {
    const showArrows = posts?.length >= 3
 
    return (
-      <section className="bg-tertiary py-20">
-         <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto text-secondary">
+      <section className="bg-silk-tertiary py-20">
+         <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto text-silk-secondary">
             <h2 className="font-very-vogue text-5xl text-center mb-10">
                Lo <span className="italic mr-1">último</span> de nuestro blog
             </h2>
@@ -76,7 +76,7 @@ const PostsSection = () => {
                                  className="block w-full group text-left "
                               >
                                  {/* Barra superior tipo ventana */}
-                                 <div className="w-full flex items-center p-2 bg-secondary rounded-t-sm border border-secondary">
+                                 <div className="w-full flex items-center p-2 bg-silk-secondary rounded-t-sm border border-silk-secondary">
                                     <div className="flex space-x-1.5">
                                        <span className="block w-2 h-2 bg-gray-400 rounded-full" />
                                        <span className="block w-2 h-2 bg-gray-400 rounded-full" />
@@ -85,7 +85,7 @@ const PostsSection = () => {
                                  </div>
 
                                  {/* Imagen y badge */}
-                                 <div className="relative aspect-square overflow-hidden bg-secondary border border-secondary">
+                                 <div className="relative aspect-square overflow-hidden bg-silk-secondary border border-silk-secondary">
                                     <img
                                        src={img}
                                        alt={title}
@@ -94,15 +94,15 @@ const PostsSection = () => {
 
                                     <Badge
                                        variant="default"
-                                       className="absolute bottom-3 right-3 bg-primary text-white border-none rounded-xs uppercase"
+                                       className="absolute bottom-3 right-3 bg-silk-primary text-white border-none rounded-xs uppercase"
                                     >
                                        {category}
                                     </Badge>
                                  </div>
 
                                  {/* Card de info, igual que PostCard */}
-                                 <div className="bg-white border border-secondary border-t-0 rounded-b-sm px-5 pt-5 pb-4 flex flex-col">
-                                    <h2 className="text-xl font-serif text-secondary mb-1 leading-snug truncate">
+                                 <div className="bg-white border border-silk-secondary border-t-0 rounded-b-sm px-5 pt-5 pb-4 flex flex-col">
+                                    <h2 className="text-xl font-serif text-silk-secondary mb-1 leading-snug truncate">
                                        {title}
                                     </h2>
 
@@ -110,7 +110,7 @@ const PostsSection = () => {
                                        by {author}
                                     </p>
 
-                                    <span className="flex items-center gap-1 text-primary font-medium group-hover:underline transition-all mt-auto">
+                                    <span className="flex items-center gap-1 text-silk-primary font-medium group-hover:underline transition-all mt-auto">
                                        Leer más <ChevronRight size={16} />
                                     </span>
                                  </div>

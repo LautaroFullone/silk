@@ -162,7 +162,7 @@ const servicios = [
                      ¡Próximamente! Anotate en la lista de espera y obtené una guía gratis
                      de <b>Cómo utilizar el color a tu favor.</b>
                   </p>
-                  <button className="bg-primary text-white mt-3 px-4 py-2 rounded-sm text-base hover:bg-primary/90 transition">
+                  <button className="bg-silk-primary text-white mt-3 px-4 py-2 rounded-sm text-base hover:bg-silk-primary/90 transition">
                      Lista de Espera
                   </button>
                </>
@@ -175,11 +175,11 @@ const servicios = [
 const Services = () => {
    return (
       <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12">
-         <p className="text-primary font-bold text-xl mb-6 text-center">
+         <p className="text-silk-primary font-bold text-xl mb-6 text-center">
             NUESTROS SERVICIOS
          </p>
 
-         <h2 className="font-very-vogue text-left text-3xl sm:text-5xl text-primary mb-12 ml-0">
+         <h2 className="font-very-vogue text-left text-3xl sm:text-5xl text-silk-primary mb-12 ml-0">
             <span>
                "Un armario que{' '}
                <span className="italic font-vogue-text-italic">te inspira</span>
@@ -203,7 +203,7 @@ const Services = () => {
 
          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 ">
             {servicios.map((servicio) => (
-               <div key={servicio.id} className="max-w-[350px] text-primary ">
+               <div key={servicio.id} className="max-w-[350px] text-silk-primary ">
                   {/* TODO: pasaria imagen a codigo */}
                   <img
                      src={servicio.image}
@@ -213,7 +213,7 @@ const Services = () => {
                   <Accordion type="single" collapsible className="w-full mt-2">
                      {servicio.opciones.map((opcion) => (
                         <AccordionItem withBorder key={opcion.id} value={opcion.id}>
-                           <AccordionTrigger className="font-semibold pl-1 text-primary py-2 text-base transition cursor-pointer ">
+                           <AccordionTrigger className="font-semibold pl-1 text-silk-primary py-2 text-base transition cursor-pointer ">
                               {opcion.titulo}
                            </AccordionTrigger>
                            <AccordionContent className="pb-4 pt-1 pl-1 text-base cursor-default">
@@ -233,7 +233,7 @@ const Services = () => {
          {/* <div className="flex justify-center ">
             <button
                onClick={() => alert('Hacer el quiz!')}
-               className="bg-primary px-5 py-2 sm:px-6 sm:py-3 rounded-sm shadow-lg hover:scale-105          
+               className="bg-silk-primary px-5 py-2 sm:px-6 sm:py-3 rounded-sm shadow-lg hover:scale-105          
                   flex items-center cursor-pointer transition-all"
             >
                COMENZÁ HOY

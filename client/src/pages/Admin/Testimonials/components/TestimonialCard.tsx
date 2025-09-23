@@ -51,7 +51,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
 
                   <div className="flex flex-col min-w-0 flex-1">
                      <h3
-                        className="text-xl font-serif text-secondary truncate min-w-0"
+                        className="text-xl font-serif text-silk-secondary truncate min-w-0"
                         title={testimonial.personName}
                      >
                         {testimonial.personName}
@@ -106,9 +106,9 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                                     )
                                  )
                               }
-                              className="text-secondary font-normal"
+                              className="text-silk-secondary font-normal"
                            >
-                              <Edit className="mr-3 h-4 w-4 text-secondary" />
+                              <Edit className="mr-3 h-4 w-4 text-silk-secondary" />
                               Editar
                            </DropdownMenuItem>
 

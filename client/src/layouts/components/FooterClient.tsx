@@ -11,7 +11,7 @@ const navLinks = [
 
 const FooterClient = () => {
    return (
-      <footer className="bg-primary py-20">
+      <footer className="bg-silk-primary py-20">
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
             <div className="flex flex-col items-start">
                <img
@@ -77,7 +77,7 @@ const FooterClient = () => {
                </div>
             </div>
 
-            <div className="w-full h-[1px] bg-tertiary/40 my-5" />
+            <div className="w-full h-[1px] bg-silk-tertiary/40 my-5" />
 
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-xs opacity-70 pb-2">
                <p className="m-0">©2025 ESTUDIOSILK. TODOS LOS DERECHOS RESERVADOS</p>

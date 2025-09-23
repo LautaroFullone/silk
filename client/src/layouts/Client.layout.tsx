@@ -7,11 +7,11 @@ const ClientLayout = () => {
    const { ref: headerRef, height: headerHeight } = useDinamicHeight()
 
    return (
-      <div className="font-acumin text-tertiary flex flex-col min-h-screen">
+      <div className="font-acumin text-silk-tertiary flex flex-col min-h-screen">
          <NavbarClient ref={headerRef} />
 
          <main
-            className="flex-1 transition-[margin] duration-500 bg-tertiary"
+            className="flex-1 transition-[margin] duration-500 bg-silk-tertiary"
             style={{ marginTop: headerHeight }}
          >
             <Outlet />
