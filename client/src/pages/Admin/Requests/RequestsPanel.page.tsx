@@ -1,4 +1,5 @@
 import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
+import { requestStatusConfig } from '@config/requestStatusConfig'
 import { ServiceRequest } from '@models/Request.model'
 import useSearchAndSort from '@hooks/useSearchAndSort'
 import RequestsTable from './components/RequestsTable'
@@ -14,7 +15,6 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
-import useRequests from '@hooks/useRequests'
 
 const mockRequest: ServiceRequest[] = [
    {
@@ -26,7 +26,7 @@ const mockRequest: ServiceRequest[] = [
       date: '2025-01-15',
       services: ['Consultoría de Imagen Ejecutiva', 'Análisis de Color Personal'],
       budget: '$1.500.000',
-      status: 'pending',
+      status: 'PENDING',
       formData: {
          occupation: 'Directora de Marketing',
          location: 'Madrid, España',
@@ -46,7 +46,7 @@ const mockRequest: ServiceRequest[] = [
       date: '2025-01-14',
       services: ['Transformación Completa'],
       budget: '$2.000.000',
-      status: 'contacted',
+      status: 'CONTACTED',
       formData: {
          occupation: 'Emprendedor',
          location: 'Barcelona, España',
@@ -66,7 +66,7 @@ const mockRequest: ServiceRequest[] = [
       date: '2025-01-13',
       services: ['Consultoría Virtual'],
       budget: '$500.000',
-      status: 'contracted',
+      status: 'CONTRACTED',
       formData: {
          occupation: 'Consultora de Negocios',
          location: 'Valencia, España',
@@ -90,7 +90,7 @@ const mockRequest: ServiceRequest[] = [
          'Consultoría de Imagen Ejecutiva',
       ],
       budget: '$1.200.000',
-      status: 'pending',
+      status: 'PENDING',
       formData: {
          occupation: 'Abogado',
          location: 'Sevilla, España',
@@ -110,7 +110,7 @@ const mockRequest: ServiceRequest[] = [
       date: '2025-01-11',
       services: ['Análisis de Color Personal'],
       budget: '$750.000',
-      status: 'cancelled',
+      status: 'CANCELLED',
       formData: {
          occupation: 'Diseñadora Gráfica',
          location: 'Bilbao, España',
@@ -126,8 +126,6 @@ const mockRequest: ServiceRequest[] = [
 const RequestsPanel = () => {
    const [requests] = useState(mockRequest)
    const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
-
-   const { statusConfig } = useRequests()
 
    const {
       searchTerm,
@@ -192,20 +190,20 @@ const RequestsPanel = () => {
                         Estado:
                      </span>
 
-                     <Select
-                        value={filterValue}
-                        onValueChange={(value) => setFilterValue(value)}
-                     >
+                     <Select value={filterValue} onValueChange={setFilterValue}>
                         <SelectTrigger className="sm:w-30">
                            <SelectValue />
                         </SelectTrigger>
+
                         <SelectContent>
                            <SelectItem value="all">Todos</SelectItem>
-                           {Object.entries(statusConfig).map(([status, { label }]) => (
-                              <SelectItem key={status} value={status}>
-                                 {label}
-                              </SelectItem>
-                           ))}
+                           {Object.entries(requestStatusConfig).map(
+                              ([status, { label }]) => (
+                                 <SelectItem key={status} value={status}>
+                                    {label}
+                                 </SelectItem>
+                              )
+                           )}
                         </SelectContent>
                      </Select>
                   </div>

@@ -1,6 +1,6 @@
-import { ServiceRequest } from '@models/Request.model'
+import { RequestStatus, ServiceRequest } from '@models/Request.model'
+import { requestStatusConfig } from '@config/requestStatusConfig'
 import { MoreVertical, Trash2 } from 'lucide-react'
-import useRequests from '@hooks/useRequests'
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -17,8 +17,6 @@ const RequestStatusHandler: React.FC<RequestStatusHandlerProps> = ({
    request,
    onStatusChange,
 }) => {
-   const { statusConfig } = useRequests()
-
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
@@ -26,14 +24,14 @@ const RequestStatusHandler: React.FC<RequestStatusHandlerProps> = ({
          </DropdownMenuTrigger>
 
          <DropdownMenuContent align="end">
-            {Object.entries(statusConfig).map(
-               ([status, { label, icon: Icon, itemColor }]) => (
+            {Object.entries(requestStatusConfig).map(
+               ([status, { label, color, icon: Icon }]) => (
                   <DropdownMenuItem
                      key={status}
                      disabled={request.status === status}
-                     onClick={() => onStatusChange(status as ServiceRequest['status'])}
+                     onClick={() => onStatusChange(status as RequestStatus)}
                   >
-                     <Icon className={`w-4 h-4 mr-2 ${itemColor} bg-transparent`} />
+                     <Icon className={`w-4 h-4 mr-2 ${color} bg-transparent`} />
                      Marcar como {label}
                   </DropdownMenuItem>
                )

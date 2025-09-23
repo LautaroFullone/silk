@@ -1,3 +1,5 @@
+export type RequestStatus = 'PENDING' | 'CONTACTED' | 'CONTRACTED' | 'CANCELLED'
+
 export interface ServiceRequest {
    id: string
    name: string
@@ -7,7 +9,7 @@ export interface ServiceRequest {
    date: string
    services: string[]
    budget: string
-   status: 'pending' | 'contacted' | 'contracted' | 'cancelled'
+   status: RequestStatus
    formData: {
       occupation: string
       location: string

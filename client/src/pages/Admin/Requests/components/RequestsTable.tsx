@@ -1,3 +1,5 @@
+import RequestStatusBadge from '@shared/RequestStatusBadge'
+import RequestStatusHandler from './RequestStatusHandler'
 import { ServiceRequest } from '@models/Request.model'
 import {
    Calendar,
@@ -19,8 +21,6 @@ import {
    TableHeader,
    TableRow,
 } from '@shadcn'
-import RequestStatusHandler from './RequestStatusHandler'
-import useRequests from '@hooks/useRequests'
 
 const tableHeaders = [
    { name: 'Nombre', icon: User },
@@ -38,8 +38,6 @@ interface RequestTableProps {
 }
 
 const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest }) => {
-   const { getStatusBanner } = useRequests()
-
    return (
       <Card className="p-0 overflow-hidden">
          <CardContent className="p-0">
@@ -116,7 +114,9 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
 
                         <TableCell>{request.budget}</TableCell>
 
-                        <TableCell>{getStatusBanner(request.status)}</TableCell>
+                        <TableCell>
+                           <RequestStatusBadge status={request.status} />
+                        </TableCell>
 
                         <TableCell>
                            <div className="flex gap-1">

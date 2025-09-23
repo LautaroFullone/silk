@@ -1,5 +1,6 @@
-import useRequests from '@hooks/useRequests'
+import RequestStatusHandler from './RequestStatusHandler'
 import { ServiceRequest } from '@models/Request.model'
+import { RequestStatusBadge } from '@shared'
 import {
    Card,
    CardContent,
@@ -22,7 +23,6 @@ import {
    FileText,
    Sparkles,
 } from 'lucide-react'
-import RequestStatusHandler from './RequestStatusHandler'
 
 interface RequestModalProps {
    selectedRequest: ServiceRequest | null
@@ -31,8 +31,6 @@ interface RequestModalProps {
 }
 
 const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose }) => {
-   const { getStatusBanner } = useRequests()
-
    if (!selectedRequest) return
 
    return (
@@ -57,7 +55,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                            </div>
 
                            <div>
-                              <h3 className="text-2xl font-serif font-bold text-secondary">
+                              <h3 className="text-2xl font-serif font-bold text-silk-secondary">
                                  {selectedRequest.name}
                               </h3>
                               <p className="text-sm text-muted-foreground font-medium">
@@ -67,7 +65,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                         </div>
 
                         <div className="flex items-center gap-3">
-                           {getStatusBanner(selectedRequest.status)}
+                           <RequestStatusBadge status={selectedRequest.status} />
 
                            <RequestStatusHandler
                               request={selectedRequest}
@@ -85,7 +83,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
 
                            <div>
                               <p className="text-xs text-gray-500 font-medium">Email</p>
-                              <p className="text-sm font-semibold text-secondary truncate">
+                              <p className="text-sm font-semibold text-silk-secondary truncate">
                                  {selectedRequest.email}
                               </p>
                            </div>
@@ -98,7 +96,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               <p className="text-xs text-gray-500 font-medium">
                                  Teléfono
                               </p>
-                              <p className="text-sm font-semibold text-secondary">
+                              <p className="text-sm font-semibold text-silk-secondary">
                                  {selectedRequest.phone}
                               </p>
                            </div>
@@ -111,7 +109,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               <p className="text-xs text-gray-500 font-medium">
                                  Ubicación
                               </p>
-                              <p className="text-sm font-semibold text-secondary">
+                              <p className="text-sm font-semibold text-silk-secondary">
                                  Buenos Aires
                               </p>
                            </div>
@@ -121,7 +119,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                            <Calendar className="w-4 h-4 text-emerald-600" />
                            <div>
                               <p className="text-xs text-gray-500 font-medium">Fecha</p>
-                              <p className="text-sm font-semibold text-secondary">
+                              <p className="text-sm font-semibold text-silk-secondary">
                                  {new Date(selectedRequest.date).toLocaleDateString(
                                     'es-ES'
                                  )}
@@ -182,7 +180,6 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                   </div>
 
                   {/* Información adicional si existe */}
-
                   <Card className="shadow-sm border-0 bg-gradient-to-br from-white to-gray-50">
                      <CardHeader className="pb-4">
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -192,7 +189,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                      </CardHeader>
                      <CardContent>
                         <div className="bg-white rounded-md p-4 border border-gray-100">
-                           <p className="text-sm text-secondary leading-relaxed">
+                           <p className="text-sm text-silk-secondary leading-relaxed">
                               Algo de texto que puede enviar el cliente
                            </p>
                         </div>
@@ -212,7 +209,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                            <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
                               <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                               <div className="flex-1">
-                                 <p className="text-sm font-medium text-secondary">
+                                 <p className="text-sm font-medium text-silk-secondary">
                                     Solicitud recibida
                                  </p>
                                  <p className="text-xs text-gray-500">
@@ -224,11 +221,11 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               </div>
                            </div>
 
-                           {selectedRequest.status !== 'pending' && (
+                           {selectedRequest.status !== 'PENDING' && (
                               <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
                                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                                  <div className="flex-1">
-                                    <p className="text-sm font-medium text-secondary">
+                                    <p className="text-sm font-medium text-silk-secondary">
                                        Cliente contactado
                                     </p>
                                     <p className="text-xs text-gray-500">
@@ -238,11 +235,11 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               </div>
                            )}
 
-                           {selectedRequest.status === 'contracted' && (
+                           {selectedRequest.status === 'CONTRACTED' && (
                               <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
                                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                                  <div className="flex-1">
-                                    <p className="text-sm font-medium text-secondary">
+                                    <p className="text-sm font-medium text-silk-secondary">
                                        Servicio completado
                                     </p>
                                     <p className="text-xs text-gray-500">

@@ -1,6 +1,5 @@
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
-import { hasRealChanges } from '../utils/hasRealChanges'
 import prismaClient from '../prisma/prismaClient'
 import { sleep } from '../utils/sleep'
 
