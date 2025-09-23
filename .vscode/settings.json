@@ -17,8 +17,5 @@
     "statusBar.background": "#065f46",
     "statusBar.foreground": "#ffffff",
     "statusBar.debuggingBackground": "#047857" // emerald-700
-  },
-
-  // ⚡ Editor
-  "editor.fontLigatures": true
+  }
 }
