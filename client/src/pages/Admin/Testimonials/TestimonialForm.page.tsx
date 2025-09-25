@@ -1,51 +1,86 @@
 import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
-import { Save, Upload, Star, User, Quote } from 'lucide-react'
-import { Testimonial } from '@models/Testimonial.model'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
+import { TestimonialFormData } from '@models/Testimonial.model'
+import { Save, Star, User, Quote } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
 import {
-   Button,
-   Card,
-   CardContent,
-   CardDescription,
-   CardHeader,
-   CardTitle,
-   Input,
-   Label,
-} from '@shadcn'
-
-type TestimonialFormData = Partial<Testimonial> & {
-   imageFile?: File
-}
+   useCreateTestimonial,
+   useUpdateTestimonial,
+   useFetchTestimonial,
+} from '@hooks/react-query'
 
 const initialFormData: TestimonialFormData = {
    personName: '',
    personRole: '',
    description: '',
    image: '',
+   imageFile: undefined,
    isHighlight: false,
    isActive: true,
 }
 
 const TestimonialForm = () => {
-   const { articleId } = useParams()
-   const isEdit = Boolean(articleId)
+   const { testimonialId } = useParams()
+   const isEdit = Boolean(testimonialId)
+
+   const { createTestimonialMutate, isPending: isCreateTestimonialPending } =
+      useCreateTestimonial()
+   const { updateTestimonialMutate, isPending: isUpdateTestimonialPending } =
+      useUpdateTestimonial()
+
+   // Obtener testimonio en modo edición
+   const { testimonial: testimonialToEdit, isLoading: isLoadingTestimonial } =
+      useFetchTestimonial({
+         testimonialId: isEdit ? testimonialId : undefined,
+      })
 
    const {
       watch,
       setValue,
       register,
-      // reset: resetForm,
-      // handleSubmit: handleFormSubmit,
-      formState: { errors },
+      reset,
+      handleSubmit,
+      formState: { errors, isDirty },
    } = useForm<TestimonialFormData>({
       mode: 'onChange',
+      reValidateMode: 'onChange',
       defaultValues: initialFormData,
    })
 
-   const handleSaveTestimonial = () => {
-      console.log('Guardar Testimonio', watch())
+   // Cargar datos del testimonio en modo edición
+   useEffect(() => {
+      if (isEdit && testimonialToEdit) {
+         setValue('personName', testimonialToEdit.personName)
+         setValue('personRole', testimonialToEdit.personRole)
+         setValue('description', testimonialToEdit.description)
+         setValue('isHighlight', testimonialToEdit.isHighlight)
+         setValue('isActive', testimonialToEdit.isActive)
+         // setValue('image', testimonial.image || '') // Si manejas imágenes
+      }
+
+      return () => {
+         reset(initialFormData)
+      }
+   }, [testimonialToEdit, isEdit]) //eslint-disable-line
+
+   const handleSaveTestimonial = async (formData: TestimonialFormData) => {
+      console.log('# formData', formData)
+
+      if (isEdit && testimonialId) {
+         await updateTestimonialMutate({ testimonialId, testimonialData: formData })
+      } else {
+         await createTestimonialMutate(formData)
+         reset()
+      }
    }
+
+   // Lógica simplificada para el botón:
+   // - Modo creación: Habilitado al inicio, se deshabilita solo después del primer submit con errores
+   // - Modo edición: Habilitado cuando hay cambios
+   const isButtonEnabled = isEdit ? isDirty : !Object.keys(errors).length
+   const isMutationPending = isCreateTestimonialPending || isUpdateTestimonialPending
 
    return (
       <>
@@ -67,9 +102,9 @@ const TestimonialForm = () => {
                variant="primary"
                label={isEdit ? 'Guardar Cambios' : 'Guardar Testimonio'}
                className="hidden md:flex"
-               isLoading={false}
-               disabled={false}
-               onClick={() => handleSaveTestimonial()}
+               isLoading={isMutationPending}
+               disabled={!isButtonEnabled || isLoadingTestimonial}
+               onClick={handleSubmit(handleSaveTestimonial)}
             />
          </div>
 
@@ -86,24 +121,45 @@ const TestimonialForm = () => {
                      <div className="grid grid-cols-2 gap-4">
                         <InputForm
                            type="text"
-                           name="name"
+                           name="personName"
                            label="Nombre"
-                           placeholder="Nombre del cliente"
-                           register={register('personName')}
+                           placeholder="Ej: Germán Beder"
+                           isLoading={isLoadingTestimonial}
+                           register={register('personName', {
+                              required: 'El nombre es obligatorio',
+                              maxLength: {
+                                 value: 50,
+                                 message: 'El nombre no puede superar los 50 caracteres',
+                              },
+                              pattern: {
+                                 value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                                 message:
+                                    'El nombre solo puede contener letras y espacios',
+                              },
+                           })}
                            errors={errors}
                         />
 
                         <InputForm
                            type="text"
-                           name="role"
+                           name="personRole"
                            label="Profesión o Rol"
-                           placeholder="Profesión o Rol del cliente"
-                           register={register('personRole')}
+                           placeholder="Ej: Director de Marketing"
+                           isLoading={isLoadingTestimonial}
+                           register={register('personRole', {
+                              required: 'La profesión o rol es obligatoro',
+                              maxLength: {
+                                 value: 50,
+                                 message:
+                                    'La profesión no puede superar los 50 caracteres',
+                              },
+                           })}
                            errors={errors}
                         />
                      </div>
 
-                     <div className="space-y-1">
+                     {/* Imagen del Cliente */}
+                     {/* <div className="space-y-1">
                         <Label htmlFor="image">Imagen del Cliente</Label>
                         <div className="flex">
                            <Input
@@ -123,6 +179,31 @@ const TestimonialForm = () => {
                                  type="file"
                                  id="imageFile"
                                  accept="image/*"
+                                 {...register('imageFile', {
+                                    validate: {
+                                       fileSize: (file: File | undefined) => {
+                                          if (!file) return true // Imagen no es obligatoria
+                                          const maxSize = 5 * 1024 * 1024 // 5MB
+                                          return (
+                                             file.size <= maxSize ||
+                                             'La imagen no puede superar 5MB'
+                                          )
+                                       },
+                                       fileType: (file: File | undefined) => {
+                                          if (!file) return true
+                                          const allowedTypes = [
+                                             'image/jpeg',
+                                             'image/jpg',
+                                             'image/png',
+                                             'image/webp',
+                                          ]
+                                          return (
+                                             allowedTypes.includes(file.type) ||
+                                             'Solo se permiten archivos JPG, PNG o WebP'
+                                          )
+                                       },
+                                    },
+                                 })}
                                  onChange={(e) => {
                                     const file = e.target.files?.[0]
                                     if (file) {
@@ -153,22 +234,42 @@ const TestimonialForm = () => {
                         <p className="text-xs text-gray-500">
                            Formatos soportados: JPG, PNG (máx. 5MB)
                         </p>
-                     </div>
+                        {errors.imageFile && (
+                           <p className="text-xs text-red-600 mt-1">
+                              {errors.imageFile.message}
+                           </p>
+                        )}
+                     </div> */}
 
                      <TextAreaForm
-                        label="Texto"
+                        label="Descripción"
                         name="description"
-                        placeholder="Texto del testimonio"
-                        register={register('description')}
+                        placeholder="Ej: Silk transformó mi vida..."
+                        isLoading={isLoadingTestimonial}
+                        register={register('description', {
+                           required: 'El testimonio es obligatorio',
+                           maxLength: {
+                              value: 500,
+                              message:
+                                 'El testimonio no puede superar los 500 caracteres',
+                           },
+                        })}
                         errors={errors}
                      />
+
                      <div className="grid grid-cols-2 gap-4">
                         <CheckboxForm
                            label="Mostrar en la web"
                            name="isActive"
                            description="Habilita que el testimonio aparezca en la landing page."
                            value={watch('isActive') || false}
-                           onChange={(val) => setValue('isActive', val)}
+                           isLoading={isLoadingTestimonial}
+                           onChange={(val) =>
+                              setValue('isActive', val, {
+                                 shouldValidate: true,
+                                 shouldDirty: true,
+                              })
+                           }
                            errors={errors}
                         />
 
@@ -177,7 +278,13 @@ const TestimonialForm = () => {
                            label="Testimonio destacado"
                            description="Permite que el testimonio tenga un distintivo."
                            value={watch('isHighlight') || false}
-                           onChange={(val) => setValue('isHighlight', val)}
+                           isLoading={isLoadingTestimonial}
+                           onChange={(val) =>
+                              setValue('isHighlight', val, {
+                                 shouldValidate: true,
+                                 shouldDirty: true,
+                              })
+                           }
                            errors={errors}
                         />
                      </div>
@@ -198,7 +305,7 @@ const TestimonialForm = () => {
                            <div className="relative flex-shrink-0 ">
                               <div className="w-16 h-16  rounded-full overflow-hidden border-3 border-white shadow-lg">
                                  <img
-                                    src={watch('image') || '/placeholder.svg'}
+                                    src={watch('image') || '/image-placeholder.svg'}
                                     alt={'Person image'}
                                     className="w-16 h-16  object-cover"
                                  />
@@ -244,9 +351,9 @@ const TestimonialForm = () => {
                variant="primary"
                label={isEdit ? 'Guardar Cambios' : 'Guardar Testimonio'}
                className="md:hidden"
-               isLoading={false}
-               disabled={false}
-               onClick={() => handleSaveTestimonial()}
+               isLoading={isMutationPending}
+               disabled={!isButtonEnabled || isLoadingTestimonial}
+               onClick={handleSubmit(handleSaveTestimonial)}
             />
          </div>
       </>

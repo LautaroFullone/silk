@@ -1,23 +1,30 @@
 import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form'
 import { TextareaHTMLAttributes } from 'react'
 import { OctagonAlert } from 'lucide-react'
-import { Textarea, Label } from '@shadcn'
+import { Textarea, Label, cn, Skeleton } from '@shadcn'
 
 interface TextAreaFormProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
    name: string
-   label: string
+   label?: string
+   labelClassName?: string
+   isLoading?: boolean
+
    register?: UseFormRegisterReturn
    errors?: FieldErrors
 }
 
 const TextAreaForm: React.FC<TextAreaFormProps> = ({
+   id,
    name,
    label,
-   register,
-   errors = {},
+   labelClassName = '',
+   value,
    placeholder,
    className = '',
-   value,
+   disabled,
+   isLoading = false,
+   register,
+   errors = {},
    ...props
 }) => {
    // eslint-disable-next-line
@@ -25,24 +32,38 @@ const TextAreaForm: React.FC<TextAreaFormProps> = ({
    const hasError = !!fieldError
 
    return (
-      <div className="space-y-2">
-         <Label htmlFor={`textarea-${name}`}>{label}</Label>
-         <Textarea
-            id={`textarea-${name}`}
-            placeholder={placeholder}
-            className={`${
-               hasError ? 'border-red-500 focus:border-0 focus-visible:ring-red-500' : ''
-            } ${className}`}
-            value={value}
-            {...register}
-            {...props}
-         />
+      <div className="space-y-1">
+         {label && (
+            <Label htmlFor={id} className={labelClassName}>
+               {label}
+            </Label>
+         )}
 
-         {hasError && (
-            <p className="mt-1 text-xs text-red-500 flex items-top gap-1">
-               <OctagonAlert size={13} />
-               {fieldError.message}
-            </p>
+         {isLoading ? (
+            <Skeleton className="w-full h-16" />
+         ) : (
+            <>
+               <Textarea
+                  value={value}
+                  id={`textarea-${name}`}
+                  placeholder={placeholder}
+                  disabled={disabled || isLoading}
+                  className={cn(
+                     hasError &&
+                        'border-red-500 focus:border-0 focus-visible:ring-red-500',
+                     className
+                  )}
+                  {...register}
+                  {...props}
+               />
+
+               {hasError && (
+                  <p className="mt-1 text-xs text-red-500 flex items-top gap-1">
+                     <OctagonAlert size={13} />
+                     {fieldError.message}
+                  </p>
+               )}
+            </>
          )}
       </div>
    )

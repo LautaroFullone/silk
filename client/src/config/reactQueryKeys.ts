@@ -1,4 +1,5 @@
 export const queriesKeys = {
+   FETCH_TESTIMONIAL: 'testimonial',
    FETCH_TESTIMONIALS: 'testimonials',
    CREATE_TESTIMONIAL: 'create_testimonial',
    UPDATE_TESTIMONIAL: 'update_testimonial',

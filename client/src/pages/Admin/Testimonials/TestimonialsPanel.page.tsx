@@ -1,5 +1,5 @@
 import TestimonialsTable from './components/TestimonialsTable'
-import { Testimonial } from '@models/Testimonial.model'
+import { useFetchTestimonials } from '@hooks/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { usePagination } from '@hooks/usePagination'
 import normalizeString from '@utils/normalizeString'
@@ -24,77 +24,13 @@ import {
    SelectValue,
 } from '@shadcn'
 
-const testimonials: Testimonial[] = [
-   {
-      id: '1',
-      personName: 'María González',
-      personRole: 'Directora Ejecutiva',
-      description:
-         'SILK transformó completamente mi imagen profesional. El servicio es excepcional y los resultados superaron mis expectativas. Ahora me siento más segura y auténtica en cada presentación.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: true,
-      isActive: true,
-   },
-   {
-      id: '2',
-      personName: 'Carlos Rodríguez',
-      personRole: 'Empresario',
-      description:
-         'El análisis de color fue revelador. Ahora tengo mucha más confianza en mi forma de vestir y recibo muchos más cumplidos de colegas y clientes.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: false,
-      isActive: true,
-   },
-   {
-      id: '3',
-      personName: 'Ana Martínez',
-      personRole: 'Consultora de Imagen',
-      description:
-         'La atención personalizada y el profesionalismo del equipo de SILK es incomparable. Recomiendo sus servicios al 100%. Una inversión que vale la pena.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: true,
-      isActive: true,
-   },
-   {
-      id: '4',
-      personName: 'Luis Fernández',
-      personRole: 'Consultor de Negocios',
-      description:
-         'Excelente servicio de consultoría. Me ayudaron a definir mi estilo profesional de manera muy efectiva.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: false,
-      isActive: true,
-   },
-   {
-      id: '5',
-      personName: 'Patricia Silva',
-      personRole: 'Arquitecta',
-      description:
-         'El proceso fue increíble, desde la primera consulta hasta el resultado final. Mi confianza aumentó notablemente.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: false,
-      isActive: true,
-   },
-   {
-      id: '6',
-      personName: 'Roberto Méndez',
-      personRole: 'Médico Especialista',
-      description:
-         'Profesionalismo excepcional. El equipo entendió perfectamente mis necesidades y superó mis expectativas.',
-      image: '/placeholder.svg?height=100&width=100',
-      isHighlight: true,
-      isActive: true,
-   },
-]
-
 const TestimonialsPanel = () => {
    const [highlightFilter, setHighlightFilter] = useState<string>('all')
    const [searchTerm, setSearchTerm] = useState('')
 
    const navigate = useNavigate()
    const debouncedSearch = useDebounce(searchTerm, 400)
-   // const { testimonial, isLoadingTestimonials } = useFetchTestimonials()
-   const isLoadingTestimonials = false
+   const { testimonials, isLoading: isLoadingTestimonials } = useFetchTestimonials()
 
    useEffect(() => {
       if (currentPage !== 1) goToPage(1)
@@ -106,7 +42,7 @@ const TestimonialsPanel = () => {
 
          const byHighlight =
             highlightFilter === 'all' ||
-            testimonial.isHighlight === Boolean(highlightFilter)
+            testimonial.isHighlight === (highlightFilter === 'true')
 
          const byPersonName = normalizeString(testimonial.personName).includes(
             normalizedSearch
@@ -119,7 +55,7 @@ const TestimonialsPanel = () => {
 
          return matchesSearch && byHighlight
       })
-   }, [testimonials, debouncedSearch, highlightFilter]) //eslint-disable-line
+   }, [testimonials, debouncedSearch, highlightFilter])
 
    const {
       currentPage,
@@ -193,7 +129,11 @@ const TestimonialsPanel = () => {
 
                   <div>
                      <Label htmlFor="highlight-filter">Estado</Label>
-                     <Select value={highlightFilter} onValueChange={setHighlightFilter}>
+                     <Select
+                        value={highlightFilter}
+                        onValueChange={setHighlightFilter}
+                        disabled={isLoadingTestimonials}
+                     >
                         <SelectTrigger className="mt-1 w-full" id="highlight-filter">
                            <SelectValue placeholder="Todos" />
                         </SelectTrigger>

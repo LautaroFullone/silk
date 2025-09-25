@@ -1,7 +1,13 @@
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
+import { hasRealChanges } from '../utils/hasRealChanges'
+import { ConflictError } from '../errors/ApiError'
 import prismaClient from '../prisma/prismaClient'
 import { sleep } from '../utils/sleep'
+import {
+   testimonialCreateSchema,
+   testimonialUpdateSchema,
+} from '../models/Testimonial.model'
 
 const testimonialsRouter = Router()
 
@@ -11,6 +17,7 @@ testimonialsRouter.get('/', async (req: Request, res: Response) => {
    try {
       const testimonials = await prismaClient.testimonial.findMany({
          orderBy: { createdAt: 'desc' },
+         omit: { createdAt: true },
       })
 
       return res.status(200).send({
@@ -21,24 +28,47 @@ testimonialsRouter.get('/', async (req: Request, res: Response) => {
    }
 })
 
+// POST -> crear testimonio
+testimonialsRouter.post('/', async (req: Request, res: Response) => {
+   await sleep(3000)
+   try {
+      const body = testimonialCreateSchema.parse(req.body)
+
+      const existingTestimonial = await prismaClient.testimonial.findFirst({
+         where: { personName: body.personName },
+      })
+
+      if (existingTestimonial) {
+         throw new ConflictError('Ya existe un testimonio de esta persona', {
+            testimonialId: existingTestimonial.id,
+         })
+      }
+
+      const createdTestimonial = await prismaClient.testimonial.create({
+         data: body,
+      })
+
+      return res.status(201).send({
+         message: 'Testimonio creado',
+         testimonial: createdTestimonial,
+      })
+   } catch (error) {
+      return handleRouteError(res, error)
+   }
+})
+
 // GET -> obtener testimonio por id
-testimonialsRouter.get('/:testimonialId', async (req, res) => {
-   await sleep(5000)
+testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) => {
+   await sleep(3000)
    const { testimonialId } = req.params
 
    try {
       const testimonial = await prismaClient.testimonial.findFirstOrThrow({
          where: { id: testimonialId },
-         // select: {
-         //    id: true,
-         //    name: true,
-         //    basePrice: true,
-         //    code: true,
-         //    category: { select: { id: true, name: true } },
-         // },
+         omit: { createdAt: true },
       })
 
-      return res.send({
+      return res.status(200).send({
          message: 'Testimonio obtenido',
          testimonial,
       })
@@ -47,134 +77,76 @@ testimonialsRouter.get('/:testimonialId', async (req, res) => {
    }
 })
 
-// PATCH -> actualizar testimonio y manejar categoría
-// testimonialsRouter.patch('/:testimonialId', async (req: Request, res: Response) => {
-//    await sleep(5000)
-//    const { testimonialId } = req.params
+// PATCH -> actualizar testimonio
+testimonialsRouter.patch('/:testimonialId', async (req: Request, res: Response) => {
+   await sleep(3000)
+   const { testimonialId } = req.params
 
-//    try {
-//       // 1) validar payload
-//       const body = articleUpdateSchema.parse(req.body)
+   try {
+      // 1) validar payload
+      const body = testimonialUpdateSchema.parse(req.body)
 
-//       // 2) buscar artículo actual, sino tira excepcion
-//       const currentArticle = await prismaClient.article.findUniqueOrThrow({
-//          where: { id: articleId },
-//          include: { category: true },
-//       })
+      // 2) buscar testimonio actual, sino tira excepcion
+      const currentTestimonial = await prismaClient.testimonial.findUniqueOrThrow({
+         where: { id: testimonialId },
+      })
 
-//       // 3) preparar update solo con cambios reales
-//       if (!hasRealChanges(currentArticle, body)) {
-//          return res.send({
-//             message: 'No hay cambios para aplicar',
-//             article: currentArticle,
-//          })
-//       }
+      // 3) preparar update solo con cambios reales
+      if (!hasRealChanges(currentTestimonial, body)) {
+         return res.send({
+            message: 'No hay cambios para aplicar',
+            testimonial: currentTestimonial,
+         })
+      }
 
-//       // 4) actualizar usando transacción para manejar categorías
-//       const result = await prismaClient.$transaction(async (tx) => {
-//          let categoryDeleted = null
-//          const updateData: any = { ...body }
-//          const oldCategoryId = currentArticle.category.id
+      // 4) si el nombre de la persona cambia, verificar que no exista otro testimonio con ese nombre
+      if (body.personName && body.personName !== currentTestimonial.personName) {
+         const existingTestimonial = await prismaClient.testimonial.findFirst({
+            where: {
+               personName: body.personName,
+               id: { not: testimonialId }, // excluir el testimonio actual
+            },
+         })
 
-//          // Si hay cambio de categoría
-//          if (body?.categoryName && body.categoryName !== currentArticle.category.name) {
-//             // Usar connectOrCreate para la nueva categoría
-//             updateData.category = {
-//                connectOrCreate: {
-//                   where: { name: body.categoryName },
-//                   create: { name: body.categoryName },
-//                },
-//             }
-//             console.log('## 3 updateData', updateData) //
-//          }
-//          // Eliminar categoryName del objeto de actualización para evitar errores
-//          delete updateData.categoryName //categoryName no existe en el modelo Article, existe category: {id,name}
+         if (existingTestimonial) {
+            throw new ConflictError('Ya existe un testimonio de esta persona', {
+               testimonialId: existingTestimonial.id,
+            })
+         }
+      }
 
-//          const updatedArticle = await tx.article.update({
-//             where: { id: articleId },
-//             data: updateData,
-//             include: { category: true },
-//          })
+      // 5) actualizar testimonio
+      const updatedTestimonial = await prismaClient.testimonial.update({
+         where: { id: testimonialId },
+         data: body,
+      })
 
-//          // Solo verificar la categoría antigua si cambió
-//          if (body?.categoryName && updatedArticle.category.id !== oldCategoryId) {
-//             // Verificar si la categoría anterior tiene más artículos
-//             const oldCategoryHasMoreArticles = await tx.article.findFirst({
-//                where: {
-//                   categoryId: oldCategoryId,
-//                },
-//             })
+      return res.status(200).send({
+         message: 'Testimonio actualizado',
+         testimonial: updatedTestimonial,
+      })
+   } catch (error) {
+      return handleRouteError(res, error)
+   }
+})
 
-//             // Eliminar la categoría anterior si no tiene más artículos
-//             if (!oldCategoryHasMoreArticles) {
-//                categoryDeleted = await tx.articleCategory.delete({
-//                   where: { id: oldCategoryId },
-//                })
-//             }
-//          }
+// DELETE -> eliminar testimonio
+testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response) => {
+   await sleep(3000)
+   const { testimonialId } = req.params
 
-//          return {
-//             updatedArticle,
-//             categoryDeleted,
-//          } as const
-//       })
+   try {
+      const testimonialDeleted = await prismaClient.testimonial.delete({
+         where: { id: testimonialId },
+      })
 
-//       return res.status(200).send({
-//          message: result.categoryDeleted
-//             ? 'Artículo actualizado y categoría anterior eliminada'
-//             : 'Artículo actualizado',
-//          article: result.updatedArticle,
-//       })
-//    } catch (error) {
-//       return handleRouteError(res, error)
-//    }
-// })
-
-// // DELETE -> eliminar artículo
-// testimonialsRouter.delete('/:articleId', async (req: Request, res: Response) => {
-//    const { articleId } = req.params
-
-//    try {
-//       const result = await prismaClient.$transaction(async (tx) => {
-//          // 1) Eliminar el artículo
-//          const articleDeleted = await tx.article.delete({
-//             where: { id: articleId },
-//             include: { category: { select: { id: true } } },
-//          })
-
-//          // Verificar si la categoría tiene más artículos
-//          const categoryHasMoreArticles = await tx.article.findFirst({
-//             where: {
-//                categoryId: articleDeleted.category.id,
-//                id: { not: articleDeleted.id }, // Excluir el que acabamos de eliminar
-//             },
-//          })
-
-//          // 3) Solo eliminar la categoría si no tiene más artículos
-//          let categoryDeleted = null
-
-//          if (!categoryHasMoreArticles) {
-//             categoryDeleted = await tx.articleCategory.delete({
-//                where: { id: articleDeleted.category.id },
-//             })
-//          }
-
-//          return {
-//             articleDeleted,
-//             categoryDeleted,
-//          } as const
-//       })
-
-//       return res.status(200).send({
-//          message: result.categoryDeleted
-//             ? 'Artículo y categoría eliminados'
-//             : 'Artículo eliminado',
-//          article: result.articleDeleted,
-//          category: result.categoryDeleted, //category solo se envía si se eliminó la categoría
-//       })
-//    } catch (error) {
-//       return handleRouteError(res, error)
-//    }
-// })
+      return res.status(200).send({
+         message: 'Testimonio eliminado',
+         testimonial: testimonialDeleted,
+      })
+   } catch (error) {
+      return handleRouteError(res, error)
+   }
+})
 
 export default testimonialsRouter

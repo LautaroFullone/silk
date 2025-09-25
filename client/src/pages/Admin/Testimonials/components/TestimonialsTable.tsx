@@ -5,6 +5,7 @@ import TestimonialCard from './TestimonialCard'
 import { useNavigate } from 'react-router-dom'
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import useDeleteTestimonial from '@hooks/react-query/Testimonials/useDeleteTestimonial'
 
 interface TestimonialsTableProps {
    paginatedTestimonials: Testimonial[]
@@ -32,8 +33,7 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
       null
    )
 
-   // const { deleteTestimonialMutate, isPending } = useDeleteTestimonial()
-   const isPending = false
+   const { deleteTestimonialMutate, isPending } = useDeleteTestimonial()
 
    return (
       <>
@@ -97,7 +97,7 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
                loadingLabel: 'Eliminando...',
                variant: 'destructive',
                onConfirm: async () => {
-                  //await deleteArticleMutate(selectedArticle!.id)
+                  await deleteTestimonialMutate(selectedTestimonial!.id)
                   setSelectedTestimonial(null)
                },
             }}

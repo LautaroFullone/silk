@@ -2,14 +2,16 @@ import { FieldErrors } from 'react-hook-form'
 import { OctagonAlert } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 import { Label } from '@shadcn/label'
-import { Checkbox } from '@shadcn'
+import { Checkbox, Skeleton } from '@shadcn'
 
 interface CheckboxFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
    name: string
    label: string
    value: boolean
-   onChange: (value: boolean) => void
    description?: string
+   isLoading?: boolean
+
+   onChange: (value: boolean) => void
    errors?: FieldErrors
 }
 
@@ -19,6 +21,8 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
    value,
    onChange,
    description,
+   isLoading = false,
+
    errors = {},
    className = '',
 }) => {
@@ -28,12 +32,31 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
 
    return (
       <div className={`flex items-start gap-2 ${className}`}>
-         <Checkbox id={`checkbox-${name}`} checked={value} onCheckedChange={onChange} />
-         <div className="flex flex-col space-y-2">
-            <Label htmlFor={`checkbox-${name}`}>{label}</Label>
+         {isLoading ? (
+            <Skeleton className="shrink-0 h-4 w-4 rounded-sm" />
+         ) : (
+            <Checkbox
+               id={`checkbox-${name}`}
+               checked={value}
+               onCheckedChange={onChange}
+            />
+         )}
+
+         <div className="flex flex-col space-y-1 w-full">
+            {isLoading ? (
+               <Skeleton className="h-4 w-36" />
+            ) : (
+               <Label htmlFor={`checkbox-${name}`}>{label}</Label>
+            )}
 
             {description && (
-               <p className="text-gray-500 text-sm leading-4">{description}</p>
+               <>
+                  {isLoading ? (
+                     <Skeleton className="h-4 w-full" />
+                  ) : (
+                     <p className="text-gray-500 text-sm leading-4">{description}</p>
+                  )}
+               </>
             )}
 
             {hasError && (

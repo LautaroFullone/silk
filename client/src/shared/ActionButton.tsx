@@ -14,7 +14,7 @@ interface ActionButtonProps
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({
-   icon,
+   icon: Icon,
    isLoading,
    label = 'Guardar',
    onClick,
@@ -23,9 +23,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
    ...props
 }) => {
    const isMobile = useMobile()
-
    const message = isLoading ? loadingLabel : label
-   const Icon = icon
 
    return (
       <Button

@@ -7,3 +7,13 @@ export interface Testimonial {
    isHighlight: boolean
    isActive: boolean
 }
+
+export interface TestimonialFormData {
+   personName: string
+   personRole: string
+   description: string
+   image?: string
+   imageFile?: File
+   isHighlight: boolean
+   isActive: boolean
+}
