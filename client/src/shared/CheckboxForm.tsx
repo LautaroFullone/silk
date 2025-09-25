@@ -1,8 +1,8 @@
+import { FieldErrors } from 'react-hook-form'
+import { OctagonAlert } from 'lucide-react'
+import { HTMLAttributes } from 'react'
 import { Label } from '@shadcn/label'
 import { Checkbox } from '@shadcn'
-import { OctagonAlert } from 'lucide-react'
-import { FieldErrors } from 'react-hook-form'
-import { HTMLAttributes } from 'react'
 
 interface CheckboxFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
    name: string
@@ -31,11 +31,13 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
          <Checkbox id={`checkbox-${name}`} checked={value} onCheckedChange={onChange} />
          <div className="flex flex-col space-y-2">
             <Label htmlFor={`checkbox-${name}`}>{label}</Label>
+
             {description && (
                <p className="text-gray-500 text-sm leading-4">{description}</p>
             )}
+
             {hasError && (
-               <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+               <p className="mt-1 text-xs text-red-500 flex items-top gap-1">
                   <OctagonAlert size={13} />
                   {fieldError.message}
                </p>
