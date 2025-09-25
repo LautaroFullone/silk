@@ -1,9 +1,9 @@
 import { Mail, MapPin, Phone, User } from 'lucide-react'
+import { ServiceRequest } from '@models/Request.model'
 import { Button, Card, CardContent } from '@shadcn'
+import { useForm } from 'react-hook-form'
 import SelectForm from './SelectForm'
 import InputForm from './InputForm'
-import { useForm } from 'react-hook-form'
-import { ServiceRequest } from '@models/Request.model'
 
 type ServiceRequestFormData = Partial<ServiceRequest>
 
@@ -30,7 +30,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
    })
 
    return (
-      <Card className="shadow-sm p-6 rounded-xl">
+      <Card className="shadow-sm rounded-xl">
          <CardContent className="h-full">
             <>
                <div className="text-center">

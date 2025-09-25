@@ -1,11 +1,5 @@
-import {
-   Accordion,
-   AccordionContent,
-   AccordionItem,
-   AccordionTrigger,
-} from '@shadcn/accordion'
-import ContactForm from '@shared/ContactForm'
-import Faq from '../Faq/Faq.page'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@shadcn'
+import { ContactForm } from '@shared'
 
 const servicios = [
    {
@@ -226,9 +220,10 @@ const Services = () => {
             ))}
          </div>
 
+         {/* TODO: En vez de mostrar el formulario, poner un boton que lo abra en un modal */}
          <ContactForm isServiceInputEnabled />
 
-         <Faq />
+         {/* TODO: VISTA DE TESTIMONIOS */}
 
          {/* <div className="flex justify-center ">
             <button

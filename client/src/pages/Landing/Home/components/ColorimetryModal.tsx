@@ -9,7 +9,7 @@ interface ColorimetryModalProps {
 const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClose }) => {
    return (
       <Dialog open={isModalOpen} onOpenChange={(open) => open || onClose()}>
-         <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden bg-silk-tertiary text-silk-primary">
+         <DialogContent className="max-w-6xl! max-h-[90vh] overflow-hidden bg-silk-tertiary text-silk-primary mx-4">
             <DialogTitle className="hidden">
                ANÁLISIS DE COLOR HECHO POR EXPERTOS
             </DialogTitle>
