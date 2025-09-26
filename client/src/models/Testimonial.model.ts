@@ -6,6 +6,7 @@ export interface Testimonial {
    image: string
    isHighlight: boolean
    isActive: boolean
+   avatarImagePath?: string
 }
 
 export interface TestimonialFormData {
@@ -16,4 +17,5 @@ export interface TestimonialFormData {
    imageFile?: File
    isHighlight: boolean
    isActive: boolean
+   avatarFile?: File
 }

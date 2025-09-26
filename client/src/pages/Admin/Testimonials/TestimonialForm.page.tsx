@@ -1,24 +1,33 @@
 import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
+import {
+   Button,
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+   Input,
+   Label,
+} from '@shadcn'
 import { TestimonialFormData } from '@models/Testimonial.model'
-import { Save, Star, User, Quote } from 'lucide-react'
+import { Save, Star, User, Quote, X, Upload } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
    useCreateTestimonial,
    useUpdateTestimonial,
    useFetchTestimonial,
 } from '@hooks/react-query'
+import { getPublicImageUrl } from '@lib/supabaseClient'
 
 const initialFormData: TestimonialFormData = {
    personName: '',
    personRole: '',
    description: '',
-   image: '',
-   imageFile: undefined,
    isHighlight: false,
    isActive: true,
+   avatarFile: undefined,
 }
 
 const TestimonialForm = () => {
@@ -48,6 +57,24 @@ const TestimonialForm = () => {
       reValidateMode: 'onChange',
       defaultValues: initialFormData,
    })
+
+   const avatarFile = watch('avatarFile')
+   const [previewUrl, setPreviewUrl] = useState<string>('')
+
+   // preview del nuevo archivo O del existente en modo edición
+   useEffect(() => {
+      if (avatarFile instanceof File) {
+         const url = URL.createObjectURL(avatarFile)
+         setPreviewUrl(url)
+         return () => URL.revokeObjectURL(url)
+      }
+
+      if (isEdit && testimonialToEdit?.avatarImagePath) {
+         setPreviewUrl(getPublicImageUrl(testimonialToEdit.avatarImagePath))
+      } else {
+         setPreviewUrl('')
+      }
+   }, [avatarFile, isEdit, testimonialToEdit])
 
    // Cargar datos del testimonio en modo edición
    useEffect(() => {
@@ -156,6 +183,86 @@ const TestimonialForm = () => {
                            })}
                            errors={errors}
                         />
+                     </div>
+
+                     <div className="space-y-1">
+                        <Label htmlFor="avatar">Imagen del Cliente</Label>
+
+                        <div className="flex">
+                           <Input
+                              id="avatar"
+                              readOnly
+                              value={avatarFile ? avatarFile.name : ''}
+                              placeholder="Seleccioná una imagen..."
+                              className="rounded-r-none border-r-0 bg-gray-50"
+                           />
+
+                           <div className="relative cursor-pointer">
+                              <input
+                                 type="file"
+                                 id="avatarFile"
+                                 accept="image/*"
+                                 onChange={(e) => {
+                                    const file = e.target.files?.[0]
+                                    // Validaciones básicas
+                                    if (file) {
+                                       const allowed = [
+                                          'image/jpeg',
+                                          'image/jpg',
+                                          'image/png',
+                                          'image/webp',
+                                       ]
+                                       if (!allowed.includes(file.type)) {
+                                          // opcional: mostrar toast/error
+                                          return
+                                       }
+                                       if (file.size > 3 * 1024 * 1024) {
+                                          // opcional: mostrar toast/error
+                                          return
+                                       }
+                                    }
+                                    setValue('avatarFile', file || undefined, {
+                                       shouldDirty: true,
+                                       shouldValidate: true,
+                                    })
+                                 }}
+                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              />
+
+                              <Button
+                                 type="button"
+                                 variant="outline"
+                                 className="rounded-l-none border-l-0 px-3 h-full bg-transparent cursor-pointer"
+                                 asChild
+                              >
+                                 <label
+                                    htmlFor="avatarFile"
+                                    className="flex items-center cursor-pointer"
+                                 >
+                                    <Upload className="w-4 h-4 cursor-pointer" />
+                                 </label>
+                              </Button>
+                           </div>
+                        </div>
+
+                        <p className="text-xs text-gray-500">
+                           Formatos: JPG, PNG o WEBP (máx. 3MB)
+                        </p>
+
+                        {avatarFile && (
+                           <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="px-0 text-red-600"
+                              onClick={() =>
+                                 setValue('avatarFile', undefined, { shouldDirty: true })
+                              }
+                           >
+                              <X className="w-4 h-4 mr-1" />
+                              Quitar imagen
+                           </Button>
+                        )}
                      </div>
 
                      {/* Imagen del Cliente */}
@@ -305,9 +412,9 @@ const TestimonialForm = () => {
                            <div className="relative flex-shrink-0 ">
                               <div className="w-16 h-16  rounded-full overflow-hidden border-3 border-white shadow-lg">
                                  <img
-                                    src={watch('image') || '/image-placeholder.svg'}
-                                    alt={'Person image'}
-                                    className="w-16 h-16  object-cover"
+                                    src={previewUrl || '/image-placeholder.svg'}
+                                    alt="Person image"
+                                    className="w-16 h-16 object-cover"
                                  />
                               </div>
 

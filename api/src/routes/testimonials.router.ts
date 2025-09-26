@@ -8,6 +8,9 @@ import {
    testimonialCreateSchema,
    testimonialUpdateSchema,
 } from '../models/Testimonial.model'
+import { uploadImage } from '../middlewares/uploadImage'
+import { supabaseBucket, supabaseClient } from '../lib/supabase'
+import getImageExt from '../utils/getImageExtension'
 
 const testimonialsRouter = Router()
 
@@ -29,33 +32,74 @@ testimonialsRouter.get('/', async (req: Request, res: Response) => {
 })
 
 // POST -> crear testimonio
-testimonialsRouter.post('/', async (req: Request, res: Response) => {
-   await sleep(3000)
-   try {
-      const body = testimonialCreateSchema.parse(req.body)
+testimonialsRouter.post(
+   '/',
+   uploadImage.single('avatar'),
+   async (req: Request, res: Response) => {
+      await sleep(3000)
+      try {
+         const body = testimonialCreateSchema.parse(req.body)
 
-      const existingTestimonial = await prismaClient.testimonial.findFirst({
-         where: { personName: body.personName },
-      })
-
-      if (existingTestimonial) {
-         throw new ConflictError('Ya existe un testimonio de esta persona', {
-            testimonialId: existingTestimonial.id,
+         const existingTestimonial = await prismaClient.testimonial.findFirst({
+            where: { personName: body.personName },
          })
+
+         if (existingTestimonial) {
+            throw new ConflictError('Ya existe un testimonio de esta persona', {
+               testimonialId: existingTestimonial.id,
+            })
+         }
+
+         const createdTestimonial = await prismaClient.testimonial.create({
+            data: body,
+         })
+
+         let avatarImagePath = null
+
+         // 4) Si vino archivo, subir a Supabase Storage
+         const file = req.file
+         if (file) {
+            const ext = getImageExt(file.mimetype)
+            const path = `testimonials/${createdTestimonial.id}/avatar.${ext}`
+
+            const { error: uploadError } = await supabaseClient.storage
+               .from(supabaseBucket)
+               .upload(path, file.buffer, {
+                  upsert: true,
+                  contentType: file.mimetype,
+                  cacheControl: '3600',
+               })
+
+            if (uploadError) {
+               console.error('Error al subir imagen a Supabase:', uploadError)
+               // rollback del registro si querés mantener consistencia estricta
+               await prismaClient.testimonial.delete({
+                  where: { id: createdTestimonial.id },
+               })
+
+               return res.status(500).send({ error: 'No se pudo subir la imagen' })
+            }
+
+            avatarImagePath = path
+
+            await prismaClient.testimonial.update({
+               where: { id: createdTestimonial.id },
+               data: { avatarImagePath },
+            })
+         }
+
+         return res.status(201).send({
+            message: 'Testimonio creado',
+            testimonial: {
+               ...createdTestimonial,
+               avatarImagePath,
+            },
+         })
+      } catch (error) {
+         return handleRouteError(res, error)
       }
-
-      const createdTestimonial = await prismaClient.testimonial.create({
-         data: body,
-      })
-
-      return res.status(201).send({
-         message: 'Testimonio creado',
-         testimonial: createdTestimonial,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
    }
-})
+)
 
 // GET -> obtener testimonio por id
 testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) => {

@@ -30,7 +30,16 @@ export async function getTestimonialById(testimonialId: string) {
  */
 export async function createTestimonial(testimonialData: TestimonialFormData) {
    type Response = Pick<ResponseApi, 'message' | 'testimonial'>
-   const { data } = await api.post<Response>(`/testimonials`, testimonialData)
+   const form = new FormData()
+   form.append('personName', testimonialData.personName)
+   form.append('personRole', testimonialData.personRole)
+   form.append('description', testimonialData.description)
+   form.append('isHighlight', String(testimonialData.isHighlight))
+   form.append('isActive', String(testimonialData.isActive))
+
+   if (testimonialData.avatarFile) form.append('avatar', testimonialData.avatarFile) // 👈 nombre que espera multer
+
+   const { data } = await api.post<Response>(`/testimonials`, form)
    return data
 }
 

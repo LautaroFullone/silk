@@ -16,8 +16,8 @@ export const testimonialCreateSchema = z.object({
       .trim()
       .min(1, 'El testimonio es requerido')
       .max(500, 'El testimonio no puede superar los 500 caracteres'),
-   isHighlight: z.boolean().default(false),
-   isActive: z.boolean().default(true),
+   isHighlight: z.coerce.boolean().default(false),
+   isActive: z.coerce.boolean().default(true),
    // image: z
    //    .string()
    //    .url('Debe ser una URL válida')
