@@ -37,7 +37,7 @@ export async function createTestimonial(testimonialData: TestimonialFormData) {
    form.append('isHighlight', String(testimonialData.isHighlight))
    form.append('isActive', String(testimonialData.isActive))
 
-   if (testimonialData.avatarFile) form.append('avatar', testimonialData.avatarFile) // 👈 nombre que espera multer
+   if (testimonialData.avatarFile) form.append('avatarFile', testimonialData.avatarFile) // 👈 nombre que espera multer
 
    const { data } = await api.post<Response>(`/testimonials`, form)
    return data
@@ -54,13 +54,35 @@ export async function updateTestimonial({
    testimonialData,
 }: {
    testimonialId: string
-   testimonialData: TestimonialFormData
+   testimonialData: Partial<TestimonialFormData>
 }) {
    type Response = Pick<ResponseApi, 'message' | 'testimonial'>
-   const { data } = await api.patch<Response>(
-      `/testimonials/${testimonialId}`,
-      testimonialData
-   )
+
+   const form = new FormData()
+
+   // Solo agregar campos que estén definidos
+   if (testimonialData.personName !== undefined) {
+      form.append('personName', testimonialData.personName)
+   }
+   if (testimonialData.personRole !== undefined) {
+      form.append('personRole', testimonialData.personRole)
+   }
+   if (testimonialData.description !== undefined) {
+      form.append('description', testimonialData.description)
+   }
+   if (testimonialData.isHighlight !== undefined) {
+      form.append('isHighlight', String(testimonialData.isHighlight))
+   }
+   if (testimonialData.isActive !== undefined) {
+      form.append('isActive', String(testimonialData.isActive))
+   }
+   if (testimonialData.avatarFile) {
+      form.append('avatarFile', testimonialData.avatarFile) // 👈 nombre que espera multer
+   }
+
+   console.log('# FormData after appending:', Object.fromEntries(form.entries()))
+
+   const { data } = await api.patch<Response>(`/testimonials/${testimonialId}`, form)
    return data
 }
 

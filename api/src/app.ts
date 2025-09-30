@@ -1,10 +1,10 @@
+import dotenv from 'dotenv'
+dotenv.config() // Cargar variables de entorno al inicio para envitar errores
+
 import testimonialsRouter from './routes/testimonials.router'
 import express from 'express'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 import cors from 'cors'
-
-dotenv.config()
 
 const PORT = process.env.PORT || 3031
 const app = express()

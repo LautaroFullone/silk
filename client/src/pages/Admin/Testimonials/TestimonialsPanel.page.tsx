@@ -76,7 +76,7 @@ const TestimonialsPanel = () => {
 
    return (
       <>
-         <div className="flex justify-between items-center">
+         <div className="flex justify-between items-center gap-2">
             <PageTitle
                title="Gestión de Testimonios"
                description="Administrá los testimonios de la web"

@@ -1,4 +1,5 @@
 import { Edit, MoreHorizontal, Quote, SquarePen, Star, Trash2, User } from 'lucide-react'
+import { getPublicImageUrl } from '@utils/getPublicImage'
 import { Testimonial } from '@models/Testimonial.model'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
@@ -34,7 +35,10 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                   <div className="relative flex-shrink-0">
                      <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-lg">
                         <img
-                           src={testimonial.image || '/image-placeholder.svg'}
+                           src={
+                              getPublicImageUrl(testimonial.avatarImagePath) ||
+                              '/image-placeholder.svg'
+                           }
                            alt={testimonial.personRole}
                            className="w-16 h-16 object-cover"
                         />

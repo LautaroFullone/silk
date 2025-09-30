@@ -1,4 +1,15 @@
 import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
+import { Save, Star, User, Quote, X, Upload } from 'lucide-react'
+import { TestimonialFormData } from '@models/Testimonial.model'
+import { getPublicImageUrl } from '@utils/getPublicImage'
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import {
+   useCreateTestimonial,
+   useUpdateTestimonial,
+   useFetchTestimonial,
+} from '@hooks/react-query'
 import {
    Button,
    Card,
@@ -9,17 +20,6 @@ import {
    Input,
    Label,
 } from '@shadcn'
-import { TestimonialFormData } from '@models/Testimonial.model'
-import { Save, Star, User, Quote, X, Upload } from 'lucide-react'
-import { useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
-import {
-   useCreateTestimonial,
-   useUpdateTestimonial,
-   useFetchTestimonial,
-} from '@hooks/react-query'
-import { getPublicImageUrl } from '@lib/supabaseClient'
 
 const initialFormData: TestimonialFormData = {
    personName: '',
@@ -31,6 +31,7 @@ const initialFormData: TestimonialFormData = {
 }
 
 const TestimonialForm = () => {
+   const [previewUrl, setPreviewUrl] = useState<string>('')
    const { testimonialId } = useParams()
    const isEdit = Boolean(testimonialId)
 
@@ -59,9 +60,8 @@ const TestimonialForm = () => {
    })
 
    const avatarFile = watch('avatarFile')
-   const [previewUrl, setPreviewUrl] = useState<string>('')
 
-   // preview del nuevo archivo O del existente en modo edición
+   // preview del nuevo archivo o del existente en modo edición
    useEffect(() => {
       if (avatarFile instanceof File) {
          const url = URL.createObjectURL(avatarFile)
@@ -103,15 +103,13 @@ const TestimonialForm = () => {
       }
    }
 
-   // Lógica simplificada para el botón:
-   // - Modo creación: Habilitado al inicio, se deshabilita solo después del primer submit con errores
-   // - Modo edición: Habilitado cuando hay cambios
+   // En modo creación se habilita al inicio y se deshabilita solo después del primer submit con errores, en edicion se habilita solo si hay cambios
    const isButtonEnabled = isEdit ? isDirty : !Object.keys(errors).length
    const isMutationPending = isCreateTestimonialPending || isUpdateTestimonialPending
 
    return (
       <>
-         <div className="flex justify-between">
+         <div className="flex justify-between gap-2">
             <PageTitle
                title={isEdit ? 'Editar Testimonio' : 'Crear Nuevo Testimonio'}
                hasGoBack
@@ -186,11 +184,11 @@ const TestimonialForm = () => {
                      </div>
 
                      <div className="space-y-1">
-                        <Label htmlFor="avatar">Imagen del Cliente</Label>
+                        <Label htmlFor="avatarFile">Imagen del Cliente</Label>
 
                         <div className="flex">
                            <Input
-                              id="avatar"
+                              id="avatarFile"
                               readOnly
                               value={avatarFile ? avatarFile.name : ''}
                               placeholder="Seleccioná una imagen..."

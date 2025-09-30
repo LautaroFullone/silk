@@ -91,7 +91,7 @@ const PostsPanel = () => {
 
    return (
       <>
-         <div className="flex justify-between items-center">
+         <div className="flex justify-between items-center gap-2">
             <PageTitle
                title="Gestión de Posts"
                description="Crea y administra el contenido de los posts"

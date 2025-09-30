@@ -1,16 +1,16 @@
-import { Router, type Request, type Response } from 'express'
+import { BadRequestError, ConflictError } from '../errors/ApiError'
+import { supabaseBucket, supabaseClient } from '../lib/supabase'
 import { handleRouteError } from '../errors/handleRouteError'
+import { Router, type Request, type Response } from 'express'
 import { hasRealChanges } from '../utils/hasRealChanges'
-import { ConflictError } from '../errors/ApiError'
+import { uploadImage } from '../middlewares/uploadImage'
+import getImageExt from '../utils/getImageExtension'
 import prismaClient from '../prisma/prismaClient'
 import { sleep } from '../utils/sleep'
 import {
    testimonialCreateSchema,
    testimonialUpdateSchema,
 } from '../models/Testimonial.model'
-import { uploadImage } from '../middlewares/uploadImage'
-import { supabaseBucket, supabaseClient } from '../lib/supabase'
-import getImageExt from '../utils/getImageExtension'
 
 const testimonialsRouter = Router()
 
@@ -34,7 +34,7 @@ testimonialsRouter.get('/', async (req: Request, res: Response) => {
 // POST -> crear testimonio
 testimonialsRouter.post(
    '/',
-   uploadImage.single('avatar'),
+   uploadImage.single('avatarFile'),
    async (req: Request, res: Response) => {
       await sleep(3000)
       try {
@@ -60,7 +60,7 @@ testimonialsRouter.post(
          const file = req.file
          if (file) {
             const ext = getImageExt(file.mimetype)
-            const path = `testimonials/${createdTestimonial.id}/avatar.${ext}`
+            const path = `testimonials/${createdTestimonial.id}-avatar.${ext}`
 
             const { error: uploadError } = await supabaseClient.storage
                .from(supabaseBucket)
@@ -71,13 +71,12 @@ testimonialsRouter.post(
                })
 
             if (uploadError) {
-               console.error('Error al subir imagen a Supabase:', uploadError)
-               // rollback del registro si querés mantener consistencia estricta
+               // rollback del registro para mantener la consistencia
                await prismaClient.testimonial.delete({
                   where: { id: createdTestimonial.id },
                })
 
-               return res.status(500).send({ error: 'No se pudo subir la imagen' })
+               throw new BadRequestError('Hubo un error al subir la imagen')
             }
 
             avatarImagePath = path
@@ -122,57 +121,110 @@ testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) =>
 })
 
 // PATCH -> actualizar testimonio
-testimonialsRouter.patch('/:testimonialId', async (req: Request, res: Response) => {
-   await sleep(3000)
-   const { testimonialId } = req.params
+testimonialsRouter.patch(
+   '/:testimonialId',
+   uploadImage.single('avatarFile'),
+   async (req: Request, res: Response) => {
+      await sleep(3000)
+      const { testimonialId } = req.params
 
-   try {
-      // 1) validar payload
-      const body = testimonialUpdateSchema.parse(req.body)
+      try {
+         // 1) validar payload
+         const body = testimonialUpdateSchema.parse(req.body)
 
-      // 2) buscar testimonio actual, sino tira excepcion
-      const currentTestimonial = await prismaClient.testimonial.findUniqueOrThrow({
-         where: { id: testimonialId },
-      })
-
-      // 3) preparar update solo con cambios reales
-      if (!hasRealChanges(currentTestimonial, body)) {
-         return res.send({
-            message: 'No hay cambios para aplicar',
-            testimonial: currentTestimonial,
+         // 2) buscar testimonio actual, sino tira excepcion
+         const currentTestimonial = await prismaClient.testimonial.findUniqueOrThrow({
+            where: { id: testimonialId },
          })
-      }
 
-      // 4) si el nombre de la persona cambia, verificar que no exista otro testimonio con ese nombre
-      if (body.personName && body.personName !== currentTestimonial.personName) {
-         const existingTestimonial = await prismaClient.testimonial.findFirst({
-            where: {
-               personName: body.personName,
-               id: { not: testimonialId }, // excluir el testimonio actual
+         // 3) preparar update solo con cambios reales
+         const file = req.file
+         let hasImageChange = Boolean(file)
+
+         if (!hasRealChanges(currentTestimonial, body) && !hasImageChange) {
+            return res.send({
+               message: 'No hay cambios para aplicar',
+               testimonial: currentTestimonial,
+            })
+         }
+
+         // 4) si el nombre de la persona cambia, verificar que no exista otro testimonio con ese nombre
+         if (body.personName && body.personName !== currentTestimonial.personName) {
+            const existingTestimonial = await prismaClient.testimonial.findFirst({
+               where: {
+                  personName: body.personName,
+                  id: { not: testimonialId },
+               },
+            })
+
+            if (existingTestimonial) {
+               throw new ConflictError('Ya existe un testimonio de esta persona', {
+                  testimonialId: existingTestimonial.id,
+               })
+            }
+         }
+
+         let newAvatarImagePath = currentTestimonial.avatarImagePath
+
+         // 5) Si hay nueva imagen, procesarla
+         if (file) {
+            const ext = getImageExt(file.mimetype)
+            const path = `testimonials/${testimonialId}-avatar.${ext}`
+
+            console.warn('# Intentando actualizar archivo:', {
+               path,
+               mimetype: file.mimetype,
+               size: file.size,
+            })
+
+            console.log('# Current avatarImagePath:', currentTestimonial.avatarImagePath)
+            // Eliminar imagen anterior si existe
+            if (currentTestimonial.avatarImagePath) {
+               const { error: deleteError } = await supabaseClient.storage
+                  .from(supabaseBucket)
+                  .remove([currentTestimonial.avatarImagePath])
+
+               if (deleteError) {
+                  console.error('# Error al eliminar imagen anterior:', deleteError)
+                  // No tiramos error, solo advertencia
+               }
+            }
+
+            // Subir nueva imagen
+            const { error: uploadError } = await supabaseClient.storage
+               .from(supabaseBucket)
+               .upload(path, file.buffer, {
+                  upsert: true,
+                  contentType: file.mimetype,
+                  cacheControl: '3600',
+               })
+
+            if (uploadError) {
+               console.error('# Error al subir nueva imagen:', uploadError)
+               throw new BadRequestError('Hubo un error al actualizar la imagen')
+            }
+
+            newAvatarImagePath = path
+         }
+
+         // 6) actualizar testimonio
+         const updatedTestimonial = await prismaClient.testimonial.update({
+            where: { id: testimonialId },
+            data: {
+               ...body,
+               avatarImagePath: newAvatarImagePath,
             },
          })
 
-         if (existingTestimonial) {
-            throw new ConflictError('Ya existe un testimonio de esta persona', {
-               testimonialId: existingTestimonial.id,
-            })
-         }
+         return res.status(200).send({
+            message: 'Testimonio actualizado',
+            testimonial: updatedTestimonial,
+         })
+      } catch (error) {
+         return handleRouteError(res, error)
       }
-
-      // 5) actualizar testimonio
-      const updatedTestimonial = await prismaClient.testimonial.update({
-         where: { id: testimonialId },
-         data: body,
-      })
-
-      return res.status(200).send({
-         message: 'Testimonio actualizado',
-         testimonial: updatedTestimonial,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
    }
-})
+)
 
 // DELETE -> eliminar testimonio
 testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response) => {
@@ -180,6 +232,26 @@ testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response)
    const { testimonialId } = req.params
 
    try {
+      // 1) Buscar el testimonio para obtener la ruta de la imagen
+      const testimonialToDelete = await prismaClient.testimonial.findUniqueOrThrow({
+         where: { id: testimonialId },
+      })
+
+      // 2) Eliminar la imagen de Supabase Storage si existe
+      if (testimonialToDelete.avatarImagePath) {
+         console.log('Intentando eliminar imagen:', testimonialToDelete.avatarImagePath)
+
+         const { error: deleteImageError } = await supabaseClient.storage
+            .from(supabaseBucket)
+            .remove([testimonialToDelete.avatarImagePath])
+
+         if (deleteImageError) {
+            console.warn('Error al eliminar imagen de Storage:', deleteImageError)
+            // No detenemos la eliminación del testimonio si falla la imagen
+         }
+      }
+
+      // 3) Eliminar el testimonio de la base de datos
       const testimonialDeleted = await prismaClient.testimonial.delete({
          where: { id: testimonialId },
       })

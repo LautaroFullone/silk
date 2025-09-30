@@ -66,7 +66,7 @@ const PostForm = () => {
 
    return (
       <>
-         <div className="flex justify-between">
+         <div className="flex justify-between gap-2">
             <PageTitle
                title={isEdit ? 'Editar Post' : 'Crear Nuevo Post'}
                hasGoBack
