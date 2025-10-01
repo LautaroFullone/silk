@@ -59,8 +59,9 @@ testimonialsRouter.post(
          // 4) Si vino archivo, subir a Supabase Storage
          const file = req.file
          if (file) {
+            const timestamp = Date.now()
             const ext = getImageExt(file.mimetype)
-            const path = `testimonials/${createdTestimonial.id}-avatar.${ext}`
+            const path = `testimonials/${createdTestimonial.id}-avatar-${timestamp}.${ext}`
 
             const { error: uploadError } = await supabaseClient.storage
                .from(supabaseBucket)
@@ -169,7 +170,8 @@ testimonialsRouter.patch(
          // 5) Si hay nueva imagen, procesarla
          if (file) {
             const ext = getImageExt(file.mimetype)
-            const path = `testimonials/${testimonialId}-avatar.${ext}`
+            const timestamp = Date.now()
+            const path = `testimonials/${testimonialId}-avatar-${timestamp}.${ext}`
 
             console.warn('# Intentando actualizar archivo:', {
                path,

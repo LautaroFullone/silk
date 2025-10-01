@@ -8,7 +8,7 @@ const useFetchTestimonial = (param: { testimonialId: string | undefined }) => {
    const { data, isLoading, error, isError } = useQuery({
       queryKey: [queriesKeys.FETCH_TESTIMONIAL, param.testimonialId],
       queryFn: () => getTestimonialById(param.testimonialId!),
-      staleTime: 20 * 60 * 1000, //20min
+      staleTime: 2 * 60 * 1000, //2min - menor tiempo para datos que pueden cambiar frecuentemente
       retry: 1,
       enabled: !!param.testimonialId, // Solo ejecuta la query si hay testimonialId
    })
