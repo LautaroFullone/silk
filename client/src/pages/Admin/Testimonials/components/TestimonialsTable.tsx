@@ -3,9 +3,9 @@ import { Testimonial } from '@models/Testimonial.model'
 import { routesConfig } from '@config/routesConfig'
 import TestimonialCard from './TestimonialCard'
 import { useNavigate } from 'react-router-dom'
+import { useDeleteTestimonial } from '@hooks'
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import useDeleteTestimonial from '@hooks/react-query/Testimonials/useDeleteTestimonial'
 
 interface TestimonialsTableProps {
    paginatedTestimonials: Testimonial[]
@@ -39,11 +39,9 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
       <>
          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
             {isLoading ? (
-               <>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                     <TestimonialCard.Skeleton key={`skeleton-testimonial-${i}`} />
-                  ))}
-               </>
+               Array.from({ length: 5 }).map((_, i) => (
+                  <TestimonialCard.Skeleton key={`skeleton-testimonial-${i}`} />
+               ))
             ) : paginatedTestimonials.length ? (
                paginatedTestimonials.map((testimonial) => (
                   <TestimonialCard

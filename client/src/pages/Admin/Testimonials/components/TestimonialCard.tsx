@@ -35,12 +35,12 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                   <div className="relative flex-shrink-0">
                      <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-lg">
                         <img
-                           src={
-                              getPublicImageUrl(testimonial.avatarImagePath) ||
-                              '/image-placeholder.svg'
-                           }
                            alt={testimonial.personRole}
                            className="w-16 h-16 object-cover"
+                           src={getPublicImageUrl(testimonial.avatarImagePath)}
+                           onError={(e) => {
+                              e.currentTarget.src = '/image-placeholder.svg'
+                           }}
                         />
                      </div>
 
