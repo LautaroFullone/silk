@@ -5,7 +5,6 @@
       "baseUrl": ".",
       "paths": {
          "@config/*": ["./src/config/*"],
-         "@hooks/*": ["./src/hooks/*"],
          "@lib": ["./src/lib"],
          "@lib/*": ["./src/lib/*"],
          "@models/*": ["./src/models/*"],
@@ -14,6 +13,8 @@
          "@stores/": ["./src/stores/*"],
          "@shadcn": ["./src/shared/shadcn/ui"],
          "@shadcn/*": ["./src/shared/shadcn/ui/*"],
+         "@hooks": ["./src/hooks"],
+         "@hooks/*": ["./src/hooks/*"],
          "@shared": ["./src/shared"],
          "@shared/*": ["./src/shared/*"],
          "@utils/*": ["./src/utils/*"],

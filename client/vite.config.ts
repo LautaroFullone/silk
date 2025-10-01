@@ -12,17 +12,17 @@ export default defineConfig({
    },
    resolve: {
       alias: {
-         '@hooks': path.resolve(__dirname, './src/hooks'),
-         '@lib': path.resolve(__dirname, './src/lib'),
          '@config': path.resolve(__dirname, './src/config'),
+         '@hooks': path.resolve(__dirname, './src/hooks'),
+         '@layouts': path.resolve(__dirname, './src/layouts'),
+         '@lib': path.resolve(__dirname, './src/lib'),
          '@models': path.resolve(__dirname, './src/models'),
          '@pages': path.resolve(__dirname, './src/pages'),
          '@services': path.resolve(__dirname, './src/services'),
-         '@stores': path.resolve(__dirname, './src/stores'),
-         '@shadcn': path.resolve(__dirname, './src/shared/shadcn/ui'),
          '@shared': path.resolve(__dirname, './src/shared'),
+         '@stores': path.resolve(__dirname, './src/stores'),
          '@utils': path.resolve(__dirname, './src/utils'),
-         '@layouts': path.resolve(__dirname, './src/layouts'),
+         '@shadcn': path.resolve(__dirname, './src/shared/shadcn/ui'),
       },
    },
 })
