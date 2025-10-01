@@ -5,9 +5,11 @@ import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import {
+   Badge,
    Button,
    Card,
    CardContent,
+   cn,
    DropdownMenu,
    DropdownMenuContent,
    DropdownMenuItem,
@@ -27,13 +29,38 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
    const navigate = useNavigate()
 
    return (
-      <Card className="overflow-hidden hover:shadow-md">
-         <CardContent>
-            <div className="flex items-start justify-between mb-4 min-w-0">
+      <Card
+         className={cn(
+            'overflow-hidden hover:shadow-md relative',
+            testimonial.isActive
+               ? 'border-l-6 border-l-emerald-700'
+               : 'border-l-6 border-l-gray-600'
+         )}
+      >
+         <CardContent className="pt-4">
+            <div className="flex items-start justify-between mb-4 min-w-0 z-800">
+               <div className="absolute top-2 left-2">
+                  {testimonial.isActive ? (
+                     <Badge
+                        variant="default"
+                        className="bg-gradient-to-b from-emerald-600 to-emerald-800 text-white border-none"
+                     >
+                        Publicado
+                     </Badge>
+                  ) : (
+                     <Badge
+                        variant="default"
+                        className="bg-gradient-to-b from-gray-500 to-gray-700 text-white border-none"
+                     >
+                        Borrador
+                     </Badge>
+                  )}
+               </div>
+
                {/* Avatar y nombre */}
                <div className="flex items-center gap-4 min-w-0 flex-1">
                   <div className="relative flex-shrink-0">
-                     <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-lg">
+                     <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-xl">
                         <img
                            alt={testimonial.personRole}
                            className="w-16 h-16 object-cover"

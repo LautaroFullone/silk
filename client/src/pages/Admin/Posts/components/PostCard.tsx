@@ -27,7 +27,7 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
    return (
       <Card
          className={cn(
-            'overflow-hidden flex flex-col md:flex-row transition-all p-0 hover:shadow-md cursor-pointer h-auto md:45',
+            'overflow-hidden flex flex-col md:flex-row transition-all p-0 hover:shadow-md cursor-pointer h-auto',
             post.isActive
                ? 'border-l-6 border-l-emerald-700'
                : 'border-l-6 border-l-gray-600'

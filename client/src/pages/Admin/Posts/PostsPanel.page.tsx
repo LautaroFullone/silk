@@ -114,6 +114,7 @@ const PostsPanel = () => {
 
    const paginatedPosts = filteredAndSortedPosts.slice(startIndex, endIndex)
    const isLoadingPosts = false // Reemplazar con estado real de carga si es necesario
+
    return (
       <>
          <div className="flex justify-between items-center gap-2">
