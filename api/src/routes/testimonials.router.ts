@@ -4,7 +4,7 @@ import { handleRouteError } from '../errors/handleRouteError'
 import { Router, type Request, type Response } from 'express'
 import { hasRealChanges } from '../utils/hasRealChanges'
 import { uploadImage } from '../middlewares/uploadImage'
-import getImageExt from '../utils/getImageExtension'
+import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
 import { sleep } from '../utils/sleep'
 import {
@@ -56,18 +56,27 @@ testimonialsRouter.post(
 
          let avatarImagePath = null
 
-         // 4) Si vino archivo, subir a Supabase Storage
+         // 4) Si vino archivo, optimizar y subir a Supabase Storage
          const file = req.file
          if (file) {
             const timestamp = Date.now()
-            const ext = getImageExt(file.mimetype)
-            const path = `testimonials/${createdTestimonial.id}-avatar-${timestamp}.${ext}`
+
+            // Optimizar imagen antes de subir
+            const { buffer: optimizedBuffer, extension } = await optimizeImage(
+               file.buffer,
+               {
+                  maxWidth: 400,
+                  maxHeight: 400,
+               }
+            )
+
+            const path = `testimonials/${createdTestimonial.id}-avatar-${timestamp}.${extension}`
 
             const { error: uploadError } = await supabaseClient.storage
                .from(supabaseBucket)
-               .upload(path, file.buffer, {
+               .upload(path, optimizedBuffer, {
                   upsert: true,
-                  contentType: file.mimetype,
+                  contentType: `image/${extension}`,
                   cacheControl: '3600',
                })
 
@@ -169,14 +178,24 @@ testimonialsRouter.patch(
 
          // 5) Si hay nueva imagen, procesarla
          if (file) {
-            const ext = getImageExt(file.mimetype)
             const timestamp = Date.now()
-            const path = `testimonials/${testimonialId}-avatar-${timestamp}.${ext}`
+
+            // Optimizar imagen antes de subir
+            const { buffer: optimizedBuffer, extension } = await optimizeImage(
+               file.buffer,
+               {
+                  maxWidth: 400,
+                  maxHeight: 400,
+               }
+            )
+
+            const path = `testimonials/${testimonialId}-avatar-${timestamp}.${extension}`
 
             console.warn('# Intentando actualizar archivo:', {
                path,
-               mimetype: file.mimetype,
-               size: file.size,
+               originalSize: file.size,
+               optimizedSize: optimizedBuffer.length,
+               format: extension,
             })
 
             console.log('# Current avatarImagePath:', currentTestimonial.avatarImagePath)
@@ -192,12 +211,12 @@ testimonialsRouter.patch(
                }
             }
 
-            // Subir nueva imagen
+            // Subir nueva imagen optimizada
             const { error: uploadError } = await supabaseClient.storage
                .from(supabaseBucket)
-               .upload(path, file.buffer, {
+               .upload(path, optimizedBuffer, {
                   upsert: true,
-                  contentType: file.mimetype,
+                  contentType: `image/${extension}`,
                   cacheControl: '3600',
                })
 
