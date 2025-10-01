@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
  * @param value valor que querés debounc-iar
  * @param delay tiempo en ms (por defecto 500)
  */
-export function useDebounce<T>(value: T, delay = 500): T {
+const useDebounce = <T>(value: T, delay = 500): T => {
    const [debouncedValue, setDebouncedValue] = useState(value)
 
    useEffect(() => {
@@ -18,3 +18,5 @@ export function useDebounce<T>(value: T, delay = 500): T {
 
    return debouncedValue
 }
+
+export default useDebounce

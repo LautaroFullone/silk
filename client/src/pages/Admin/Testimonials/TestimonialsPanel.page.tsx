@@ -1,11 +1,7 @@
+import { useFetchTestimonials, usePagination, useSearchAndSort } from '@hooks'
 import TestimonialsTable from './components/TestimonialsTable'
-import { useFetchTestimonials } from '@hooks/react-query'
-import { useEffect, useMemo, useState } from 'react'
-import { usePagination } from '@hooks/usePagination'
-import normalizeString from '@utils/normalizeString'
 import { routesConfig } from '@config/routesConfig'
 import { ActionButton, PageTitle } from '@shared'
-import { useDebounce } from '@hooks/useDebounce'
 import { useNavigate } from 'react-router-dom'
 import { Plus, Search } from 'lucide-react'
 import {
@@ -25,47 +21,33 @@ import {
 } from '@shadcn'
 
 const TestimonialsPanel = () => {
-   const [highlightFilter, setHighlightFilter] = useState<string>('all')
-   const [searchTerm, setSearchTerm] = useState('')
-
    const navigate = useNavigate()
-   const debouncedSearch = useDebounce(searchTerm, 400)
    const { testimonials, isLoading: isLoadingTestimonials } = useFetchTestimonials()
 
-   useEffect(() => {
-      if (currentPage !== 1) goToPage(1)
-   }, [debouncedSearch, highlightFilter]) // eslint-disable-line
-
-   const filteredTestimonials = useMemo(() => {
-      return testimonials.filter((testimonial) => {
-         const normalizedSearch = normalizeString(debouncedSearch)
-
-         const byHighlight =
-            highlightFilter === 'all' ||
-            testimonial.isHighlight === (highlightFilter === 'true')
-
-         const byPersonName = normalizeString(testimonial.personName).includes(
-            normalizedSearch
-         )
-         const byPersonRole = normalizeString(testimonial.personRole).includes(
-            normalizedSearch
-         )
-         const matchesSearch =
-            normalizedSearch.length === 0 ? true : byPersonName || byPersonRole
-
-         return matchesSearch && byHighlight
-      })
-   }, [testimonials, debouncedSearch, highlightFilter])
+   const {
+      items: filteredTestimonials,
+      searchTerm,
+      setSearchTerm,
+      filters,
+      updateFilter,
+      clearFilters,
+      hasActiveFilters,
+   } = useSearchAndSort({
+      data: testimonials,
+      searchFields: ['personName', 'personRole'],
+      sortableFields: ['personName', 'personRole', 'isHighlight'],
+      initialFilters: { isHighlight: 'all' },
+   })
 
    const {
       currentPage,
       totalPages,
       startIndex,
       endIndex,
+      itemsPerPage,
       goToPage,
       canGoNext,
       canGoPrevious,
-      itemsPerPage,
       setItemsPerPage,
    } = usePagination({
       totalItems: filteredTestimonials.length,
@@ -130,8 +112,10 @@ const TestimonialsPanel = () => {
                   <div>
                      <Label htmlFor="highlight-filter">Estado</Label>
                      <Select
-                        value={highlightFilter}
-                        onValueChange={setHighlightFilter}
+                        value={filters.isHighlight || 'all'}
+                        onValueChange={(value: string) =>
+                           updateFilter('isHighlight', value)
+                        }
                         disabled={isLoadingTestimonials}
                      >
                         <SelectTrigger className="mt-1 w-full" id="highlight-filter">
@@ -185,11 +169,8 @@ const TestimonialsPanel = () => {
 
                         <Button
                            variant="default"
-                           onClick={() => {
-                              setSearchTerm('')
-                              setHighlightFilter('all')
-                           }}
-                           disabled={isLoadingTestimonials}
+                           onClick={clearFilters}
+                           disabled={isLoadingTestimonials || !hasActiveFilters}
                         >
                            Limpiar Filtros
                         </Button>
@@ -206,7 +187,7 @@ const TestimonialsPanel = () => {
                   canGoPrevious={canGoPrevious}
                   onPageChange={goToPage}
                   emptyMessage={
-                     debouncedSearch || highlightFilter !== 'all'
+                     hasActiveFilters
                         ? `No hay testimonios que coincidan con los filtros, probá limpiarlos o intentá con otros términos de búsqueda`
                         : 'Hacé clic en "Nuevo Testimonio" para crear el primero'
                   }

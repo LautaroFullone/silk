@@ -1,9 +1,9 @@
 import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
 import { requestStatusConfig } from '@config/requestStatusConfig'
 import { ServiceRequest } from '@models/Request.model'
-import useSearchAndSort from '@hooks/useSearchAndSort'
 import RequestsTable from './components/RequestsTable'
 import RequestModal from './components/RequestModal'
+import { useSearchAndSort } from '@hooks'
 import { PageTitle } from '@shared'
 import { useState } from 'react'
 import {
@@ -128,20 +128,20 @@ const RequestsPanel = () => {
    const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
 
    const {
+      items: filteredAndSortedRequests,
       searchTerm,
       setSearchTerm,
       sortBy,
       setSortBy,
       sortOrder,
       toggleSortOrder,
-      filterValue,
-      setFilterValue,
-      filteredData: filteredAndSortedRequests,
+      filters,
+      updateFilter,
    } = useSearchAndSort<ServiceRequest>({
       data: requests,
-      searchableFields: ['name', 'email'],
+      searchFields: ['name', 'email'],
       sortableFields: ['date', 'name'],
-      filterField: 'status',
+      initialFilters: { status: 'all' },
    })
 
    return (
@@ -190,7 +190,10 @@ const RequestsPanel = () => {
                         Estado:
                      </span>
 
-                     <Select value={filterValue} onValueChange={setFilterValue}>
+                     <Select
+                        value={filters.status || 'all'}
+                        onValueChange={(value: string) => updateFilter('status', value)}
+                     >
                         <SelectTrigger className="sm:w-30">
                            <SelectValue />
                         </SelectTrigger>

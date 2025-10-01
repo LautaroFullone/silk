@@ -1,9 +1,9 @@
 import { ArrowUpDown, ChevronDown, ChevronUp, Plus } from 'lucide-react'
-import useSearchAndSort from '@hooks/useSearchAndSort'
 import { routesConfig } from '@config/routesConfig'
 import { ActionButton, PageTitle } from '@shared'
 import { useNavigate } from 'react-router-dom'
 import PostCard from './components/PostCard'
+import { useSearchAndSort } from '@hooks'
 import { Post } from '@models/Post.model'
 import {
    Button,
@@ -73,20 +73,20 @@ const PostsPanel = () => {
    const navigate = useNavigate()
 
    const {
+      items: filteredAndSortedPosts,
       searchTerm,
       setSearchTerm,
       sortBy,
       setSortBy,
       sortOrder,
       toggleSortOrder,
-      filterValue,
-      setFilterValue,
-      filteredData: filteredAndSortedPosts,
-   } = useSearchAndSort<Post>({
+      filters,
+      updateFilter,
+   } = useSearchAndSort({
       data: mockPosts,
-      searchableFields: ['title', 'author', 'category'],
+      searchFields: ['title', 'author', 'category'],
       sortableFields: ['date', 'title', 'author'],
-      filterField: 'isActive',
+      initialFilters: { isActive: 'all' },
    })
 
    return (
@@ -157,8 +157,8 @@ const PostsPanel = () => {
                      </span>
 
                      <Select
-                        value={filterValue} // 'all' | 'true' | 'false'
-                        onValueChange={(value) => setFilterValue(value)}
+                        value={filters.isActive || 'all'} // 'all' | 'true' | 'false'
+                        onValueChange={(value) => updateFilter('isActive', value)}
                      >
                         <SelectTrigger className="sm:w-30">
                            <SelectValue placeholder="Todos" />

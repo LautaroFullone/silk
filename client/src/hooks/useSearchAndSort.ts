@@ -1,53 +1,77 @@
 import { useMemo, useState } from 'react'
-import { useDebounce } from './useDebounce'
+import useDebounce from './useDebounce'
 
 type SortOrder = 'asc' | 'desc'
 
-interface HookProps<T> {
+interface UseSearchAndSortProps<T> {
    data: T[]
-   searchableFields: (keyof T)[]
+   searchFields: (keyof T)[]
    sortableFields: (keyof T)[]
-   filterField?: keyof T // Campo por el que se va a filtrar (opcional)
+   initialFilters?: Record<string, string>
+   defaultSort?: {
+      field?: keyof T
+      order?: SortOrder
+   }
 }
 
 /**
- * Se encarga de buscar y ordenar una lista de objetos.
- * Permite buscar en varios campos, ordenar por varios campos y filtrar por un campo específico.
- * @param data Lista de objetos a buscar y ordenar
- * @param searchableFields Campos en los que se puede buscar
- * @param sortableFields Campos por los que se puede ordenar
- * @param filterField Campo por el que se puede filtrar (opcional)
- * @returns Un objeto con el término de búsqueda, campo de orden, orden, valor de filtro y la lista filtrada
+ * Hook para búsqueda, filtrado y ordenado de datos
+ * Separado de la paginación para mayor flexibilidad
+ * @param data Lista de datos a procesar
+ * @param searchFields Campos a considerar en la búsqueda
+ * @param sortableFields Campos que se pueden ordenar
+ * @param initialFilters Filtros iniciales (por defecto ninguno)
+ * @param defaultSort Ordenamiento por defecto (campo y orden)
+ * @returns Objetos y funciones para manejar búsqueda, filtros y ordenado
  */
 const useSearchAndSort = <T>({
    data,
-   searchableFields,
+   searchFields,
    sortableFields,
-   filterField,
-}: HookProps<T>) => {
+   initialFilters = {},
+   defaultSort = {},
+}: UseSearchAndSortProps<T>) => {
    const [searchTerm, setSearchTerm] = useState('')
-   const [sortBy, setSortBy] = useState<keyof T>(sortableFields[0])
-   const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
-   const [filterValue, setFilterValue] = useState<string>('all') // valor por defecto
+   const [filters, setFilters] = useState<Record<string, string>>(initialFilters)
+   const [sortBy, setSortBy] = useState<keyof T>(defaultSort.field || sortableFields[0])
+   const [sortOrder, setSortOrder] = useState<SortOrder>(defaultSort.order || 'desc')
 
-   // Aplicar debounce al término de búsqueda
-   const debouncedSearchTerm = useDebounce(searchTerm, 400)
+   const debouncedSearch = useDebounce(searchTerm, 400)
 
-   const filteredData = useMemo(() => {
-      const lowerSearch = debouncedSearchTerm.toLowerCase()
+   const normalizeString = (str: string): string => {
+      return str
+         .toLowerCase()
+         .normalize('NFD')
+         .replace(/[\u0300-\u036f]/g, '')
+         .trim()
+   }
 
-      let filtered = data.filter((item) =>
-         searchableFields.some((field) => {
-            const value = item[field]
-            return typeof value === 'string' && value.toLowerCase().includes(lowerSearch)
+   const processedData = useMemo(() => {
+      const normalizedSearch = normalizeString(debouncedSearch)
+
+      // Filtrar por búsqueda
+      const filtered = data.filter((item) => {
+         const matchesSearch =
+            normalizedSearch.length === 0 ||
+            searchFields.some((field) => {
+               const value = item[field]
+               return (
+                  typeof value === 'string' &&
+                  normalizeString(value).includes(normalizedSearch)
+               )
+            })
+
+         const matchesFilters = Object.entries(filters).every(([key, value]) => {
+            if (value === 'all') return true
+            const itemValue = item[key as keyof T]
+            return String(itemValue) === value
          })
-      )
 
-      if (filterField && filterValue !== 'all') {
-         filtered = filtered.filter((item) => String(item[filterField]) === filterValue)
-      }
+         return matchesSearch && matchesFilters
+      })
 
-      filtered = filtered.sort((a, b) => {
+      // Ordenar
+      filtered.sort((a, b) => {
          const av = a[sortBy]
          const bv = b[sortBy]
 
@@ -66,28 +90,45 @@ const useSearchAndSort = <T>({
       })
 
       return filtered
-   }, [
-      data,
-      debouncedSearchTerm,
-      filterValue,
-      filterField,
-      sortBy,
-      sortOrder,
-      searchableFields,
-   ])
+   }, [data, debouncedSearch, filters, searchFields, sortBy, sortOrder])
 
-   const toggleSortOrder = () => setSortOrder((s) => (s === 'asc' ? 'desc' : 'asc'))
+   const updateFilter = (key: string, value: string) => {
+      setFilters((prev) => ({ ...prev, [key]: value }))
+   }
+
+   const clearFilters = () => {
+      setSearchTerm('')
+      setFilters(initialFilters)
+   }
+
+   const toggleSortOrder = () => {
+      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+   }
+
+   const hasActiveFilters =
+      searchTerm.length > 0 ||
+      Object.entries(filters).some(([, value]) => value !== 'all')
 
    return {
+      // Datos
+      items: processedData,
+      totalItems: processedData.length,
+
+      // Búsqueda
       searchTerm,
       setSearchTerm,
+
+      // Filtros
+      filters,
+      updateFilter,
+      clearFilters,
+      hasActiveFilters,
+
+      // Ordenado
       sortBy,
       setSortBy,
       sortOrder,
       toggleSortOrder,
-      filterValue,
-      setFilterValue,
-      filteredData,
    }
 }
 
