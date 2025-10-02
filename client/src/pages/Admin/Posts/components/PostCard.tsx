@@ -34,7 +34,7 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
          )}
       >
          <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
-            <div className="w-full md:w-48 h-32 md:h-40 flex-shrink-0 overflow-hidden relative">
+            <div className="w-full h-32 md:h-40 md:w-48 flex-shrink-0 overflow-hidden relative">
                <img
                   alt={post.title}
                   className="w-full h-full object-cover"
