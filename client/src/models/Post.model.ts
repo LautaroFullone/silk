@@ -1,4 +1,4 @@
-import { OutputData } from '@editorjs/editorjs'
+import { Block } from '@blocknote/core'
 
 export interface Post {
    id: string
@@ -7,7 +7,18 @@ export interface Post {
    author: string
    description: string
    image: string
-   content: OutputData | string
+   content: Block[] | string
    isActive: boolean
    category: string
+}
+
+export interface PostFormData {
+   title: string
+   author: string
+   date: string
+   description: string
+   category: string
+   content: Block[]
+   isActive: boolean
+   imageFile?: File
 }
