@@ -14,6 +14,8 @@ interface PostsTableProps {
    canGoNext: boolean
    canGoPrevious: boolean
    onPageChange: (page: number) => void
+   onEdit?: (post: Post) => void
+   onDelete?: (post: Post) => void
    emptyMessage: string
 }
 
@@ -25,12 +27,30 @@ const PostsTable: React.FC<PostsTableProps> = ({
    canGoNext,
    canGoPrevious,
    onPageChange,
+   onEdit,
+   onDelete,
    emptyMessage,
 }) => {
    const navigate = useNavigate()
    const [selectedPost, setSelectedPost] = useState<Post | null>(null)
 
    // const { deletePostMutate, isPending } = useDeletePost() // TODO: Implementar hook
+
+   const handleEdit = (post: Post) => {
+      if (onEdit) {
+         onEdit(post)
+      } else {
+         navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', post.id))
+      }
+   }
+
+   const handleDelete = (post: Post) => {
+      if (onDelete) {
+         onDelete(post)
+      } else {
+         setSelectedPost(post)
+      }
+   }
 
    return (
       <>
@@ -44,10 +64,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
                   <PostCard
                      key={`post-card-${post.id}`}
                      post={post}
-                     onEdit={(post) =>
-                        navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', post.id))
-                     }
-                     onDelete={setSelectedPost}
+                     onEdit={handleEdit}
+                     onDelete={handleDelete}
                   />
                ))
             ) : (
@@ -70,32 +88,34 @@ const PostsTable: React.FC<PostsTableProps> = ({
             />
          )}
 
-         <ConfirmActionModal
-            isOpen={!!selectedPost}
-            isLoading={false} // TODO: usar isPending cuando se implemente el hook
-            title={
-               <>
-                  ¿Estás seguro que querés eliminar el post{' '}
-                  <span className="font-semibold">{selectedPost?.title}</span>?
-               </>
-            }
-            description="Se eliminará permanentemente el post. Esta acción no se puede deshacer."
-            confirmButton={{
-               icon: Trash2,
-               label: 'Eliminar post',
-               loadingLabel: 'Eliminando...',
-               variant: 'destructive',
-               onConfirm: async () => {
-                  // TODO: await deletePostMutate(selectedPost!.id)
-                  setSelectedPost(null)
-               },
-            }}
-            cancelButton={{
-               label: 'No, mantener',
-               variant: 'outline',
-               onCancel: () => setSelectedPost(null),
-            }}
-         />
+         {!onDelete && (
+            <ConfirmActionModal
+               isOpen={!!selectedPost}
+               isLoading={false} // TODO: usar isPending cuando se implemente el hook
+               title={
+                  <>
+                     ¿Estás seguro que querés eliminar el post{' '}
+                     <span className="font-semibold">{selectedPost?.title}</span>?
+                  </>
+               }
+               description="Se eliminará permanentemente el post. Esta acción no se puede deshacer."
+               confirmButton={{
+                  icon: Trash2,
+                  label: 'Eliminar post',
+                  loadingLabel: 'Eliminando...',
+                  variant: 'destructive',
+                  onConfirm: async () => {
+                     // TODO: await deletePostMutate(selectedPost!.id)
+                     setSelectedPost(null)
+                  },
+               }}
+               cancelButton={{
+                  label: 'No, mantener',
+                  variant: 'outline',
+                  onCancel: () => setSelectedPost(null),
+               }}
+            />
+         )}
       </>
    )
 }

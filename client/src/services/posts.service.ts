@@ -31,13 +31,16 @@ export async function getPostById(postId: string) {
 export async function createPost(postData: PostFormData) {
    type Response = Pick<ResponseApi, 'message' | 'post'>
    const form = new FormData()
-   form.append('personName', postData.personName)
-   form.append('personRole', postData.personRole)
+
+   form.append('title', postData.title)
+   form.append('author', postData.author)
+   form.append('date', postData.date)
    form.append('description', postData.description)
-   form.append('isHighlight', String(postData.isHighlight))
+   form.append('category', postData.category)
+   form.append('content', JSON.stringify(postData.content))
    form.append('isActive', String(postData.isActive))
 
-   if (postData.avatarFile) form.append('avatarFile', postData.avatarFile)
+   if (postData.imageFile) form.append('imageFile', postData.imageFile)
 
    const { data } = await api.post<Response>(`/posts`, form)
    return data
@@ -61,24 +64,29 @@ export async function updatePost({
    const form = new FormData()
 
    // Solo agregar campos que realmente tienen un valor para actualizar
-   if (postData.personName !== undefined) {
-      form.append('personName', postData.personName)
+   if (postData.title !== undefined) {
+      form.append('title', postData.title)
    }
-   if (postData.personRole !== undefined) {
-      form.append('personRole', postData.personRole)
+   if (postData.author !== undefined) {
+      form.append('author', postData.author)
+   }
+   if (postData.date !== undefined) {
+      form.append('date', postData.date)
    }
    if (postData.description !== undefined) {
       form.append('description', postData.description)
    }
-   // Para booleanos, verificar que la propiedad exista en el objeto (no solo que no sea undefined)
-   if (postData.isHighlight !== undefined) {
-      form.append('isHighlight', String(postData.isHighlight))
+   if (postData.category !== undefined) {
+      form.append('category', postData.category)
+   }
+   if (postData.content !== undefined) {
+      form.append('content', JSON.stringify(postData.content))
    }
    if (postData.isActive !== undefined) {
       form.append('isActive', String(postData.isActive))
    }
-   if (postData.avatarFile) {
-      form.append('avatarFile', postData.avatarFile)
+   if (postData.imageFile) {
+      form.append('imageFile', postData.imageFile)
    }
 
    const { data } = await api.patch<Response>(`/posts/${postId}`, form)
