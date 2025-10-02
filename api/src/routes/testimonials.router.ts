@@ -198,7 +198,6 @@ testimonialsRouter.patch(
                format: extension,
             })
 
-            console.log('# Current avatarImagePath:', currentTestimonial.avatarImagePath)
             // Eliminar imagen anterior si existe
             if (currentTestimonial.avatarImagePath) {
                const { error: deleteError } = await supabaseClient.storage

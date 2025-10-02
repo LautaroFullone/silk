@@ -16,13 +16,20 @@ export const testimonialCreateSchema = z.object({
       .trim()
       .min(1, 'El testimonio es requerido')
       .max(500, 'El testimonio no puede superar los 500 caracteres'),
-   isHighlight: z.coerce.boolean().default(false),
-   isActive: z.coerce.boolean().default(true),
-   // image: z
-   //    .string()
-   //    .url('Debe ser una URL válida')
-   //    .regex(/\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i, 'La imagen debe ser JPG, PNG, WebP o GIF')
-   //    .optional(),
+   isHighlight: z
+      .union([z.boolean(), z.string()])
+      .transform((val) => {
+         if (typeof val === 'boolean') return val
+         return val === 'true'
+      })
+      .default(false),
+   isActive: z
+      .union([z.boolean(), z.string()])
+      .transform((val) => {
+         if (typeof val === 'boolean') return val
+         return val === 'true'
+      })
+      .default(true),
 })
 
 export const testimonialUpdateSchema = testimonialCreateSchema.partial()

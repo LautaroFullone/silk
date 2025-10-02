@@ -60,7 +60,7 @@ export async function updateTestimonial({
 
    const form = new FormData()
 
-   // Solo agregar campos que estén definidos
+   // Solo agregar campos que realmente tienen un valor para actualizar
    if (testimonialData.personName !== undefined) {
       form.append('personName', testimonialData.personName)
    }
@@ -70,6 +70,7 @@ export async function updateTestimonial({
    if (testimonialData.description !== undefined) {
       form.append('description', testimonialData.description)
    }
+   // Para booleanos, verificar que la propiedad exista en el objeto (no solo que no sea undefined)
    if (testimonialData.isHighlight !== undefined) {
       form.append('isHighlight', String(testimonialData.isHighlight))
    }
@@ -77,10 +78,8 @@ export async function updateTestimonial({
       form.append('isActive', String(testimonialData.isActive))
    }
    if (testimonialData.avatarFile) {
-      form.append('avatarFile', testimonialData.avatarFile) // 👈 nombre que espera multer
+      form.append('avatarFile', testimonialData.avatarFile)
    }
-
-   console.log('# FormData after appending:', Object.fromEntries(form.entries()))
 
    const { data } = await api.patch<Response>(`/testimonials/${testimonialId}`, form)
    return data

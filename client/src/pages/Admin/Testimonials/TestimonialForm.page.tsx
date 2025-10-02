@@ -84,7 +84,6 @@ const TestimonialForm = () => {
          setValue('description', testimonialToEdit.description)
          setValue('isHighlight', testimonialToEdit.isHighlight)
          setValue('isActive', testimonialToEdit.isActive)
-         // setValue('image', testimonial.image || '') // Si manejas imágenes
       }
 
       return () => {
@@ -95,7 +94,7 @@ const TestimonialForm = () => {
    const handleSaveTestimonial = async (formData: TestimonialFormData) => {
       console.log('# formData', formData)
 
-      if (isEdit && testimonialId) {
+      if (isEdit && testimonialId && testimonialToEdit) {
          await updateTestimonialMutate({ testimonialId, testimonialData: formData })
       } else {
          await createTestimonialMutate(formData)
@@ -262,89 +261,6 @@ const TestimonialForm = () => {
                            </Button>
                         )}
                      </div>
-
-                     {/* Imagen del Cliente */}
-                     {/* <div className="space-y-1">
-                        <Label htmlFor="image">Imagen del Cliente</Label>
-                        <div className="flex">
-                           <Input
-                              id="image"
-                              readOnly
-                              value={
-                                 watch('imageFile')
-                                    ? watch('imageFile')?.name || 'Archivo seleccionado'
-                                    : ''
-                              }
-                              placeholder="Seleccioná una imagen..."
-                              className="rounded-r-none border-r-0 bg-gray-50"
-                           />
-
-                           <div className="relative cursor-pointer">
-                              <input
-                                 type="file"
-                                 id="imageFile"
-                                 accept="image/*"
-                                 {...register('imageFile', {
-                                    validate: {
-                                       fileSize: (file: File | undefined) => {
-                                          if (!file) return true // Imagen no es obligatoria
-                                          const maxSize = 5 * 1024 * 1024 // 5MB
-                                          return (
-                                             file.size <= maxSize ||
-                                             'La imagen no puede superar 5MB'
-                                          )
-                                       },
-                                       fileType: (file: File | undefined) => {
-                                          if (!file) return true
-                                          const allowedTypes = [
-                                             'image/jpeg',
-                                             'image/jpg',
-                                             'image/png',
-                                             'image/webp',
-                                          ]
-                                          return (
-                                             allowedTypes.includes(file.type) ||
-                                             'Solo se permiten archivos JPG, PNG o WebP'
-                                          )
-                                       },
-                                    },
-                                 })}
-                                 onChange={(e) => {
-                                    const file = e.target.files?.[0]
-                                    if (file) {
-                                       // Create a temporary URL for preview
-                                       const imageUrl = URL.createObjectURL(file)
-                                       setValue('image', imageUrl)
-                                       setValue('imageFile', file)
-                                    }
-                                 }}
-                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                              />
-
-                              <Button
-                                 type="button"
-                                 variant="outline"
-                                 className="rounded-l-none border-l-0 px-3 h-full bg-transparent cursor-pointer"
-                                 asChild
-                              >
-                                 <label
-                                    htmlFor="imageFile"
-                                    className="flex items-center cursor-pointer"
-                                 >
-                                    <Upload className="w-4 h-4 cursor-pointer" />
-                                 </label>
-                              </Button>
-                           </div>
-                        </div>
-                        <p className="text-xs text-gray-500">
-                           Formatos soportados: JPG, PNG (máx. 5MB)
-                        </p>
-                        {errors.imageFile && (
-                           <p className="text-xs text-red-600 mt-1">
-                              {errors.imageFile.message}
-                           </p>
-                        )}
-                     </div> */}
 
                      <TextAreaForm
                         label="Descripción"

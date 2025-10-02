@@ -215,31 +215,6 @@ const PostForm = () => {
                      </div>
                   </CardContent>
                </Card>
-
-               {/* <Card>
-                  <CardHeader>
-                     <CardTitle>Acciones</CardTitle>
-                  </CardHeader>
-
-                  <CardContent className="space-y-2">
-                     <Button
-                        className="w-full bg-emerald-800 hover:bg-emerald-900"
-                        onClick={() => console.log('Publicar post')}
-                     >
-                        <FileCheck className="w-4 h-4 mr-2" />
-                        Publicar
-                     </Button>
-
-                     <Button
-                        variant="outline"
-                        className="w-full bg-accent"
-                        onClick={() => console.log('Guardar borrador')}
-                     >
-                        <Save className="w-4 h-4 mr-2" />
-                        Guardar borrador
-                     </Button>
-                  </CardContent>
-               </Card> */}
             </div>
 
             <ActionButton

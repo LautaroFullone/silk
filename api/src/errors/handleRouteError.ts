@@ -47,17 +47,13 @@ export function handleRouteError(res: Response, caughtError: unknown) {
       }
       if (caughtError.code === 'P2003') {
          const constraint = (caughtError.meta?.constraint as string) || ''
-         console.log('# constraint', constraint)
          // Para constraints como "Order_clientId_fkey", extraer "Client"
          let model = ''
          const fkMatch = constraint.match(/\w+_(\w+)Id_fkey$/i)
-         console.log('# fkMatch', fkMatch)
-
          if (fkMatch && fkMatch[1]) {
             // Capitalize first letter to match model names in messages
             model = fkMatch[1].charAt(0).toUpperCase() + fkMatch[1].slice(1)
          }
-         console.log('# model:', model)
 
          const foreignKeyMessage =
             FOREIGN_KEY_CONSTRAINT_MESSAGES[model] ||
