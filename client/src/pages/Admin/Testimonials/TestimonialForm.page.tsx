@@ -92,8 +92,6 @@ const TestimonialForm = () => {
    }, [testimonialToEdit, isEdit]) //eslint-disable-line
 
    const handleSaveTestimonial = async (formData: TestimonialFormData) => {
-      console.log('# formData', formData)
-
       if (isEdit && testimonialId && testimonialToEdit) {
          await updateTestimonialMutate({ testimonialId, testimonialData: formData })
       } else {

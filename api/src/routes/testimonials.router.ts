@@ -259,15 +259,12 @@ testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response)
 
       // 2) Eliminar la imagen de Supabase Storage si existe
       if (testimonialToDelete.avatarImagePath) {
-         console.log('Intentando eliminar imagen:', testimonialToDelete.avatarImagePath)
-
          const { error: deleteImageError } = await supabaseClient.storage
             .from(supabaseBucket)
             .remove([testimonialToDelete.avatarImagePath])
 
          if (deleteImageError) {
             console.warn('Error al eliminar imagen de Storage:', deleteImageError)
-            // No detenemos la eliminación del testimonio si falla la imagen
          }
       }
 
