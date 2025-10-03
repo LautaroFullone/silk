@@ -1,7 +1,7 @@
 import { PageTitle, InputForm, TextAreaForm, CheckboxForm, ActionButton } from '@shared'
 import { useCreatePost, useFetchPost, useUpdatePost } from '@hooks/react-query'
+import { Save, Trash2, Upload } from 'lucide-react'
 import { PostFormData } from '@models/Post.model'
-import { Save, Upload, X } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
@@ -12,9 +12,17 @@ import {
    CardDescription,
    CardHeader,
    CardTitle,
+   cn,
    Input,
    Label,
+   Skeleton,
 } from '@shadcn'
+
+// import '@blocknote/core/fonts/inter.css'
+import { BlockNoteView } from '@blocknote/mantine'
+import '@blocknote/mantine/style.css'
+import { useCreateBlockNote } from '@blocknote/react'
+import { es } from '@blocknote/core/locales'
 
 const initialFormData: PostFormData = {
    title: '',
@@ -26,23 +34,15 @@ const initialFormData: PostFormData = {
    isActive: false,
    imageFile: undefined,
 }
-
-//import '@blocknote/core/fonts/inter.css'
-import { BlockNoteView } from '@blocknote/mantine'
-import '@blocknote/mantine/style.css'
-import { useCreateBlockNote } from '@blocknote/react'
-
 const PostForm = () => {
    const { postId } = useParams()
    const isEdit = Boolean(postId)
-   const editor = useCreateBlockNote()
+   const editor = useCreateBlockNote({ dictionary: es })
 
    const { createPostMutate, isPending: isCreatePostPending } = useCreatePost()
    const { updatePostMutate, isPending: isUpdatePostPending } = useUpdatePost()
-
-   // Obtener post en modo edición
    const { post: postToEdit, isLoading: isLoadingPost } = useFetchPost({
-      postId: isEdit ? postId : undefined,
+      postId,
    })
 
    const {
@@ -70,26 +70,33 @@ const PostForm = () => {
          setValue('category', postToEdit.category)
          setValue('isActive', postToEdit.isActive)
 
-         // Si el contenido es string (HTML), crear un bloque simple
+         // Cargar contenido en el editor BlockNote
          if (typeof postToEdit.content === 'string') {
-            // Crear un bloque simple para contenido texto
+            // Si el contenido es string (HTML), crear un bloque simple
             setValue('content', [])
-         } else if (Array.isArray(postToEdit.content)) {
-            // Ya es un array de blocks de BlockNote
+            // Para contenido HTML, podrías convertirlo a bloques aquí si es necesario
+         } else if (Array.isArray(postToEdit.content) && postToEdit.content.length > 0) {
+            // Ya es un array de blocks de BlockNote, cargar en el editor
             setValue('content', postToEdit.content)
+            editor.replaceBlocks(editor.document, postToEdit.content)
          }
       }
 
       return () => {
          reset(initialFormData)
       }
-   }, [postToEdit, isEdit, setValue, reset])
+   }, [postToEdit, isEdit, setValue, reset, editor])
 
    const handleSavePost = async (formData: PostFormData) => {
+      const completeFormData = {
+         ...formData,
+         content: editor.document,
+      }
+
       if (isEdit && postId && postToEdit) {
-         await updatePostMutate({ postId, postData: formData })
+         await updatePostMutate({ postId, postData: completeFormData })
       } else {
-         await createPostMutate(formData)
+         await createPostMutate(completeFormData)
          reset()
       }
    }
@@ -124,9 +131,7 @@ const PostForm = () => {
             />
          </div>
 
-         {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"> */}
          <div className="grid grid-cols-1 gap-6">
-            {/* Columna Izquierda */}
             <div className="lg:col-span-2">
                <Card>
                   <CardHeader>
@@ -140,8 +145,9 @@ const PostForm = () => {
                            type="text"
                            name="title"
                            label="Título"
-                           placeholder="Título del post"
+                           placeholder="Ej: Tendencias en colores"
                            isLoading={isLoadingPost}
+                           disabled={isMutationPending}
                            register={register('title', {
                               required: 'El título es obligatorio',
                               maxLength: {
@@ -156,8 +162,9 @@ const PostForm = () => {
                            type="text"
                            name="author"
                            label="Autor"
-                           placeholder="Nombre del autor"
+                           placeholder="Ej: Germán Beder"
                            isLoading={isLoadingPost}
+                           disabled={isMutationPending}
                            register={register('author', {
                               required: 'El autor es obligatorio',
                               maxLength: {
@@ -173,12 +180,14 @@ const PostForm = () => {
                            errors={errors}
                         />
                      </div>
+
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <InputForm
                            type="date"
                            name="date"
                            label="Fecha"
                            isLoading={isLoadingPost}
+                           disabled={isMutationPending}
                            register={register('date', {
                               required: 'La fecha es obligatoria',
                            })}
@@ -189,8 +198,9 @@ const PostForm = () => {
                            type="text"
                            name="category"
                            label="Categoría"
-                           placeholder="Categoría del post"
+                           placeholder="Ej: Moda"
                            isLoading={isLoadingPost}
+                           disabled={isMutationPending}
                            register={register('category', {
                               required: 'La categoría es obligatoria',
                               maxLength: {
@@ -203,112 +213,105 @@ const PostForm = () => {
                         />
                      </div>
 
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
-                        <div className="space-y-1">
-                           <Label htmlFor="imageFile">Imagen del Post</Label>
+                     <div className="space-y-1">
+                        <Label htmlFor="imageFile">Imagen del Post</Label>
 
-                           <div className="flex">
-                              <Input
-                                 id="imageFile"
-                                 readOnly
-                                 value={imageFile ? imageFile.name : ''}
-                                 placeholder="Seleccioná una imagen..."
-                                 className="rounded-r-none border-r-0 bg-gray-50"
-                              />
-
-                              <div className="relative cursor-pointer">
-                                 <input
-                                    type="file"
+                        {isLoadingPost ? (
+                           <Skeleton className="w-full h-9" />
+                        ) : (
+                           <>
+                              <div className="flex">
+                                 <Input
+                                    readOnly
                                     id="imageFile"
-                                    accept="image/*"
-                                    disabled={isLoadingPost}
-                                    onChange={(e) => {
-                                       const file = e.target.files?.[0]
-                                       // Validaciones básicas
-                                       if (file) {
-                                          const allowed = [
-                                             'image/jpeg',
-                                             'image/jpg',
-                                             'image/png',
-                                             'image/webp',
-                                          ]
-                                          if (!allowed.includes(file.type)) {
-                                             // opcional: mostrar toast/error
-                                             return
-                                          }
-                                          if (file.size > 3 * 1024 * 1024) {
-                                             // opcional: mostrar toast/error
-                                             return
-                                          }
-                                       }
-                                       setValue('imageFile', file || undefined, {
-                                          shouldDirty: true,
-                                          shouldValidate: true,
-                                       })
-                                    }}
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    disabled={isMutationPending}
+                                    value={imageFile ? imageFile.name : ''}
+                                    placeholder="Seleccioná una imagen..."
+                                    className="rounded-r-none border-r-0 "
                                  />
 
-                                 <Button
-                                    type="button"
-                                    variant="outline"
-                                    disabled={isLoadingPost}
-                                    className="rounded-l-none border-l-0 px-3 h-full bg-transparent cursor-pointer"
-                                    asChild
-                                 >
-                                    <label
-                                       htmlFor="imageFile"
-                                       className="flex items-center cursor-pointer"
+                                 <div className="relative cursor-pointer">
+                                    <input
+                                       type="file"
+                                       id="imageFile"
+                                       accept="image/*"
+                                       disabled={isMutationPending}
+                                       onChange={(e) => {
+                                          const file = e.target.files?.[0]
+                                          // Validaciones básicas
+                                          if (file) {
+                                             const allowed = [
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/webp',
+                                             ]
+                                             if (!allowed.includes(file.type)) {
+                                                // opcional: mostrar toast/error
+                                                return
+                                             }
+                                             if (file.size > 3 * 1024 * 1024) {
+                                                // opcional: mostrar toast/error
+                                                return
+                                             }
+                                          }
+                                          setValue('imageFile', file || undefined, {
+                                             shouldDirty: true,
+                                             shouldValidate: true,
+                                          })
+                                       }}
+                                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    />
+
+                                    <Button
+                                       asChild
+                                       type="button"
+                                       variant="outline"
+                                       disabled={isMutationPending}
+                                       className="rounded-l-none border-l-0 px-3 h-full cursor-pointer shadow-none"
                                     >
-                                       <Upload className="w-4 h-4 cursor-pointer" />
-                                    </label>
-                                 </Button>
+                                       <label
+                                          htmlFor="imageFile"
+                                          className="flex items-center cursor-pointer"
+                                       >
+                                          <Upload className="w-4 h-4 cursor-pointer" />
+                                       </label>
+                                    </Button>
+                                 </div>
+
+                                 {imageFile && (
+                                    <div className="flex items-center">
+                                       <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          className="text-destructive! ml-4"
+                                          onClick={() =>
+                                             setValue('imageFile', undefined, {
+                                                shouldDirty: true,
+                                                shouldValidate: true,
+                                             })
+                                          }
+                                       >
+                                          <Trash2 className="size-4" />
+                                          Quitar imagen
+                                       </Button>
+                                    </div>
+                                 )}
                               </div>
-                           </div>
 
-                           <p className="text-xs text-gray-500">
-                              Formatos: JPG, PNG o WEBP (máx. 3MB)
-                           </p>
-
-                           {imageFile && (
-                              <Button
-                                 type="button"
-                                 variant="ghost"
-                                 size="sm"
-                                 className="px-0 text-red-600"
-                                 onClick={() =>
-                                    setValue('imageFile', undefined, {
-                                       shouldDirty: true,
-                                    })
-                                 }
-                              >
-                                 <X className="w-4 h-4 mr-1" />
-                                 Quitar imagen
-                              </Button>
-                           )}
-                        </div>
-
-                        <CheckboxForm
-                           name="isActive"
-                           label="Mostrar en la web"
-                           description="Habilita que el post aparezca en la landing page."
-                           value={watch('isActive') || false}
-                           isLoading={isLoadingPost}
-                           onChange={(val) =>
-                              setValue('isActive', val, {
-                                 shouldValidate: true,
-                                 shouldDirty: true,
-                              })
-                           }
-                           errors={errors}
-                        />
+                              <p className="text-xs text-gray-500">
+                                 Formatos: JPG, PNG o WEBP (máx. 3MB)
+                              </p>
+                           </>
+                        )}
                      </div>
 
                      <TextAreaForm
                         name="description"
                         label="Descripción"
-                        placeholder="Breve descripción del post"
                         isLoading={isLoadingPost}
+                        disabled={isMutationPending}
+                        placeholder="Ej: Descubrí los colores que potencian tu presencia."
                         register={register('description', {
                            required: 'La descripción es obligatoria',
                            maxLength: {
@@ -319,58 +322,60 @@ const PostForm = () => {
                         })}
                         errors={errors}
                      />
-                     <div className="space-y-2">
+
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <CheckboxForm
+                           name="isActive"
+                           label="Mostrar en la web"
+                           description="Habilita que el post aparezca en la landing page."
+                           value={watch('isActive') || false}
+                           isLoading={isLoadingPost}
+                           disabled={isMutationPending}
+                           onChange={(val) =>
+                              setValue('isActive', val, {
+                                 shouldValidate: true,
+                                 shouldDirty: true,
+                              })
+                           }
+                           errors={errors}
+                        />
+                     </div>
+
+                     <div className="space-y-1">
                         <Label htmlFor="content">Contenido</Label>
 
-                        {/* <BlockNoteEditor
-                           value={watch('content')}
-                           onChange={handleEditorChange}
-                           placeholder="Edita el contenido de tu post..."
-                        /> */}
-                        <BlockNoteView editor={editor} />
+                        {isLoadingPost ? (
+                           <Skeleton className="w-full h-32" />
+                        ) : (
+                           <div
+                              className={cn(
+                                 'border border-gray-200 shadow-xs rounded-md',
+                                 'focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]',
+                                 'transition-all duration-200',
+                                 isMutationPending &&
+                                    'opacity-50 pointer-events-none cursor-not-allowed'
+                              )}
+                           >
+                              <BlockNoteView
+                                 theme="light"
+                                 editor={editor}
+                                 formattingToolbar
+                                 editable={!isMutationPending}
+                                 className="px-2 py-2"
+                                 onChange={() => {
+                                    // Actualizar el formulario cuando cambie el contenido del editor
+                                    setValue('content', editor.document, {
+                                       shouldDirty: true,
+                                       shouldValidate: true,
+                                    })
+                                 }}
+                              />
+                           </div>
+                        )}
                      </div>
                   </CardContent>
                </Card>
             </div>
-
-            {/* Columna Derecha */}
-            {/* <div className="space-y-6">
-               <Card>
-                  <CardHeader>
-                     <CardTitle>Vista Previa</CardTitle>
-                  </CardHeader>
-
-                  <CardContent>
-                     <div className="space-y-2">
-                        <div className="aspect-video bg-gray-200 rounded-md overflow-hidden">
-                           {previewUrl ? (
-                              <img
-                                 src={previewUrl}
-                                 alt="Preview"
-                                 className="w-full h-full object-cover"
-                              />
-                           ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-500">
-                                 Sin imagen
-                              </div>
-                           )}
-                        </div>
-                        <h3 className="text-lg font-serif text-silk-secondary">
-                           {watch('title') || 'Título del post'}
-                        </h3>
-
-                        <p className="text-sm text-gray-600">
-                           Por {watch('author') || 'Autor'} -{' '}
-                           {watch('category') || 'Categoría'}
-                        </p>
-
-                        <p className="text-sm text-gray-600">
-                           {watch('description') || 'Descripción del post...'}
-                        </p>
-                     </div>
-                  </CardContent>
-               </Card>
-            </div> */}
 
             <ActionButton
                size="lg"

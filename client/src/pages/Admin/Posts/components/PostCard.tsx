@@ -38,7 +38,7 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
                <img
                   alt={post.title}
                   className="w-full h-full object-cover"
-                  src={getPublicImageUrl(post.image)}
+                  src={getPublicImageUrl(post.imageFilePath)}
                   onError={(e) => {
                      e.currentTarget.src = '/image-placeholder.svg'
                   }}

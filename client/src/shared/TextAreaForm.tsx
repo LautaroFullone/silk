@@ -8,6 +8,7 @@ interface TextAreaFormProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
    label?: string
    labelClassName?: string
    isLoading?: boolean
+   limit?: number
 
    register?: UseFormRegisterReturn
    errors?: FieldErrors
@@ -24,6 +25,7 @@ const TextAreaForm: React.FC<TextAreaFormProps> = ({
    disabled,
    isLoading = false,
    register,
+   limit,
    errors = {},
    ...props
 }) => {
@@ -45,6 +47,7 @@ const TextAreaForm: React.FC<TextAreaFormProps> = ({
             <>
                <Textarea
                   value={value}
+                  maxLength={limit}
                   id={`textarea-${name}`}
                   placeholder={placeholder}
                   disabled={disabled || isLoading}
@@ -56,6 +59,12 @@ const TextAreaForm: React.FC<TextAreaFormProps> = ({
                   {...register}
                   {...props}
                />
+
+               {limit && (
+                  <div className="mt-1 text-xs text-zinc-500 text-right">
+                     {(value as string).length}/{limit}
+                  </div>
+               )}
 
                {hasError && (
                   <p className="mt-1 text-xs text-red-500 flex items-top gap-1">

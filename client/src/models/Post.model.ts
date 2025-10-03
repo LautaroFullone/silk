@@ -6,7 +6,7 @@ export interface Post {
    date: string
    author: string
    description: string
-   image: string
+   imageFilePath?: string
    content: Block[] | string
    isActive: boolean
    category: string

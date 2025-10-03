@@ -10,6 +10,7 @@ interface CheckboxFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChan
    value: boolean
    description?: string
    isLoading?: boolean
+   disabled?: boolean
 
    onChange: (value: boolean) => void
    errors?: FieldErrors
@@ -22,7 +23,7 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
    onChange,
    description,
    isLoading = false,
-
+   disabled = false,
    errors = {},
    className = '',
 }) => {
@@ -39,6 +40,7 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
                id={`checkbox-${name}`}
                checked={value}
                onCheckedChange={onChange}
+               disabled={disabled}
             />
          )}
 

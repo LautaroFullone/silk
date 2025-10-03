@@ -42,6 +42,8 @@ export async function createPost(postData: PostFormData) {
 
    if (postData.imageFile) form.append('imageFile', postData.imageFile)
 
+   console.log('# Contenido formulario:', form)
+
    const { data } = await api.post<Response>(`/posts`, form)
    return data
 }
