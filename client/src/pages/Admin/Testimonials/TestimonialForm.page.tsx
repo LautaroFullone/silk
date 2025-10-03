@@ -1,5 +1,5 @@
 import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '@shared'
-import { Save, Star, User, Quote, X, Upload } from 'lucide-react'
+import { Save, Star, User, Quote, Upload, Trash2 } from 'lucide-react'
 import { TestimonialFormData } from '@models/Testimonial.model'
 import { getPublicImageUrl } from '@utils/getPublicImage'
 import { useParams } from 'react-router-dom'
@@ -19,6 +19,7 @@ import {
    CardTitle,
    Input,
    Label,
+   Skeleton,
 } from '@shadcn'
 
 const initialFormData: TestimonialFormData = {
@@ -106,7 +107,7 @@ const TestimonialForm = () => {
 
    return (
       <>
-         <div className="flex justify-between gap-2">
+         <div className="flex justify-between items-center gap-2">
             <PageTitle
                title={isEdit ? 'Editar Testimonio' : 'Crear Nuevo Testimonio'}
                hasGoBack
@@ -183,80 +184,93 @@ const TestimonialForm = () => {
                      <div className="space-y-1">
                         <Label htmlFor="avatarFile">Imagen del Cliente</Label>
 
-                        <div className="flex">
-                           <Input
-                              id="avatarFile"
-                              readOnly
-                              value={avatarFile ? avatarFile.name : ''}
-                              placeholder="Seleccioná una imagen..."
-                              className="rounded-r-none border-r-0 bg-gray-50"
-                           />
+                        {isLoadingTestimonial ? (
+                           <Skeleton className="w-full h-9" />
+                        ) : (
+                           <>
+                              <div className="flex">
+                                 <Input
+                                    readOnly
+                                    id="avatarFile"
+                                    disabled={isMutationPending}
+                                    value={avatarFile ? avatarFile.name : ''}
+                                    placeholder="Seleccioná una imagen..."
+                                    className="rounded-r-none border-r-0 "
+                                 />
 
-                           <div className="relative cursor-pointer">
-                              <input
-                                 type="file"
-                                 id="avatarFile"
-                                 accept="image/*"
-                                 onChange={(e) => {
-                                    const file = e.target.files?.[0]
-                                    // Validaciones básicas
-                                    if (file) {
-                                       const allowed = [
-                                          'image/jpeg',
-                                          'image/jpg',
-                                          'image/png',
-                                          'image/webp',
-                                       ]
-                                       if (!allowed.includes(file.type)) {
-                                          // opcional: mostrar toast/error
-                                          return
-                                       }
-                                       if (file.size > 3 * 1024 * 1024) {
-                                          // opcional: mostrar toast/error
-                                          return
-                                       }
-                                    }
-                                    setValue('avatarFile', file || undefined, {
-                                       shouldDirty: true,
-                                       shouldValidate: true,
-                                    })
-                                 }}
-                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                              />
+                                 <div className="relative cursor-pointer">
+                                    <input
+                                       type="file"
+                                       id="imageFile"
+                                       accept="image/*"
+                                       disabled={isMutationPending}
+                                       onChange={(e) => {
+                                          const file = e.target.files?.[0]
+                                          // Validaciones básicas
+                                          if (file) {
+                                             const allowed = [
+                                                'image/jpeg',
+                                                'image/jpg',
+                                                'image/png',
+                                                'image/webp',
+                                             ]
+                                             if (!allowed.includes(file.type)) {
+                                                // opcional: mostrar toast/error
+                                                return
+                                             }
+                                             if (file.size > 3 * 1024 * 1024) {
+                                                // opcional: mostrar toast/error
+                                                return
+                                             }
+                                          }
+                                          setValue('avatarFile', file || undefined, {
+                                             shouldDirty: true,
+                                             shouldValidate: true,
+                                          })
+                                       }}
+                                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    />
 
-                              <Button
-                                 type="button"
-                                 variant="outline"
-                                 className="rounded-l-none border-l-0 px-3 h-full bg-transparent cursor-pointer"
-                                 asChild
-                              >
-                                 <label
-                                    htmlFor="avatarFile"
-                                    className="flex items-center cursor-pointer"
-                                 >
-                                    <Upload className="w-4 h-4 cursor-pointer" />
-                                 </label>
-                              </Button>
-                           </div>
-                        </div>
+                                    <Button
+                                       asChild
+                                       type="button"
+                                       variant="outline"
+                                       disabled={isMutationPending}
+                                       className="rounded-l-none border-l-0 px-3 h-full cursor-pointer shadow-none"
+                                    >
+                                       <label
+                                          htmlFor="imageFile"
+                                          className="flex items-center cursor-pointer"
+                                       >
+                                          <Upload className="w-4 h-4 cursor-pointer" />
+                                       </label>
+                                    </Button>
+                                 </div>
 
-                        <p className="text-xs text-gray-500">
-                           Formatos: JPG, PNG o WEBP (máx. 3MB)
-                        </p>
+                                 {avatarFile && (
+                                    <div className="flex items-center">
+                                       <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          className="text-destructive! ml-4"
+                                          onClick={() =>
+                                             setValue('avatarFile', undefined, {
+                                                shouldDirty: true,
+                                                shouldValidate: true,
+                                             })
+                                          }
+                                       >
+                                          <Trash2 className="size-4" />
+                                          Quitar imagen
+                                       </Button>
+                                    </div>
+                                 )}
+                              </div>
 
-                        {avatarFile && (
-                           <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="px-0 text-red-600"
-                              onClick={() =>
-                                 setValue('avatarFile', undefined, { shouldDirty: true })
-                              }
-                           >
-                              <X className="w-4 h-4 mr-1" />
-                              Quitar imagen
-                           </Button>
+                              <p className="text-xs text-gray-500">
+                                 Formatos: JPG, PNG o WEBP (máx. 3MB)
+                              </p>
+                           </>
                         )}
                      </div>
 
