@@ -78,8 +78,8 @@ const PostsTable: React.FC<PostsTableProps> = ({
             isLoading={isPending}
             title={
                <>
-                  ¿Estás seguro que querés eliminar el post{' '}
-                  <span className="font-semibold">{selectedPost?.title}</span>?
+                  ¿Estás seguro que querés eliminar el post "
+                  <span className="font-bold">{selectedPost?.title}</span>"?
                </>
             }
             description="Se eliminará permanentemente el post. Esta acción no se puede deshacer."

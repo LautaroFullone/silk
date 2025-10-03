@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createPost, getPosts } from '@services/posts.service'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
-import { createPost } from '@services/posts.service'
 import { toast } from 'sonner'
 
 const useCreatePost = () => {
@@ -9,10 +9,20 @@ const useCreatePost = () => {
 
    const { mutateAsync: createPostMutate, isPending } = useMutation({
       mutationFn: createPost,
-      onSuccess: ({ message }) => {
+      onSuccess: ({ message, post }) => {
          toast.success(message)
 
-         queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
+         // Actualizar el caché agregando el nuevo post
+         queryClient.setQueryData(
+            [queriesKeys.FETCH_POSTS],
+            (oldData: Awaited<ReturnType<typeof getPosts>> | undefined) => {
+               if (!oldData) return oldData
+               return {
+                  ...oldData,
+                  posts: [post, ...oldData.posts], // Agregar al inicio de la lista
+               }
+            }
+         )
       },
       onError: (error) => {
          if (error?.message === 'Network Error') return

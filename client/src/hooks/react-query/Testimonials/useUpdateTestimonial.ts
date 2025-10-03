@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateTestimonial } from '@services/testimonials.service'
+import { updateTestimonial, getTestimonials } from '@services/testimonials.service'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
+import { Testimonial } from '@models/Testimonial.model'
 import { toast } from 'sonner'
 
 const useUpdateTestimonial = () => {
@@ -18,13 +19,23 @@ const useUpdateTestimonial = () => {
          } else {
             toast.success(message)
 
-            // Actualizar el cache de la lista de testimonios
-            queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_TESTIMONIALS] })
-            // queryClient.invalidateQueries({
-            //    queryKey: [queriesKeys.FETCH_TESTIMONIAL, testimonial.id],
-            // })
+            // queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_TESTIMONIALS] })
 
-            // Actualizar el cache del testimonio actualizado
+            // Actualizar el caché de la lista de testimonios
+            queryClient.setQueryData(
+               [queriesKeys.FETCH_TESTIMONIALS],
+               (oldData: Awaited<ReturnType<typeof getTestimonials>> | undefined) => {
+                  if (!oldData) return oldData
+                  return {
+                     ...oldData,
+                     testimonials: oldData.testimonials.map((t: Testimonial) =>
+                        t.id === testimonial.id ? testimonial : t
+                     ),
+                  }
+               }
+            )
+
+            // Actualizar el caché del testimonio individual
             queryClient.setQueryData([queriesKeys.FETCH_TESTIMONIAL, testimonial.id], {
                message,
                testimonial,

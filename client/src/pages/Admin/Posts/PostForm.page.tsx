@@ -1,3 +1,14 @@
+import { Save, Trash2, Upload } from 'lucide-react'
+import { PostFormData } from '@models/Post.model'
+import { useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+import {
+   useCreatePost,
+   useFetchPost,
+   useFetchPosts,
+   useUpdatePost,
+} from '@hooks/react-query'
 import {
    PageTitle,
    InputForm,
@@ -6,17 +17,6 @@ import {
    ActionButton,
    CommandForm,
 } from '@shared'
-import {
-   useCreatePost,
-   useFetchPost,
-   useFetchPosts,
-   useUpdatePost,
-} from '@hooks/react-query'
-import { Save, Trash2, Upload } from 'lucide-react'
-import { PostFormData } from '@models/Post.model'
-import { useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
 import {
    Button,
    Card,
@@ -46,6 +46,7 @@ const initialFormData: PostFormData = {
    isActive: false,
    imageFile: undefined,
 }
+
 const PostForm = () => {
    const { postId } = useParams()
    const isEdit = Boolean(postId)
@@ -206,24 +207,6 @@ const PostForm = () => {
                            })}
                            errors={errors}
                         />
-
-                        {/* <InputForm
-                           type="text"
-                           name="category"
-                           label="Categoría"
-                           placeholder="Ej: Moda"
-                           isLoading={isLoadingPost}
-                           disabled={isMutationPending}
-                           register={register('category', {
-                              required: 'La categoría es obligatoria',
-                              maxLength: {
-                                 value: 50,
-                                 message:
-                                    'La categoría no puede superar los 50 caracteres',
-                              },
-                           })}
-                           errors={errors}
-                        /> */}
 
                         <CommandForm
                            id="category"

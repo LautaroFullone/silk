@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
-import { updatePost } from '@services/posts.service'
+import { updatePost, getPosts } from '@services/posts.service'
 import { Post } from '@models/Post.model'
 import { toast } from 'sonner'
 
@@ -16,12 +16,26 @@ const useUpdatePost = () => {
          } else {
             toast.success(message)
 
-            // Actualizar el cache de la lista de posts
-            queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
+            //queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
+            // queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], (old: Post) => ({
+            //    ...old,
+            //    post,
+            // }))
 
-            // se actualiza manualmente para evitar un refetch automatico apenas responde la api y navegamos
-            queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], (old: Post) => ({
-               ...old,
+            // Actualizar el caché de la lista de posts
+            queryClient.setQueryData(
+               [queriesKeys.FETCH_POSTS],
+               (oldData: Awaited<ReturnType<typeof getPosts>> | undefined) => {
+                  if (!oldData) return oldData
+                  return {
+                     ...oldData,
+                     posts: oldData.posts.map((p: Post) => (p.id === post.id ? post : p)),
+                  }
+               }
+            )
+
+            // Actualizar el caché del post individual
+            queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], () => ({
                post,
             }))
          }

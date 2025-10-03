@@ -84,8 +84,7 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
             title={
                <>
                   ¿Estás seguro que querés eliminar el testimonio de{' '}
-                  <span className="font-semibold">{selectedTestimonial?.personName}</span>
-                  ?
+                  <span className="font-bold">{selectedTestimonial?.personName}</span>?
                </>
             }
             description="Se eliminará permanentemente el testimonio. Esta acción no se puede deshacer."
