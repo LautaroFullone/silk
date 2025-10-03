@@ -26,7 +26,7 @@ export const postCreateSchema = z.object({
       .min(1, 'La descripción es obligatoria')
       .max(300, 'La descripción no puede superar los 300 caracteres'),
 
-   category: z
+   categoryName: z
       .string()
       .trim()
       .min(1, 'La categoría es obligatoria')
@@ -43,7 +43,6 @@ export const postCreateSchema = z.object({
       .default(false),
 })
 
-// Schema para actualizar un post (todos los campos opcionales excepto validaciones)
 export const postUpdateSchema = z.object({
    title: z
       .string()
@@ -72,7 +71,7 @@ export const postUpdateSchema = z.object({
       .max(300, 'La descripción no puede superar los 300 caracteres')
       .optional(),
 
-   category: z
+   categoryName: z
       .string()
       .trim()
       .min(1, 'La categoría es obligatoria')
@@ -89,6 +88,3 @@ export const postUpdateSchema = z.object({
       })
       .optional(),
 })
-
-export type PostCreateData = z.infer<typeof postCreateSchema>
-export type PostUpdateData = z.infer<typeof postUpdateSchema>

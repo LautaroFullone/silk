@@ -22,16 +22,26 @@ model Testimonial {
 }
 
 model Post {
-   id          String  @id @default(cuid())
-   title       String
-   author      String
-   date        String
-   description String
-   content     Json
-   category    String
-   isActive    Boolean
-
+   id            String  @id @default(cuid())
+   title         String
+   author        String
+   date          String
+   description   String
+   content       Json
+   isActive      Boolean
    imageFilePath String?
+   categoryId    String
 
    createdAt DateTime @default(now())
+
+   category PostCategory @relation(fields: [categoryId], references: [id])
+
+   @@index([categoryId])
+}
+
+model PostCategory {
+   id   String @id @default(cuid())
+   name String @unique @db.Citext
+
+   posts Post[]
 }

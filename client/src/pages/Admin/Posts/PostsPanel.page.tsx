@@ -1,12 +1,10 @@
-import { ActionButton, PageTitle, ConfirmActionModal } from '@shared'
-import { useFetchPosts, useDeletePost } from '@hooks/react-query'
 import { usePagination, useSearchAndSort } from '@hooks'
-import { Plus, Search, Trash2 } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
+import { useFetchPosts } from '@hooks/react-query'
+import { ActionButton, PageTitle } from '@shared'
 import PostsTable from './components/PostsTable'
 import { useNavigate } from 'react-router-dom'
-import { Post } from '@models/Post.model'
-import { useState } from 'react'
+import { Plus, Search } from 'lucide-react'
 import {
    Button,
    Card,
@@ -25,10 +23,8 @@ import {
 
 const PostsPanel = () => {
    const navigate = useNavigate()
-   const [postToDelete, setPostToDelete] = useState<Post | null>(null)
 
    const { posts, isLoading: isLoadingPosts } = useFetchPosts()
-   const { deletePostMutate, isPending: isDeletePostPending } = useDeletePost()
 
    const {
       items: filteredAndSortedPosts,
@@ -61,21 +57,6 @@ const PostsPanel = () => {
    })
 
    const paginatedPosts = filteredAndSortedPosts.slice(startIndex, endIndex)
-
-   const handleEditPost = (post: Post) => {
-      navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', post.id))
-   }
-
-   const handleDeletePost = (post: Post) => {
-      setPostToDelete(post)
-   }
-
-   const confirmDeletePost = async () => {
-      if (postToDelete) {
-         await deletePostMutate(postToDelete.id)
-         setPostToDelete(null)
-      }
-   }
 
    return (
       <>
@@ -205,8 +186,6 @@ const PostsPanel = () => {
                   canGoNext={canGoNext}
                   canGoPrevious={canGoPrevious}
                   onPageChange={goToPage}
-                  onEdit={handleEditPost}
-                  onDelete={handleDeletePost}
                   emptyMessage={
                      hasActiveFilters
                         ? `No hay posts que coincidan con los filtros, probá limpiarlos o intentá con otros términos de búsqueda`
@@ -215,25 +194,6 @@ const PostsPanel = () => {
                />
             </CardContent>
          </Card>
-
-         <ConfirmActionModal
-            isOpen={!!postToDelete}
-            isLoading={isDeletePostPending}
-            title="Eliminar Post"
-            description={`¿Estás seguro de que querés eliminar el post "${postToDelete?.title}"?`}
-            confirmButton={{
-               icon: Trash2,
-               label: 'Eliminar post',
-               loadingLabel: 'Eliminando...',
-               variant: 'destructive',
-               onConfirm: confirmDeletePost,
-            }}
-            cancelButton={{
-               label: 'No, mantener',
-               variant: 'outline',
-               onCancel: () => setPostToDelete(null),
-            }}
-         />
       </>
    )
 }

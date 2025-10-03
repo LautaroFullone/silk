@@ -14,6 +14,14 @@ export function hasRealChanges<T extends Record<string, any>>(
       if (!Object.prototype.hasOwnProperty.call(next, key)) continue
       if (value === undefined) continue
 
+      // Caso especial para categoryName
+      if (key === 'categoryName' && current.category && 'name' in current.category) {
+         if (current.category.name !== value) {
+            return true
+         }
+         continue
+      }
+
       // comparación directa (cubre strings, números, enums)
       if (current[key as keyof T] !== value) {
          return true

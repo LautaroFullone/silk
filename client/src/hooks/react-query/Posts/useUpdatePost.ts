@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
 import { updatePost } from '@services/posts.service'
+import { Post } from '@models/Post.model'
 import { toast } from 'sonner'
 
 const useUpdatePost = () => {
@@ -18,11 +19,11 @@ const useUpdatePost = () => {
             // Actualizar el cache de la lista de posts
             queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
 
-            // Actualizar el cache del post actualizado
-            queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], {
-               message,
+            // se actualiza manualmente para evitar un refetch automatico apenas responde la api y navegamos
+            queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], (old: Post) => ({
+               ...old,
                post,
-            })
+            }))
          }
       },
       onError: (error) => {

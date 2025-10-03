@@ -1,15 +1,19 @@
 import { Block } from '@blocknote/core'
 
+export interface PostCategory {
+   id: string
+   name: string
+}
 export interface Post {
    id: string
    title: string
-   date: string
    author: string
+   date: string
    description: string
-   imageFilePath?: string
    content: Block[] | string
    isActive: boolean
-   category: string
+   imageFilePath?: string
+   category: PostCategory
 }
 
 export interface PostFormData {
@@ -17,7 +21,7 @@ export interface PostFormData {
    author: string
    date: string
    description: string
-   category: string
+   categoryName: string
    content: Block[]
    isActive: boolean
    imageFile?: File

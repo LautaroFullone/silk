@@ -148,9 +148,9 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
                   </Badge> */}
                   <Badge
                      variant="outline"
-                     className="text-silk-secondary border-gray-200 bg-accent rounded-sm uppercase"
+                     className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
                   >
-                     {post.category}
+                     {post.category.name}
                   </Badge>
                </div>
 

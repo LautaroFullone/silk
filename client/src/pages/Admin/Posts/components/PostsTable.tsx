@@ -2,6 +2,7 @@ import { ConfirmActionModal, EmptyBanner, Pagination } from '@shared'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import { Post } from '@models/Post.model'
+import { useDeletePost } from '@hooks'
 import { Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import PostCard from './PostCard'
@@ -27,30 +28,12 @@ const PostsTable: React.FC<PostsTableProps> = ({
    canGoNext,
    canGoPrevious,
    onPageChange,
-   onEdit,
-   onDelete,
    emptyMessage,
 }) => {
-   const navigate = useNavigate()
    const [selectedPost, setSelectedPost] = useState<Post | null>(null)
 
-   // const { deletePostMutate, isPending } = useDeletePost() // TODO: Implementar hook
-
-   const handleEdit = (post: Post) => {
-      if (onEdit) {
-         onEdit(post)
-      } else {
-         navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', post.id))
-      }
-   }
-
-   const handleDelete = (post: Post) => {
-      if (onDelete) {
-         onDelete(post)
-      } else {
-         setSelectedPost(post)
-      }
-   }
+   const navigate = useNavigate()
+   const { deletePostMutate, isPending } = useDeletePost()
 
    return (
       <>
@@ -64,8 +47,10 @@ const PostsTable: React.FC<PostsTableProps> = ({
                   <PostCard
                      key={`post-card-${post.id}`}
                      post={post}
-                     onEdit={handleEdit}
-                     onDelete={handleDelete}
+                     onEdit={() => {
+                        navigate(routesConfig.ADMIN_POST_EDIT.replace(':postId', post.id))
+                     }}
+                     onDelete={setSelectedPost}
                   />
                ))
             ) : (
@@ -88,34 +73,32 @@ const PostsTable: React.FC<PostsTableProps> = ({
             />
          )}
 
-         {!onDelete && (
-            <ConfirmActionModal
-               isOpen={!!selectedPost}
-               isLoading={false} // TODO: usar isPending cuando se implemente el hook
-               title={
-                  <>
-                     ¿Estás seguro que querés eliminar el post{' '}
-                     <span className="font-semibold">{selectedPost?.title}</span>?
-                  </>
-               }
-               description="Se eliminará permanentemente el post. Esta acción no se puede deshacer."
-               confirmButton={{
-                  icon: Trash2,
-                  label: 'Eliminar post',
-                  loadingLabel: 'Eliminando...',
-                  variant: 'destructive',
-                  onConfirm: async () => {
-                     // TODO: await deletePostMutate(selectedPost!.id)
-                     setSelectedPost(null)
-                  },
-               }}
-               cancelButton={{
-                  label: 'No, mantener',
-                  variant: 'outline',
-                  onCancel: () => setSelectedPost(null),
-               }}
-            />
-         )}
+         <ConfirmActionModal
+            isOpen={!!selectedPost}
+            isLoading={isPending}
+            title={
+               <>
+                  ¿Estás seguro que querés eliminar el post{' '}
+                  <span className="font-semibold">{selectedPost?.title}</span>?
+               </>
+            }
+            description="Se eliminará permanentemente el post. Esta acción no se puede deshacer."
+            confirmButton={{
+               icon: Trash2,
+               label: 'Eliminar post',
+               loadingLabel: 'Eliminando...',
+               variant: 'destructive',
+               onConfirm: async () => {
+                  await deletePostMutate(selectedPost!.id)
+                  setSelectedPost(null)
+               },
+            }}
+            cancelButton={{
+               label: 'No, mantener',
+               variant: 'outline',
+               onCancel: () => setSelectedPost(null),
+            }}
+         />
       </>
    )
 }

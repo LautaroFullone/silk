@@ -22,6 +22,7 @@ const useFetchPosts = () => {
 
    return {
       posts: data?.posts || [],
+      categories: data?.categories || {},
       isLoading,
       isError,
       error,

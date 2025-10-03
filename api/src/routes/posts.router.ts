@@ -1,6 +1,8 @@
 import { postCreateSchema, postUpdateSchema } from '../models/Post.model'
+import { generateCategoriesMap } from '../utils/generateCategoriesMap'
 import { BadRequestError, ConflictError } from '../errors/ApiError'
 import { supabaseBucket, supabaseClient } from '../lib/supabase'
+import { generateFolderName } from '../utils/generateFolderName'
 import { handleRouteError } from '../errors/handleRouteError'
 import { Router, type Request, type Response } from 'express'
 import { hasRealChanges } from '../utils/hasRealChanges'
@@ -17,11 +19,35 @@ postsRouter.get('/', async (req: Request, res: Response) => {
    try {
       const posts = await prismaClient.post.findMany({
          orderBy: { createdAt: 'desc' },
-         omit: { createdAt: true },
+         include: { category: true },
+         omit: { createdAt: true, categoryId: true },
       })
+
+      const categories = generateCategoriesMap(posts)
 
       return res.status(200).send({
          posts,
+         categories,
+      })
+   } catch (error) {
+      return handleRouteError(res, error)
+   }
+})
+
+// GET -> obtener post por id
+postsRouter.get('/:postId', async (req: Request, res: Response) => {
+   await sleep(3000)
+   const { postId } = req.params
+
+   try {
+      const post = await prismaClient.post.findFirstOrThrow({
+         where: { id: postId },
+         include: { category: true },
+         omit: { createdAt: true, categoryId: true },
+      })
+
+      return res.status(200).send({
+         post,
       })
    } catch (error) {
       return handleRouteError(res, error)
@@ -59,8 +85,17 @@ postsRouter.post(
                date: body.date,
                description: body.description,
                content: body.content,
-               category: body.category,
                isActive: body.isActive,
+               category: {
+                  //si la categoria existe, asigna el ID, sino existe la crea
+                  connectOrCreate: {
+                     where: { name: body.categoryName }, // requiere @unique en name
+                     create: { name: body.categoryName },
+                  },
+               },
+            },
+            include: {
+               category: true,
             },
          })
 
@@ -80,7 +115,8 @@ postsRouter.post(
                }
             )
 
-            const path = `posts/${createdPost.title}/banner-image/${timestamp}.${extension}`
+            const safeFolderName = generateFolderName(createdPost.title)
+            const path = `posts/${safeFolderName}/banner-image-${timestamp}.${extension}`
 
             const { error: uploadError } = await supabaseClient.storage
                .from(supabaseBucket)
@@ -108,7 +144,7 @@ postsRouter.post(
          }
 
          return res.status(201).send({
-            message: 'Post creado exitosamente',
+            message: 'Post creado',
             post: {
                ...createdPost,
                imageFilePath,
@@ -119,26 +155,6 @@ postsRouter.post(
       }
    }
 )
-
-// GET -> obtener post por id
-postsRouter.get('/:postId', async (req: Request, res: Response) => {
-   await sleep(3000)
-   const { postId } = req.params
-
-   try {
-      const post = await prismaClient.post.findFirstOrThrow({
-         where: { id: postId },
-         omit: { createdAt: true },
-      })
-
-      return res.status(200).send({
-         message: 'Post obtenido',
-         post,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
-   }
-})
 
 // PATCH -> actualizar post
 postsRouter.patch(
@@ -158,6 +174,7 @@ postsRouter.patch(
          // buscar post actual, sino tira excepcion
          const currentPost = await prismaClient.post.findUniqueOrThrow({
             where: { id: postId },
+            include: { category: true },
          })
 
          // preparar update solo con cambios reales
@@ -187,7 +204,24 @@ postsRouter.patch(
             }
          }
 
+         // Preparar datos de actualización
+         let categoryDeleted = null
+         const updateData: any = { ...body }
+         const oldCategoryId = currentPost.category.id
          let newImageFilePath = currentPost.imageFilePath
+
+         // Si hay cambio de categoría
+         if (body?.categoryName && body.categoryName !== currentPost.category.name) {
+            // Usar connectOrCreate para la nueva categoría
+            updateData.category = {
+               connectOrCreate: {
+                  where: { name: body.categoryName },
+                  create: { name: body.categoryName },
+               },
+            }
+         }
+         // Eliminar categoryName del objeto de actualización para evitar errores
+         delete updateData.categoryName //categoryName no existe en el modelo Post, existe category: {id,name}
 
          // Si hay nueva imagen, procesarla
          if (file) {
@@ -202,7 +236,8 @@ postsRouter.patch(
                }
             )
 
-            const path = `posts/${currentPost.title}/banner-image/${timestamp}.${extension}`
+            const safeFolderName = generateFolderName(currentPost.title)
+            const path = `posts/${safeFolderName}/banner-image-${timestamp}.${extension}`
 
             // Eliminar imagen anterior si existe
             if (currentPost.imageFilePath) {
@@ -232,17 +267,37 @@ postsRouter.patch(
             newImageFilePath = path
          }
 
-         // actualizar post
+         // Agregar imageFilePath a los datos de actualización
+         updateData.imageFilePath = newImageFilePath
+
+         // Actualizar post una sola vez con todos los cambios
          const updatedPost = await prismaClient.post.update({
             where: { id: postId },
-            data: {
-               ...body,
-               imageFilePath: newImageFilePath,
-            },
+            data: updateData,
+            include: { category: true },
          })
 
+         // Solo verificar la categoría antigua si cambió
+         if (body?.categoryName && updatedPost.category.id !== oldCategoryId) {
+            // Verificar si la categoría anterior tiene más posts
+            const oldCategoryHasMorePosts = await prismaClient.post.findFirst({
+               where: {
+                  categoryId: oldCategoryId,
+               },
+            })
+
+            // Eliminar la categoría anterior si no tiene más posts
+            if (!oldCategoryHasMorePosts) {
+               categoryDeleted = await prismaClient.postCategory.delete({
+                  where: { id: oldCategoryId },
+               })
+            }
+         }
+
          return res.status(200).send({
-            message: 'Post actualizado exitosamente',
+            message: categoryDeleted
+               ? 'Post actualizado y categoría anterior eliminada'
+               : 'Post actualizado',
             post: updatedPost,
          })
       } catch (error) {
@@ -257,29 +312,42 @@ postsRouter.delete('/:postId', async (req: Request, res: Response) => {
    const { postId } = req.params
 
    try {
-      // Buscar el post para obtener la ruta de la imagen
-      const postToDelete = await prismaClient.post.findUniqueOrThrow({
+      // Eliminar el post de la base de datos
+      const postDeleted = await prismaClient.post.delete({
          where: { id: postId },
+         include: { category: { select: { id: true } } },
       })
 
+      // Verificar si la categoría tiene más artículos
+      const categoryHasMoreArticles = await prismaClient.post.findFirst({
+         where: {
+            categoryId: postDeleted.category.id,
+            id: { not: postDeleted.id }, // Excluir el que acabamos de eliminar
+         },
+      })
+
+      // Solo eliminar la categoría si no tiene más artículos
+      let categoryDeleted = null
+
+      if (!categoryHasMoreArticles) {
+         categoryDeleted = await prismaClient.postCategory.delete({
+            where: { id: postDeleted.category.id },
+         })
+      }
+
       // Eliminar la imagen de Supabase Storage si existe
-      if (postToDelete.imageFilePath) {
+      if (postDeleted.imageFilePath) {
          const { error: deleteImageError } = await supabaseClient.storage
             .from(supabaseBucket)
-            .remove([postToDelete.imageFilePath])
+            .remove([postDeleted.imageFilePath])
 
          if (deleteImageError) {
             console.warn('Error al eliminar imagen de Storage:', deleteImageError)
          }
       }
 
-      // Eliminar el post de la base de datos
-      const postDeleted = await prismaClient.post.delete({
-         where: { id: postId },
-      })
-
       return res.status(200).send({
-         message: 'Post eliminado exitosamente',
+         message: categoryDeleted ? 'Post y categoría eliminados' : 'Post eliminado',
          post: postDeleted,
       })
    } catch (error) {

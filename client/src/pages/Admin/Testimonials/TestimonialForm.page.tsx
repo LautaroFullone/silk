@@ -294,7 +294,7 @@ const TestimonialForm = () => {
                         <CheckboxForm
                            label="Mostrar en la web"
                            name="isActive"
-                           description="Habilita que el testimonio aparezca en la landing page."
+                           description="Habilita que el testimonio aparezca en la landing."
                            value={watch('isActive') || false}
                            isLoading={isLoadingTestimonial}
                            onChange={(val) =>

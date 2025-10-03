@@ -1,5 +1,17 @@
-import { PageTitle, InputForm, TextAreaForm, CheckboxForm, ActionButton } from '@shared'
-import { useCreatePost, useFetchPost, useUpdatePost } from '@hooks/react-query'
+import {
+   PageTitle,
+   InputForm,
+   TextAreaForm,
+   CheckboxForm,
+   ActionButton,
+   CommandForm,
+} from '@shared'
+import {
+   useCreatePost,
+   useFetchPost,
+   useFetchPosts,
+   useUpdatePost,
+} from '@hooks/react-query'
 import { Save, Trash2, Upload } from 'lucide-react'
 import { PostFormData } from '@models/Post.model'
 import { useParams } from 'react-router-dom'
@@ -30,7 +42,7 @@ const initialFormData: PostFormData = {
    date: new Date().toISOString().split('T')[0], // Fecha actual por defecto
    description: '',
    content: [],
-   category: '',
+   categoryName: '',
    isActive: false,
    imageFile: undefined,
 }
@@ -39,11 +51,12 @@ const PostForm = () => {
    const isEdit = Boolean(postId)
    const editor = useCreateBlockNote({ dictionary: es })
 
-   const { createPostMutate, isPending: isCreatePostPending } = useCreatePost()
-   const { updatePostMutate, isPending: isUpdatePostPending } = useUpdatePost()
    const { post: postToEdit, isLoading: isLoadingPost } = useFetchPost({
       postId,
    })
+   const { categories, isLoading: isCategoriesLoading } = useFetchPosts()
+   const { createPostMutate, isPending: isCreatePostPending } = useCreatePost()
+   const { updatePostMutate, isPending: isUpdatePostPending } = useUpdatePost()
 
    const {
       watch,
@@ -67,7 +80,7 @@ const PostForm = () => {
          setValue('author', postToEdit.author)
          setValue('date', postToEdit.date)
          setValue('description', postToEdit.description)
-         setValue('category', postToEdit.category)
+         setValue('categoryName', postToEdit.category.name)
          setValue('isActive', postToEdit.isActive)
 
          // Cargar contenido en el editor BlockNote
@@ -194,7 +207,7 @@ const PostForm = () => {
                            errors={errors}
                         />
 
-                        <InputForm
+                        {/* <InputForm
                            type="text"
                            name="category"
                            label="Categoría"
@@ -210,6 +223,43 @@ const PostForm = () => {
                               },
                            })}
                            errors={errors}
+                        /> */}
+
+                        <CommandForm
+                           id="category"
+                           name="categoryName"
+                           label="Categoría"
+                           value={watch('categoryName') || ''}
+                           options={categories}
+                           optionsHeader="Categorías existentes"
+                           placeholder="Seleccionar categoría..."
+                           searchPlaceholder="Buscar o crear categoría..."
+                           onSelect={(value) =>
+                              setValue('categoryName', value, {
+                                 shouldValidate: true,
+                                 shouldDirty: true,
+                              })
+                           }
+                           onCreate={(value) =>
+                              setValue('categoryName', value, {
+                                 shouldValidate: true,
+                                 shouldDirty: true,
+                              })
+                           }
+                           register={register('categoryName', {
+                              required: 'La categoría es requerida',
+                              maxLength: {
+                                 value: 50,
+                                 message:
+                                    'La categoría no puede superar los 50 caracteres',
+                              },
+                           })}
+                           errors={errors}
+                           isLoadingInput={isLoadingPost}
+                           isLoadingOptions={isCategoriesLoading}
+                           loadingMessage="Cargando categorías..."
+                           noResultsMessage="No se encontraron categorías."
+                           disabled={isMutationPending}
                         />
                      </div>
 
@@ -327,7 +377,7 @@ const PostForm = () => {
                         <CheckboxForm
                            name="isActive"
                            label="Mostrar en la web"
-                           description="Habilita que el post aparezca en la landing page."
+                           description="Habilita que el post aparezca en la landing."
                            value={watch('isActive') || false}
                            isLoading={isLoadingPost}
                            disabled={isMutationPending}

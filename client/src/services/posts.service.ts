@@ -7,7 +7,7 @@ import { api } from '@lib/axios'
  * @returns Mensaje de éxito y datos de los posts
  */
 export async function getPosts() {
-   type Response = Pick<ResponseApi, 'posts'>
+   type Response = Pick<ResponseApi, 'posts' | 'categories'>
    const { data } = await api.get<Response>(`/posts`)
    return data
 }
@@ -18,7 +18,7 @@ export async function getPosts() {
  * @returns Datos del post
  */
 export async function getPostById(postId: string) {
-   type Response = Pick<ResponseApi, 'message' | 'post'>
+   type Response = Pick<ResponseApi, 'post'>
    const { data } = await api.get<Response>(`/posts/${postId}`)
    return data
 }
@@ -36,13 +36,11 @@ export async function createPost(postData: PostFormData) {
    form.append('author', postData.author)
    form.append('date', postData.date)
    form.append('description', postData.description)
-   form.append('category', postData.category)
+   form.append('categoryName', postData.categoryName)
    form.append('content', JSON.stringify(postData.content))
    form.append('isActive', String(postData.isActive))
 
    if (postData.imageFile) form.append('imageFile', postData.imageFile)
-
-   console.log('# Contenido formulario:', form)
 
    const { data } = await api.post<Response>(`/posts`, form)
    return data
@@ -78,8 +76,8 @@ export async function updatePost({
    if (postData.description !== undefined) {
       form.append('description', postData.description)
    }
-   if (postData.category !== undefined) {
-      form.append('category', postData.category)
+   if (postData.categoryName !== undefined) {
+      form.append('categoryName', postData.categoryName)
    }
    if (postData.content !== undefined) {
       form.append('content', JSON.stringify(postData.content))

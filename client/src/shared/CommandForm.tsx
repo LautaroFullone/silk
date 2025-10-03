@@ -1,4 +1,5 @@
 import { OctagonAlert, ChevronsUpDown, Check, Plus, Loader2 } from 'lucide-react'
+import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form'
 import normalizeString from '@utils/normalizeString'
 import React, { useState } from 'react'
 import {
@@ -23,6 +24,7 @@ interface CommandOption {
 
 interface CommandFormProps {
    id?: string
+   name?: string
    label?: string
    value?: string
    placeholder?: string
@@ -43,10 +45,15 @@ interface CommandFormProps {
    isFilterMode?: boolean
    showAllOption?: boolean
    allOptionLabel?: string
+
+   // Props para react-hook-form
+   register?: UseFormRegisterReturn
+   errors?: FieldErrors
 }
 
 const CommandForm: React.FC<CommandFormProps> = ({
    id,
+   name,
    label,
    value,
    placeholder = 'Seleccionar...',
@@ -67,16 +74,31 @@ const CommandForm: React.FC<CommandFormProps> = ({
    isFilterMode = false,
    showAllOption = false,
    allOptionLabel = 'Todas',
+
+   // Props para react-hook-form
+   register,
+   errors,
 }) => {
    const [isOpen, setIsOpen] = useState(false)
    const [searchTerm, setSearchTerm] = useState('')
+
+   const fieldError =
+      name && errors
+         ? name.split('.').reduce((acc, key) => acc?.[key], errors as any) // eslint-disable-line
+         : null
+   const hasReactHookFormError = !!fieldError
+
+   // Usar error de react-hook-form si está disponible, sino usar hasError prop
+   const showError = hasReactHookFormError || hasError
+   const displayErrorMessages =
+      hasReactHookFormError && fieldError?.message ? [fieldError.message] : errorMessages
 
    // Convertir opciones a formato normalizado si es un objeto
    const normalizedOptions: CommandOption[] = Array.isArray(options)
       ? options
       : Object.entries(options).map(([id, label]) => ({ id, label }))
 
-   // Find the selected option by id (for filter mode) or by label (for regular mode)
+   // Encontrar la opción seleccionada basada en el valor
    const selectedOption = value
       ? normalizedOptions.find((option) =>
            isFilterMode
@@ -144,7 +166,7 @@ const CommandForm: React.FC<CommandFormProps> = ({
                         className={cn(
                            'relative w-full hover:bg-white font-normal border-input',
                            'focus:border-ring focus:ring-ring/50 focus:ring-[3px]',
-                           hasError &&
+                           showError &&
                               'border-red-500 focus:border-0 focus-visible:ring-red-500',
                            buttonClassName
                         )}
@@ -188,13 +210,24 @@ const CommandForm: React.FC<CommandFormProps> = ({
                                     value={allOptionLabel}
                                     onSelect={() => {
                                        onSelect('all')
+
+                                       // Notificar a react-hook-form del cambio
+                                       // if (register?.onChange) {
+                                       //    register.onChange({
+                                       //       target: {
+                                       //          name: name || '',
+                                       //          value: 'all'
+                                       //       }
+                                       //    })
+                                       // }
+
                                        setSearchTerm('')
                                        setIsOpen(false)
                                     }}
                                  >
                                     <Check
                                        className={cn(
-                                          'mr-2 h-4 w-4',
+                                          'text-emerald-800 size-4',
                                           isAllOptionSelected
                                              ? 'opacity-100'
                                              : 'opacity-0'
@@ -211,7 +244,7 @@ const CommandForm: React.FC<CommandFormProps> = ({
                                     value={searchTerm}
                                     onSelect={handleCreateItem}
                                  >
-                                    <Plus className="mr-1 h-4 w-4" />
+                                    <Plus className="size-4" />
                                     Crear "{searchTerm}"
                                  </CommandItem>
                               </CommandGroup>
@@ -227,7 +260,7 @@ const CommandForm: React.FC<CommandFormProps> = ({
                                     >
                                        <Check
                                           className={cn(
-                                             'mr-2 h-4 w-4',
+                                             'text-emerald-800 size-4',
                                              (
                                                 isFilterMode
                                                    ? value === option.id
@@ -255,9 +288,14 @@ const CommandForm: React.FC<CommandFormProps> = ({
                   </PopoverContent>
                </Popover>
 
-               {hasError && errorMessages?.length > 0 && (
+               {/* Input oculto para react-hook-form */}
+               {register && name && (
+                  <input type="hidden" value={value || ''} {...register} />
+               )}
+
+               {showError && displayErrorMessages?.length > 0 && (
                   <p className="mt-1 text-xs text-red-500 flex flex-col gap-1">
-                     {errorMessages.map((message, index) => (
+                     {displayErrorMessages.map((message, index) => (
                         <span className="flex flex-row gap-1" key={`error-${index}`}>
                            <OctagonAlert size={13} className="shrink-0" />
                            {message}
