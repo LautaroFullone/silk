@@ -1,14 +1,17 @@
-import { ArrowUpDown, ChevronDown, ChevronUp } from 'lucide-react'
+import { useFetchRequests, usePagination, useSearchAndSort } from '@hooks'
 import { requestStatusConfig } from '@config/requestStatusConfig'
-import { ServiceRequest } from '@models/Request.model'
 import RequestsTable from './components/RequestsTable'
-import RequestModal from './components/RequestModal'
-import { useSearchAndSort } from '@hooks'
+import { Search } from 'lucide-react'
 import { PageTitle } from '@shared'
-import { useState } from 'react'
 import {
    Button,
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
    Input,
+   Label,
    Select,
    SelectContent,
    SelectItem,
@@ -16,133 +19,40 @@ import {
    SelectValue,
 } from '@shadcn'
 
-const mockRequest: ServiceRequest[] = [
-   {
-      id: 'REQ-001',
-      name: 'María González',
-      email: 'maria.gonzalez@email.com',
-      phone: '+34 612 345 678',
-      age: 32,
-      date: '2025-01-15',
-      services: ['Consultoría de Imagen Ejecutiva', 'Análisis de Color Personal'],
-      budget: '$1.500.000',
-      status: 'PENDING',
-      formData: {
-         occupation: 'Directora de Marketing',
-         location: 'Madrid, España',
-         goals: 'Mejorar mi imagen profesional para presentaciones importantes',
-         experience: 'Primera vez con consultoría de imagen',
-         preferences: 'Estilo clásico y elegante',
-         availability: 'Fines de semana',
-         additionalInfo: 'Tengo una presentación importante en 3 semanas',
-      },
-   },
-   {
-      id: 'REQ-002',
-      name: 'Carlos Rodríguez',
-      email: 'carlos.rodriguez@email.com',
-      phone: '+34 687 654 321',
-      age: 28,
-      date: '2025-01-14',
-      services: ['Transformación Completa'],
-      budget: '$2.000.000',
-      status: 'CONTACTED',
-      formData: {
-         occupation: 'Emprendedor',
-         location: 'Barcelona, España',
-         goals: 'Cambio completo de imagen para nueva etapa profesional',
-         experience: 'He trabajado con estilistas antes',
-         preferences: 'Moderno y sofisticado',
-         availability: 'Entre semana por las tardes',
-         additionalInfo: 'Acabo de fundar mi startup y necesito proyectar confianza',
-      },
-   },
-   {
-      id: 'REQ-003',
-      name: 'Ana Martínez',
-      email: 'ana.martinez@email.com',
-      phone: '+34 654 987 321',
-      age: 45,
-      date: '2025-01-13',
-      services: ['Consultoría Virtual'],
-      budget: '$500.000',
-      status: 'CONTRACTED',
-      formData: {
-         occupation: 'Consultora de Negocios',
-         location: 'Valencia, España',
-         goals: 'Optimizar mi guardarropa actual',
-         experience: 'Segunda consultoría',
-         preferences: 'Práctico y versátil',
-         availability: 'Flexible',
-         additionalInfo: 'Trabajo desde casa pero tengo reuniones frecuentes por video',
-      },
-   },
-   {
-      id: 'REQ-004',
-      name: 'Luis Fernández',
-      email: 'luis.fernandez@email.com',
-      phone: '+34 698 123 456',
-      age: 38,
-      date: '2025-01-12',
-      services: [
-         'Análisis de Color Personal',
-         'Consultoría de Imagen Ejecutiva',
-         'Consultoría de Imagen Ejecutiva',
-      ],
-      budget: '$1.200.000',
-      status: 'PENDING',
-      formData: {
-         occupation: 'Abogado',
-         location: 'Sevilla, España',
-         goals: 'Renovar mi imagen para el bufete',
-         experience: 'Nunca he tenido consultoría profesional',
-         preferences: 'Conservador pero actual',
-         availability: 'Sábados por la mañana',
-         additionalInfo: 'Soy socio del bufete y necesito proyectar autoridad',
-      },
-   },
-   {
-      id: 'REQ-005',
-      name: 'Elena Ruiz',
-      email: 'elena.ruiz@email.com',
-      phone: '+34 611 222 333',
-      age: 29,
-      date: '2025-01-11',
-      services: ['Análisis de Color Personal'],
-      budget: '$750.000',
-      status: 'CANCELLED',
-      formData: {
-         occupation: 'Diseñadora Gráfica',
-         location: 'Bilbao, España',
-         goals: 'Encontrar mi paleta de colores perfecta',
-         experience: 'Primera consultoría',
-         preferences: 'Creativo y único',
-         availability: 'Tardes entre semana',
-         additionalInfo: 'Trabajo en una agencia creativa',
-      },
-   },
-]
-
 const RequestsPanel = () => {
-   const [requests] = useState(mockRequest)
-   const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
+   const { requests, isLoading: isLoadingRequests } = useFetchRequests()
 
    const {
-      items: filteredAndSortedRequests,
+      items: filteredRequests,
       searchTerm,
       setSearchTerm,
-      sortBy,
-      setSortBy,
-      sortOrder,
-      toggleSortOrder,
       filters,
       updateFilter,
-   } = useSearchAndSort<ServiceRequest>({
+      clearFilters,
+      hasActiveFilters,
+   } = useSearchAndSort({
       data: requests,
-      searchFields: ['name', 'email'],
-      sortableFields: ['date', 'name'],
+      searchFields: ['name', 'email', 'budget'],
+      sortableFields: ['name', 'budget'],
       initialFilters: { status: 'all' },
    })
+
+   const {
+      currentPage,
+      totalPages,
+      startIndex,
+      endIndex,
+      itemsPerPage,
+      goToPage,
+      canGoNext,
+      canGoPrevious,
+      setItemsPerPage,
+   } = usePagination({
+      totalItems: filteredRequests.length,
+      itemsPerPage: 10,
+   })
+
+   const paginatedRequests = filteredRequests.slice(startIndex, endIndex)
 
    return (
       <>
@@ -151,51 +61,46 @@ const RequestsPanel = () => {
             description="Visualizá y administrá las respuestas recibidas del formulario de captación."
          />
 
-         <div className="flex flex-col lg:flex-row gap-x-4 gap-y-2">
-            <div className="max-w-2xl w-full">
-               <span className="text-sm text-gray-600">Buscador:</span>
+         <Card>
+            <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                  Listado de Solicitudes
+               </CardTitle>
 
-               <Input
-                  className="w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Filtrar por nombre o email..."
-               />
-            </div>
+               <CardDescription>
+                  Filtrá por Nombre, Email, Servicio y/o estado
+               </CardDescription>
+            </CardHeader>
 
-            <div className="flex items-end justify-between lg:justify-normal ">
-               <div className="flex items-end gap-4">
-                  <div className="flex flex-col">
-                     <span className="text-sm text-gray-600 whitespace-nowrap">
-                        Ordenar por:
-                     </span>
+            <CardContent className="space-y-4">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                     <Label htmlFor="search-filter">Buscar por Nombre o Rol</Label>
 
-                     <Select
-                        value={sortBy}
-                        onValueChange={(value: keyof ServiceRequest) => setSortBy(value)}
-                     >
-                        <SelectTrigger className="sm:w-30">
-                           <SelectValue />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                           <SelectItem value="date">Fecha</SelectItem>
-                           <SelectItem value="name">Nombre</SelectItem>
-                        </SelectContent>
-                     </Select>
+                     <div className="relative mt-1">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                           id="search-filter"
+                           value={searchTerm}
+                           disabled={false}
+                           className="pl-8 bg-white"
+                           placeholder="Ej: Germán Beder"
+                           onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                     </div>
                   </div>
 
-                  <div className="flex flex-col">
-                     <span className="text-sm text-gray-600 whitespace-nowrap">
-                        Estado:
-                     </span>
-
+                  <div>
+                     <Label htmlFor="highlight-filter">Estado</Label>
                      <Select
-                        value={filters.status || 'all'}
-                        onValueChange={(value: string) => updateFilter('status', value)}
+                        value={filters.isHighlight || 'all'}
+                        onValueChange={(value: string) =>
+                           updateFilter('isHighlight', value)
+                        }
+                        disabled={isLoadingRequests}
                      >
-                        <SelectTrigger className="sm:w-30">
-                           <SelectValue />
+                        <SelectTrigger className="mt-1 w-full" id="highlight-filter">
+                           <SelectValue placeholder="Todos" />
                         </SelectTrigger>
 
                         <SelectContent>
@@ -211,32 +116,76 @@ const RequestsPanel = () => {
                      </Select>
                   </div>
 
-                  <Button
-                     variant="outline"
-                     onClick={() => toggleSortOrder()}
-                     className="flex items-center gap-1 bg-white!"
-                  >
-                     <ArrowUpDown className="w-4 h-4" />
-                     {sortOrder === 'asc' ? (
-                        <ChevronUp className="w-3 h-3" />
-                     ) : (
-                        <ChevronDown className="w-4 h-4" />
-                     )}
-                  </Button>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between col-span-full gap-4">
+                     <div className="text-sm text-gray-600">
+                        {paginatedRequests.length === 0
+                           ? 'Mostrando 0 de 0 solicitudes'
+                           : `Mostrando ${startIndex + 1}-${Math.min(
+                                endIndex,
+                                paginatedRequests.length
+                             )} de ${paginatedRequests.length} solicitudes`}
+                     </div>
+
+                     <div className="flex items-center gap-4 justify-between">
+                        <div className="flex items-center gap-2">
+                           <Label
+                              htmlFor="items-per-page"
+                              className="text-sm whitespace-nowrap"
+                           >
+                              Mostrar:
+                           </Label>
+
+                           <Select
+                              value={itemsPerPage.toString()}
+                              disabled={isLoadingRequests}
+                              onValueChange={(v) => setItemsPerPage(Number(v))}
+                           >
+                              <SelectTrigger id="items-per-page">
+                                 <SelectValue />
+                              </SelectTrigger>
+
+                              <SelectContent>
+                                 <SelectItem value="5">5</SelectItem>
+                                 <SelectItem value="10">10</SelectItem>
+                                 <SelectItem value="25">25</SelectItem>
+                                 <SelectItem value="*">Todos</SelectItem>
+                              </SelectContent>
+                           </Select>
+                        </div>
+
+                        <Button
+                           variant="default"
+                           onClick={clearFilters}
+                           disabled={isLoadingRequests || !hasActiveFilters}
+                        >
+                           Limpiar Filtros
+                        </Button>
+                     </div>
+                  </div>
                </div>
-            </div>
-         </div>
 
-         <RequestsTable
-            requests={filteredAndSortedRequests}
-            onSelectRequest={setSelectedRequest}
-         />
+               <RequestsTable
+                  paginatedRequests={paginatedRequests}
+                  isLoading={isLoadingRequests}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  canGoNext={canGoNext}
+                  canGoPrevious={canGoPrevious}
+                  onPageChange={goToPage}
+                  emptyMessage={
+                     hasActiveFilters
+                        ? `No hay solicitudes que coincidan con los filtros, probá limpiarlos o intentá con otros términos de búsqueda`
+                        : 'Hacé clic en "Nueva Solicitud" para crear la primera'
+                  }
+               />
+            </CardContent>
+         </Card>
 
-         <RequestModal
+         {/* <RequestModal
             selectedRequest={selectedRequest}
             onStatusChange={() => {}}
             onClose={() => setSelectedRequest(null)}
-         />
+         /> */}
       </>
    )
 }

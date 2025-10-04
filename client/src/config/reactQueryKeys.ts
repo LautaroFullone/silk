@@ -10,4 +10,7 @@ export const queriesKeys = {
    CREATE_POST: 'create_post',
    UPDATE_POST: 'update_post',
    DELETE_POST: 'delete_post',
+
+   FETCH_REQUESTS: 'requests',
+   DELETE_REQUEST: 'delete_request',
 } as const

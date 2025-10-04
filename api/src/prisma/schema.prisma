@@ -45,3 +45,27 @@ model PostCategory {
 
    posts Post[]
 }
+
+model Request {
+   id          String   @id @default(cuid())
+   name        String
+   age         Int
+   email       String
+   ubication   String
+   phone       String
+   services    String[]
+   budget      String
+   startMoment String
+
+   status RequestStatus @default(PENDING)
+
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+}
+
+enum RequestStatus {
+   PENDING
+   CONTACTED
+   CONTRACTED
+   CANCELLED
+}

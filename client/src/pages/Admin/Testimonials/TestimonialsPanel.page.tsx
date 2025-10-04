@@ -88,6 +88,7 @@ const TestimonialsPanel = () => {
                <CardTitle className="flex items-center gap-2">
                   Listado de Testimonios
                </CardTitle>
+
                <CardDescription>Filtrá por Nombre, Rol y/o estado</CardDescription>
             </CardHeader>
 

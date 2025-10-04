@@ -18,7 +18,7 @@ const useCreateTestimonial = () => {
          // Actualizar el caché agregando el nuevo testimonio
          queryClient.setQueryData(
             [queriesKeys.FETCH_TESTIMONIALS],
-            (oldData: Awaited<ReturnType<typeof getTestimonials>> | undefined) => {
+            (oldData: Awaited<ReturnType<typeof getTestimonials>>) => {
                if (!oldData) return oldData
                return {
                   ...oldData,

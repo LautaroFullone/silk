@@ -18,7 +18,7 @@ function useDeleteTestimonial() {
          // Actualizar el caché removiendo el testimonio eliminado
          queryClient.setQueryData(
             [queriesKeys.FETCH_TESTIMONIALS],
-            (oldData: Awaited<ReturnType<typeof getTestimonials>> | undefined) => {
+            (oldData: Awaited<ReturnType<typeof getTestimonials>>) => {
                if (!oldData) return oldData
                return {
                   ...oldData,

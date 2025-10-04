@@ -1,26 +1,22 @@
-import RequestStatusBadge from '@shared/RequestStatusBadge'
-import RequestStatusHandler from './RequestStatusHandler'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@shadcn'
 import { ServiceRequest } from '@models/Request.model'
-import {
-   Calendar,
-   CircleDashed,
-   DollarSign,
-   FileText,
-   Mail,
-   Sparkles,
-   User,
-} from 'lucide-react'
-import {
-   Badge,
-   Card,
-   CardContent,
-   Table,
-   TableBody,
-   TableCell,
-   TableHead,
-   TableHeader,
-   TableRow,
-} from '@shadcn'
+import { useNavigate } from 'react-router-dom'
+import { useDeleteRequests } from '@hooks'
+import { useState } from 'react'
+import RequestRow from './RequestRow'
+import { EmptyBanner, Pagination } from '@shared'
+import { Calendar, CircleDashed, DollarSign, Mail, Sparkles, User } from 'lucide-react'
+
+interface RequestTableProps {
+   paginatedRequests: ServiceRequest[]
+   isLoading: boolean
+   currentPage: number
+   totalPages: number
+   canGoNext: boolean
+   canGoPrevious: boolean
+   onPageChange: (page: number) => void
+   emptyMessage: string
+}
 
 const tableHeaders = [
    { name: 'Nombre', icon: User },
@@ -32,16 +28,37 @@ const tableHeaders = [
    { name: '', icon: null },
 ]
 
-interface RequestTableProps {
-   requests: ServiceRequest[]
-   onSelectRequest: (request: ServiceRequest) => void
-}
+const RequestsTable: React.FC<RequestTableProps> = ({
+   paginatedRequests,
+   isLoading,
+   currentPage,
+   totalPages,
+   canGoNext,
+   canGoPrevious,
+   onPageChange,
+   emptyMessage,
+}) => {
+   const navigate = useNavigate()
+   const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
 
-const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest }) => {
+   const { deleteRequestMutate, isPending } = useDeleteRequests()
+
    return (
-      <Card className="p-0 overflow-hidden">
-         <CardContent className="p-0">
-            <Table>
+      <>
+         <div className="overflow-x-auto">
+            <Table className="min-w-full">
+               {/* <TableHeader>
+                  <TableRow>
+                     <TableHead>Nombre</TableHead>
+                     <TableHead>Email</TableHead>
+                     <TableHead>Fecha</TableHead>
+                     <TableHead>Servicios</TableHead>
+                     <TableHead className="text-right">Presupuesto</TableHead>
+                     <TableHead>Estado</TableHead>
+                     <TableHead></TableHead>
+                  </TableRow>
+               </TableHeader> */}
+
                <TableHeader className="bg-gray-100">
                   <TableRow>
                      {tableHeaders.map((head, index) => (
@@ -62,85 +79,43 @@ const RequestsTable: React.FC<RequestTableProps> = ({ requests, onSelectRequest 
                </TableHeader>
 
                <TableBody>
-                  {requests.map((request) => (
-                     <TableRow key={request.id} className="hover:bg-gray-50">
-                        <TableCell>
-                           <div className="font-medium text-silk-secondary">
-                              {request.name}
-                           </div>
-
-                           <div className="text-sm text-muted-foreground">
-                              {request.id}
-                           </div>
-                        </TableCell>
-
-                        <TableCell>
-                           <div className="text-sm text-silk-secondary">
-                              {request.email}
-                           </div>
-                           <div className="text-xs text-muted-foreground">
-                              {request.phone}
-                           </div>
-                        </TableCell>
-
-                        <TableCell>
-                           <div className="text-sm text-silk-secondary">
-                              {new Date(request.date).toLocaleDateString('es-ES')}
-                           </div>
-                        </TableCell>
-
-                        <TableCell>
-                           <div className="flex flex-col space-y-1">
-                              {request.services.slice(0, 3).map((service, index) => (
-                                 <Badge
-                                    key={index}
-                                    variant="outline"
-                                    className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
-                                 >
-                                    {service}
-                                 </Badge>
-                              ))}
-
-                              {request.services.length > 3 && (
-                                 <Badge
-                                    variant="outline"
-                                    className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
-                                 >
-                                    +{request.services.length - 2} más
-                                 </Badge>
-                              )}
-                           </div>
-                        </TableCell>
-
-                        <TableCell>{request.budget}</TableCell>
-
-                        <TableCell>
-                           <RequestStatusBadge status={request.status} />
-                        </TableCell>
-
-                        <TableCell>
-                           <div className="flex gap-1">
-                              <div className="flex space-x-3">
-                                 <FileText
-                                    onClick={() => onSelectRequest(request)}
-                                    className="w-5 h-5 cursor-pointer transition-all duration-200 hover:scale-105"
-                                 />
-
-                                 <RequestStatusHandler
-                                    request={request}
-                                    onStatusChange={(status) => {
-                                       console.log('# onStatusChange: ', status)
-                                    }}
-                                 />
-                              </div>
-                           </div>
+                  {isLoading ? (
+                     Array.from({ length: 5 }).map((_, i) => (
+                        <RequestRow.Skeleton key={`skeleton-article-${i}`} />
+                     ))
+                  ) : paginatedRequests.length ? (
+                     paginatedRequests.map((request) => (
+                        <RequestRow
+                           key={request.id}
+                           request={request}
+                           onEdit={() => console.log('Edit request', request)}
+                           onDelete={() => console.log('Delete request', request)}
+                        />
+                     ))
+                  ) : (
+                     <TableRow className="hover:bg-background ">
+                        <TableCell colSpan={6} className="px-0">
+                           <EmptyBanner
+                              title="No hay artículos registrados"
+                              description={emptyMessage}
+                           />
                         </TableCell>
                      </TableRow>
-                  ))}
+                  )}
                </TableBody>
             </Table>
-         </CardContent>
-      </Card>
+         </div>
+
+         {totalPages > 1 && !isLoading && (
+            <Pagination
+               currentPage={currentPage}
+               totalPages={totalPages}
+               onPageChange={onPageChange}
+               canGoNext={canGoNext}
+               canGoPrevious={canGoPrevious}
+            />
+         )}
+      </>
    )
 }
 export default RequestsTable
