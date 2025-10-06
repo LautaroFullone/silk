@@ -1,6 +1,6 @@
 import { RequestStatus, ServiceRequest } from '@models/Request.model'
 import { requestStatusConfig } from '@config/requestStatusConfig'
-import { MoreVertical, Trash2 } from 'lucide-react'
+import { MoreVertical } from 'lucide-react'
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -43,13 +43,13 @@ const RequestStatusHandler: React.FC<RequestStatusHandlerProps> = ({
                )
             )}
 
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
                onClick={() => {}}
                className="text-destructive! hover:bg-red-50!"
             >
                <Trash2 className="w-4 h-4 mr-3 text-destructive" />
                Eliminar solicitud
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
          </DropdownMenuContent>
       </DropdownMenu>
    )

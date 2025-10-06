@@ -175,17 +175,11 @@ const RequestsPanel = () => {
                   emptyMessage={
                      hasActiveFilters
                         ? `No hay solicitudes que coincidan con los filtros, probá limpiarlos o intentá con otros términos de búsqueda`
-                        : 'Hacé clic en "Nueva Solicitud" para crear la primera'
+                        : 'Esperá la primera solicitud a través del formulario de captación'
                   }
                />
             </CardContent>
          </Card>
-
-         {/* <RequestModal
-            selectedRequest={selectedRequest}
-            onStatusChange={() => {}}
-            onClose={() => setSelectedRequest(null)}
-         /> */}
       </>
    )
 }

@@ -1,35 +1,31 @@
 import { Badge, Button, Skeleton, TableCell, TableRow } from '@shadcn'
-import { ServiceRequest } from '@models/Request.model'
-import { Eye, FileText, SquarePen, Trash2 } from 'lucide-react'
-import { RequestStatusBadge } from '@shared'
 import RequestStatusHandler from './RequestStatusHandler'
+import { ServiceRequest } from '@models/Request.model'
+import { Eye, SquarePen, Trash2 } from 'lucide-react'
+import { RequestStatusBadge } from '@shared'
 
 interface RequestRowProps {
    request: ServiceRequest
-   onEdit: (request: Request) => void
-   onDelete: (request: Request) => void
+   onEdit: (status: ServiceRequest['status']) => void
+   onDelete: (request: ServiceRequest) => void
 }
 
 const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
    <TableRow>
-      {/* <TableCell className="font-medium">{request.name}</TableCell> */}
-      <TableCell>
-         <div className="font-medium text-silk-secondary">{request.name}</div>
-
-         <div className="text-sm text-muted-foreground">{request.id}</div>
+      <TableCell className="text-sm">
+         {new Date(request.createdAt).toLocaleDateString('es-ES')}
       </TableCell>
 
-      {/* <TableCell>{request.email}</TableCell> */}
-      <TableCell>
-         <div className="text-sm text-silk-secondary">{request.email}</div>
-         <div className="text-xs text-muted-foreground">{request.phone}</div>
-      </TableCell>
-
-      {/* <TableCell>{request.createdAt}</TableCell> */}
-      <TableCell>
-         <div className="text-sm text-silk-secondary">
-            {new Date(request.createdAt).toLocaleDateString('es-ES')}
+      <TableCell className="font-medium">
+         <div className="text-sm">{request.name}</div>
+         <div className="text-xs text-muted-foreground">
+            {request.age} {request.age === 1 ? 'año' : 'años'}
          </div>
+      </TableCell>
+
+      <TableCell>
+         <div className="text-sm">{request.email}</div>
+         <div className="text-xs text-muted-foreground">{request.phone}</div>
       </TableCell>
 
       <TableCell>
@@ -38,24 +34,21 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
                <Badge
                   key={index}
                   variant="outline"
-                  className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
+                  className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm "
                >
                   {service}
                </Badge>
             ))}
 
             {request.services.length > 3 && (
-               <Badge
-                  variant="outline"
-                  className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
-               >
+               <Badge variant="outline" className=" border-gray-200 bg-accent rounded-sm">
                   +{request.services.length - 2} más
                </Badge>
             )}
          </div>
       </TableCell>
 
-      <TableCell>{request.budget}</TableCell>
+      <TableCell className="font-medium">{request.budget}</TableCell>
 
       <TableCell>
          <RequestStatusBadge status={request.status} />
@@ -75,12 +68,15 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
                   Editar
                </Button>
             }
-            onStatusChange={(status) => {
-               console.log('# onStatusChange: ', status)
-            }}
+            onStatusChange={onEdit}
          />
 
-         <Button variant="outline" size="sm" className="text-destructive!">
+         <Button
+            variant="outline"
+            size="sm"
+            className="text-destructive!"
+            onClick={() => onDelete(request)}
+         >
             <Trash2 className="size-4" />
             Eliminar
          </Button>
@@ -88,6 +84,7 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
    </TableRow>
 )
 
+//TODO: mejorar skeleton
 RequestRow.Skeleton = function RequestRowSkeleton() {
    return (
       <TableRow>

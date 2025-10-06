@@ -79,6 +79,18 @@
    /* Colores SILK */
    /* Antes: --color-primary  */
    --color-silk-primary: #244d3c;
+   --color-silk-primary-50: #f0f9f4;
+   --color-silk-primary-100: #dcf2e4;
+   --color-silk-primary-200: #bce5cc;
+   --color-silk-primary-300: #8dd3a8;
+   --color-silk-primary-400: #57bb7d;
+   --color-silk-primary-500: #32a05a;
+   --color-silk-primary-600: #244d3c;
+   --color-silk-primary-700: #1e6642;
+   --color-silk-primary-800: #1c5238;
+   --color-silk-primary-900: #18432f;
+   --color-silk-primary-950: #0a2418;
+
    /* Antes: --color-secondary  */
    --color-silk-secondary: #161616;
    /* Antes: --color-tertiary  */

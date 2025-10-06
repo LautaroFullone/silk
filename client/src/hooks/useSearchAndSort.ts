@@ -106,7 +106,7 @@ const useSearchAndSort = <T>({
    }
 
    const hasActiveFilters =
-      searchTerm.length > 0 ||
+      debouncedSearch.length > 0 ||
       Object.entries(filters).some(([, value]) => value !== 'all')
 
    return {

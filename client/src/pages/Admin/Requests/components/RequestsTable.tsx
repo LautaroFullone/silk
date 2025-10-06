@@ -1,11 +1,19 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@shadcn'
+import { ConfirmActionModal, EmptyBanner, Pagination } from '@shared'
 import { ServiceRequest } from '@models/Request.model'
-import { useNavigate } from 'react-router-dom'
 import { useDeleteRequests } from '@hooks'
-import { useState } from 'react'
+import RequestModal from './RequestModal'
 import RequestRow from './RequestRow'
-import { EmptyBanner, Pagination } from '@shared'
-import { Calendar, CircleDashed, DollarSign, Mail, Sparkles, User } from 'lucide-react'
+import { useState } from 'react'
+import {
+   Calendar,
+   CircleDashed,
+   DollarSign,
+   Mail,
+   Sparkles,
+   Trash2,
+   User,
+} from 'lucide-react'
 
 interface RequestTableProps {
    paginatedRequests: ServiceRequest[]
@@ -18,16 +26,6 @@ interface RequestTableProps {
    emptyMessage: string
 }
 
-const tableHeaders = [
-   { name: 'Nombre', icon: User },
-   { name: 'Email', icon: Mail },
-   { name: 'Fecha', icon: Calendar },
-   { name: 'Servicios', icon: Sparkles },
-   { name: 'Presupuesto', icon: DollarSign },
-   { name: 'Estado', icon: CircleDashed },
-   { name: '', icon: null },
-]
-
 const RequestsTable: React.FC<RequestTableProps> = ({
    paginatedRequests,
    isLoading,
@@ -38,8 +36,8 @@ const RequestsTable: React.FC<RequestTableProps> = ({
    onPageChange,
    emptyMessage,
 }) => {
-   const navigate = useNavigate()
-   const [selectedRequest, setSelectedRequest] = useState<ServiceRequest | null>(null)
+   const [requestToEdit, setRequestToEdit] = useState<ServiceRequest | null>(null)
+   const [requestToDelete, setRequestToDelete] = useState<ServiceRequest | null>(null)
 
    const { deleteRequestMutate, isPending } = useDeleteRequests()
 
@@ -47,56 +45,72 @@ const RequestsTable: React.FC<RequestTableProps> = ({
       <>
          <div className="overflow-x-auto">
             <Table className="min-w-full">
-               {/* <TableHeader>
+               <TableHeader>
                   <TableRow>
-                     <TableHead>Nombre</TableHead>
-                     <TableHead>Email</TableHead>
-                     <TableHead>Fecha</TableHead>
-                     <TableHead>Servicios</TableHead>
-                     <TableHead className="text-right">Presupuesto</TableHead>
-                     <TableHead>Estado</TableHead>
-                     <TableHead></TableHead>
-                  </TableRow>
-               </TableHeader> */}
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <Calendar className="w-4 h-4 text-emerald-800" />
+                           Fecha
+                        </div>
+                     </TableHead>
 
-               <TableHeader className="bg-gray-100">
-                  <TableRow>
-                     {tableHeaders.map((head, index) => (
-                        <TableHead
-                           key={`table-head-{${index}}`}
-                           className="font-semibold"
-                        >
-                           <div className="flex items-center gap-2">
-                              {head.icon && (
-                                 <head.icon className="w-4 h-4 text-emerald-800" />
-                              )}
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <User className="w-4 h-4 text-emerald-800" />
+                           Persona
+                        </div>
+                     </TableHead>
 
-                              {head.name}
-                           </div>
-                        </TableHead>
-                     ))}
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <Mail className="w-4 h-4 text-emerald-800" />
+                           Email
+                        </div>
+                     </TableHead>
+
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <Sparkles className="w-4 h-4 text-emerald-800" />
+                           Servicios
+                        </div>
+                     </TableHead>
+
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <DollarSign className="w-4 h-4 text-emerald-800" />
+                           Presupuesto
+                        </div>
+                     </TableHead>
+
+                     <TableHead>
+                        <div className="flex items-center gap-2">
+                           <CircleDashed className="w-4 h-4 text-emerald-800" />
+                           Estado
+                        </div>
+                     </TableHead>
+                     <TableHead className=""></TableHead>
                   </TableRow>
                </TableHeader>
 
                <TableBody>
                   {isLoading ? (
                      Array.from({ length: 5 }).map((_, i) => (
-                        <RequestRow.Skeleton key={`skeleton-article-${i}`} />
+                        <RequestRow.Skeleton key={`skeleton-request-${i}`} />
                      ))
                   ) : paginatedRequests.length ? (
                      paginatedRequests.map((request) => (
                         <RequestRow
                            key={request.id}
                            request={request}
-                           onEdit={() => console.log('Edit request', request)}
-                           onDelete={() => console.log('Delete request', request)}
+                           onEdit={(status) => console.log('Edit request', status)}
+                           onDelete={setRequestToDelete}
                         />
                      ))
                   ) : (
                      <TableRow className="hover:bg-background ">
-                        <TableCell colSpan={6} className="px-0">
+                        <TableCell colSpan={7} className="px-0">
                            <EmptyBanner
-                              title="No hay artículos registrados"
+                              title="No hay solicitudes registradas"
                               description={emptyMessage}
                            />
                         </TableCell>
@@ -115,6 +129,40 @@ const RequestsTable: React.FC<RequestTableProps> = ({
                canGoPrevious={canGoPrevious}
             />
          )}
+
+         <RequestModal
+            isOpen={!!requestToEdit}
+            request={requestToEdit}
+            onEdit={(status) => console.log('Edit request', status)}
+            onClose={() => setRequestToEdit(null)}
+         />
+
+         <ConfirmActionModal
+            isOpen={!!requestToDelete}
+            isLoading={isPending}
+            title={
+               <>
+                  ¿Estás seguro que querés eliminar la solicitud de
+                  <span className="font-bold">{requestToDelete?.name}</span>?
+               </>
+            }
+            description="Se eliminará permanentemente la solicitud. Esta acción no se puede deshacer."
+            confirmButton={{
+               icon: Trash2,
+               label: 'Eliminar solicitud',
+               loadingLabel: 'Eliminando...',
+               variant: 'destructive',
+               onConfirm: async () => {
+                  await deleteRequestMutate(requestToDelete!.id)
+                  setRequestToDelete(null)
+               },
+            }}
+            cancelButton={{
+               label: 'No, mantener',
+               variant: 'outline',
+               onCancel: () => setRequestToDelete(null),
+            }}
+         />
       </>
    )
 }

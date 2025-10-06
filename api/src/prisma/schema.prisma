@@ -46,16 +46,17 @@ model PostCategory {
    posts Post[]
 }
 
-model Request {
+model ServiceRequest {
    id          String   @id @default(cuid())
    name        String
-   age         Int
    email       String
+   age         Int
    ubication   String
    phone       String
    services    String[]
    budget      String
    startMoment String
+   //TODO: timeline
 
    status RequestStatus @default(PENDING)
 

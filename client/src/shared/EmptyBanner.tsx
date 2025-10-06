@@ -23,9 +23,9 @@ const EmptyBanner: React.FC<EmptyBannerProps> = ({
                   )}
                </div>
 
-               <p className="text-gray-500 font-medium mt-1">{title}</p>
+               <p className="text-gray-500 font-medium text-lg mt-1">{title}</p>
 
-               <p className="text-sm text-gray-400 text-wrap">{description}</p>
+               <p className="text-sm text-muted-foreground text-wrap">{description}</p>
             </div>
          </div>
       </div>

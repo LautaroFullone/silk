@@ -122,7 +122,6 @@ testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) =>
       })
 
       return res.status(200).send({
-         message: 'Testimonio obtenido',
          testimonial,
       })
    } catch (error) {
@@ -252,26 +251,19 @@ testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response)
    const { testimonialId } = req.params
 
    try {
-      // 1) Buscar el testimonio para obtener la ruta de la imagen
-      const testimonialToDelete = await prismaClient.testimonial.findUniqueOrThrow({
+      const testimonialDeleted = await prismaClient.testimonial.delete({
          where: { id: testimonialId },
       })
 
-      // 2) Eliminar la imagen de Supabase Storage si existe
-      if (testimonialToDelete.avatarImagePath) {
+      if (testimonialDeleted.avatarImagePath) {
          const { error: deleteImageError } = await supabaseClient.storage
             .from(supabaseBucket)
-            .remove([testimonialToDelete.avatarImagePath])
+            .remove([testimonialDeleted.avatarImagePath])
 
          if (deleteImageError) {
             console.warn('Error al eliminar imagen de Storage:', deleteImageError)
          }
       }
-
-      // 3) Eliminar el testimonio de la base de datos
-      const testimonialDeleted = await prismaClient.testimonial.delete({
-         where: { id: testimonialId },
-      })
 
       return res.status(200).send({
          message: 'Testimonio eliminado',

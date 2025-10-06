@@ -7,7 +7,7 @@ import { api } from '@lib/axios'
  */
 export async function getRequests() {
    type Response = Pick<ResponseApi, 'requests'>
-   const { data } = await api.get<Response>(`/requests`)
+   const { data } = await api.get<Response>(`/service-requests`)
    return data
 }
 
@@ -18,6 +18,6 @@ export async function getRequests() {
  */
 export async function deleteRequest(requestId: string) {
    type Response = Pick<ResponseApi, 'message' | 'request'>
-   const { data } = await api.delete<Response>(`/requests/${requestId}`)
+   const { data } = await api.delete<Response>(`/service-requests/${requestId}`)
    return data
 }

@@ -25,23 +25,29 @@ import {
 } from 'lucide-react'
 
 interface RequestModalProps {
-   selectedRequest: ServiceRequest | null
+   isOpen: boolean
+   request: ServiceRequest | null
    onClose: () => void
-   onStatusChange: (id: string, status: ServiceRequest['status']) => void
+   onEdit: (status: ServiceRequest['status']) => void
 }
 
-const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose }) => {
-   if (!selectedRequest) return
+const RequestModal: React.FC<RequestModalProps> = ({
+   isOpen,
+   request,
+   onClose,
+   onEdit,
+}) => {
+   if (!request) return
 
    return (
-      <Dialog open={!!selectedRequest} onOpenChange={(open) => open || onClose()}>
+      <Dialog open={isOpen} onOpenChange={(open) => open || onClose()}>
          <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden bg-gray-50">
             <DialogHeader className="gap-0">
                <DialogTitle className="text-2xl font-serif">
                   Detalles de la Solicitud
                </DialogTitle>
 
-               <DialogDescription>{`Solicitud ${selectedRequest.id}`}</DialogDescription>
+               <DialogDescription>{`Solicitud ${request.id}`}</DialogDescription>
             </DialogHeader>
 
             <ScrollArea className="h-[600px]">
@@ -51,12 +57,12 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                      <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-4">
                            <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center font-serif text-3xl shadow-md">
-                              {selectedRequest.name.charAt(0)}
+                              {request.name.charAt(0)}
                            </div>
 
                            <div>
                               <h3 className="text-2xl font-serif font-bold text-silk-secondary">
-                                 {selectedRequest.name}
+                                 {request.name}
                               </h3>
                               <p className="text-sm text-muted-foreground font-medium">
                                  Hace 4 dias
@@ -65,13 +71,11 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                         </div>
 
                         <div className="flex items-center gap-3">
-                           <RequestStatusBadge status={selectedRequest.status} />
+                           <RequestStatusBadge status={request.status} />
 
                            <RequestStatusHandler
-                              request={selectedRequest}
-                              onStatusChange={(status) => {
-                                 console.log('# onStatusChange: ', status)
-                              }}
+                              request={request}
+                              onStatusChange={onEdit}
                            />
                         </div>
                      </div>
@@ -84,7 +88,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                            <div>
                               <p className="text-xs text-gray-500 font-medium">Email</p>
                               <p className="text-sm font-semibold text-silk-secondary truncate">
-                                 {selectedRequest.email}
+                                 {request.email}
                               </p>
                            </div>
                         </div>
@@ -97,7 +101,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                                  Teléfono
                               </p>
                               <p className="text-sm font-semibold text-silk-secondary">
-                                 {selectedRequest.phone}
+                                 {request.phone}
                               </p>
                            </div>
                         </div>
@@ -120,9 +124,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                            <div>
                               <p className="text-xs text-gray-500 font-medium">Fecha</p>
                               <p className="text-sm font-semibold text-silk-secondary">
-                                 {new Date(selectedRequest.date).toLocaleDateString(
-                                    'es-ES'
-                                 )}
+                                 {new Date(request.createdAt).toLocaleDateString('es-ES')}
                               </p>
                            </div>
                         </div>
@@ -141,7 +143,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                         <div className="mt-3 flex items-center gap-2">
                            <Sparkles className="w-4 h-4 text-emerald-600" />
                            <p className="text-sm font-semibold text-gray-900">
-                              {selectedRequest.services}
+                              {request.services}
                            </p>
                         </div>
                      </div>
@@ -157,7 +159,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                         <div className="mt-3 flex items-center gap-2">
                            <DollarSign className="w-4 h-4 text-emerald-600" />
                            <p className="text-sm font-semibold text-gray-900">
-                              {selectedRequest.budget}
+                              {request.budget}
                            </p>
                         </div>
                      </div>
@@ -213,7 +215,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                                     Solicitud recibida
                                  </p>
                                  <p className="text-xs text-gray-500">
-                                    {new Date(selectedRequest.date).toLocaleDateString(
+                                    {new Date(request.createdAt).toLocaleDateString(
                                        'es-ES'
                                     )}{' '}
                                     - Formulario completado
@@ -221,7 +223,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               </div>
                            </div>
 
-                           {selectedRequest.status !== 'PENDING' && (
+                           {request.status !== 'PENDING' && (
                               <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
                                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                                  <div className="flex-1">
@@ -235,7 +237,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ selectedRequest, onClose })
                               </div>
                            )}
 
-                           {selectedRequest.status === 'CONTRACTED' && (
+                           {request.status === 'CONTRACTED' && (
                               <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
                                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                                  <div className="flex-1">
