@@ -2,7 +2,6 @@ import { createTestimonial, getTestimonials } from '@services/testimonials.servi
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
-
 import { toast } from 'sonner'
 
 const useCreateTestimonial = () => {

@@ -1,3 +1,4 @@
+import { ServiceRequestFormData } from '@models/Request.model'
 import { ResponseApi } from './ResponseApi'
 import { api } from '@lib/axios'
 
@@ -8,6 +9,12 @@ import { api } from '@lib/axios'
 export async function getRequests() {
    type Response = Pick<ResponseApi, 'requests'>
    const { data } = await api.get<Response>(`/service-requests`)
+   return data
+}
+
+export async function createServiceRequest(createRequestData: ServiceRequestFormData) {
+   type Response = Pick<ResponseApi, 'message' | 'request'>
+   const { data } = await api.post<Response>(`/service-requests`, createRequestData)
    return data
 }
 

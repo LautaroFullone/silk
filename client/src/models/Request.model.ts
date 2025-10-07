@@ -13,3 +13,5 @@ export interface ServiceRequest {
    status: RequestStatus
    createdAt: string
 }
+
+export type ServiceRequestFormData = Omit<ServiceRequest, 'id' | 'createdAt' | 'status'>
