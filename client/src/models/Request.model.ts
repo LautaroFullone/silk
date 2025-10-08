@@ -1,5 +1,13 @@
 export type RequestStatus = 'PENDING' | 'CONTACTED' | 'CONTRACTED' | 'CANCELLED'
 
+export interface TimelineEvent {
+   id: string
+   title: string
+   description: string
+   date: string
+   type: RequestStatus
+}
+
 export interface ServiceRequest {
    id: string
    name: string
@@ -7,11 +15,16 @@ export interface ServiceRequest {
    email: string
    ubication: string
    phone: string
-   services: string[]
+   service: string
    budget: string
    startMoment: string
+   timeline: TimelineEvent[]
    status: RequestStatus
    createdAt: string
+   updatedAt?: string
 }
 
-export type ServiceRequestFormData = Omit<ServiceRequest, 'id' | 'createdAt' | 'status'>
+export type ServiceRequestFormData = Omit<
+   ServiceRequest,
+   'id' | 'createdAt' | 'status' | 'timeline' | 'updatedAt'
+>

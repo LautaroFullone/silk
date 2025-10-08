@@ -1,3 +1,4 @@
+import { generateTimelineEvent } from '../utils/generateTimelineEvent'
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
 import { hasRealChanges } from '../utils/hasRealChanges'
@@ -48,7 +49,11 @@ serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
       }
 
       const createdServiceRequest = await prismaClient.serviceRequest.create({
-         data: { ...body, status: 'PENDING' },
+         data: {
+            ...body,
+            status: 'PENDING',
+            timeline: generateTimelineEvent([], 'PENDING') as any,
+         },
       })
 
       return res.status(201).send({
@@ -81,7 +86,7 @@ serviceRequestsRouter.get('/:serviceRequestId', async (req: Request, res: Respon
 
 // PATCH -> actualizar estado de la solicitud de servicio
 serviceRequestsRouter.patch(
-   '/:serviceRequestId',
+   '/:serviceRequestId/status',
 
    async (req: Request, res: Response) => {
       await sleep(3000)
@@ -102,10 +107,17 @@ serviceRequestsRouter.patch(
             })
          }
 
+         // Obtener timeline actual y agregar nuevo evento
+         const updatedTimeline = generateTimelineEvent(
+            currentServiceRequest.timeline as any[],
+            body.status
+         )
+
          const updatedServiceRequest = await prismaClient.serviceRequest.update({
             where: { id: serviceRequestId },
             data: {
                status: body.status,
+               timeline: updatedTimeline as any,
             },
          })
 

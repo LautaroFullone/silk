@@ -114,7 +114,7 @@ const RequestModal: React.FC<RequestModalProps> = ({
                                  Ubicación
                               </p>
                               <p className="text-sm font-semibold text-silk-secondary">
-                                 Buenos Aires
+                                 {request.ubication}
                               </p>
                            </div>
                         </div>
@@ -143,7 +143,7 @@ const RequestModal: React.FC<RequestModalProps> = ({
                         <div className="mt-3 flex items-center gap-2">
                            <Sparkles className="w-4 h-4 text-emerald-600" />
                            <p className="text-sm font-semibold text-gray-900">
-                              {request.services}
+                              {request.service}
                            </p>
                         </div>
                      </div>
@@ -173,9 +173,15 @@ const RequestModal: React.FC<RequestModalProps> = ({
                         </div>
 
                         <div className="mt-3 flex items-center gap-2">
-                           <DollarSign className="w-4 h-4 text-emerald-600" />
+                           <Calendar className="w-4 h-4 text-emerald-600" />
                            <p className="text-sm font-semibold text-gray-900">
-                              En dos semanas
+                              {request.startMoment === 'now'
+                                 ? 'Inmediatamente'
+                                 : request.startMoment === 'next-month'
+                                 ? 'El próximo mes'
+                                 : request.startMoment === 'to-agree'
+                                 ? 'A convenir'
+                                 : request.startMoment}
                            </p>
                         </div>
                      </div>
@@ -206,49 +212,91 @@ const RequestModal: React.FC<RequestModalProps> = ({
                            Timeline de la Solicitud
                         </CardTitle>
                      </CardHeader>
+
                      <CardContent>
                         <div className="space-y-3">
-                           <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
-                              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                              <div className="flex-1">
-                                 <p className="text-sm font-medium text-silk-secondary">
-                                    Solicitud recibida
-                                 </p>
-                                 <p className="text-xs text-gray-500">
-                                    {new Date(request.createdAt).toLocaleDateString(
-                                       'es-ES'
-                                    )}{' '}
-                                    - Formulario completado
-                                 </p>
-                              </div>
-                           </div>
+                           {request.timeline && request.timeline.length > 0 ? (
+                              request.timeline.map((event) => (
+                                 <div
+                                    key={event.id}
+                                    className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100"
+                                 >
+                                    <div
+                                       className={`w-2 h-2 rounded-full ${
+                                          event.type === 'PENDING'
+                                             ? 'bg-emerald-500'
+                                             : event.type === 'CONTACTED'
+                                             ? 'bg-blue-500'
+                                             : event.type === 'CONTRACTED'
+                                             ? 'bg-green-600'
+                                             : event.type === 'CANCELLED'
+                                             ? 'bg-red-500'
+                                             : event.type === 'CUSTOM'
+                                             ? 'bg-purple-500'
+                                             : 'bg-gray-400'
+                                       }`}
+                                    />
 
-                           {request.status !== 'PENDING' && (
-                              <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
-                                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-silk-secondary">
-                                       Cliente contactado
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                       Primer contacto realizado
-                                    </p>
-                                 </div>
-                              </div>
-                           )}
+                                    <div className="flex-1">
+                                       <p className="text-sm font-medium text-silk-secondary">
+                                          {event.title}
+                                       </p>
 
-                           {request.status === 'CONTRACTED' && (
-                              <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
-                                 <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-silk-secondary">
-                                       Servicio completado
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                       Consultoría finalizada exitosamente
-                                    </p>
+                                       <p className="text-xs text-gray-500">
+                                          {new Date(event.date).toLocaleDateString(
+                                             'es-ES'
+                                          )}{' '}
+                                          - {event.description}
+                                       </p>
+                                    </div>
                                  </div>
-                              </div>
+                              ))
+                           ) : (
+                              // Fallback para solicitudes sin timeline
+                              <>
+                                 <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
+                                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                    <div className="flex-1">
+                                       <p className="text-sm font-medium text-silk-secondary">
+                                          Solicitud recibida
+                                       </p>
+                                       <p className="text-xs text-gray-500">
+                                          {new Date(request.createdAt).toLocaleDateString(
+                                             'es-ES'
+                                          )}{' '}
+                                          - Formulario completado
+                                       </p>
+                                    </div>
+                                 </div>
+
+                                 {request.status !== 'PENDING' && (
+                                    <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
+                                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                       <div className="flex-1">
+                                          <p className="text-sm font-medium text-silk-secondary">
+                                             Cliente contactado
+                                          </p>
+                                          <p className="text-xs text-gray-500">
+                                             Primer contacto realizado
+                                          </p>
+                                       </div>
+                                    </div>
+                                 )}
+
+                                 {request.status === 'CONTRACTED' && (
+                                    <div className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100">
+                                       <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                       <div className="flex-1">
+                                          <p className="text-sm font-medium text-silk-secondary">
+                                             Servicio completado
+                                          </p>
+                                          <p className="text-xs text-gray-500">
+                                             Consultoría finalizada exitosamente
+                                          </p>
+                                       </div>
+                                    </div>
+                                 )}
+                              </>
                            )}
                         </div>
                      </CardContent>

@@ -30,21 +30,12 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
 
       <TableCell>
          <div className="flex flex-col space-y-1">
-            {request.services.slice(0, 3).map((service, index) => (
-               <Badge
-                  key={index}
-                  variant="outline"
-                  className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm "
-               >
-                  {service}
-               </Badge>
-            ))}
-
-            {request.services.length > 3 && (
-               <Badge variant="outline" className=" border-gray-200 bg-accent rounded-sm">
-                  +{request.services.length - 2} más
-               </Badge>
-            )}
+            <Badge
+               variant="outline"
+               className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm"
+            >
+               {request.service}
+            </Badge>
          </div>
       </TableCell>
 

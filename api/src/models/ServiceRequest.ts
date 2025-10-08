@@ -1,3 +1,4 @@
+import { RequestStatus } from '@prisma/client'
 import { z } from 'zod'
 
 export const serviceRequestCreateSchema = z.object({
@@ -25,9 +26,7 @@ export const serviceRequestCreateSchema = z.object({
       .trim()
       .min(1, 'El teléfono es obligatorio')
       .max(20, 'El teléfono no puede superar los 20 caracteres'),
-   services: z
-      .array(z.string().min(1, 'El servicio no puede estar vacío'))
-      .min(1, 'Debe seleccionar al menos un servicio'),
+   service: z.string().trim().min(1, 'El servicio es obligatorio'),
    budget: z
       .string()
       .trim()
@@ -36,9 +35,13 @@ export const serviceRequestCreateSchema = z.object({
    startMoment: z.string().trim().min(1, 'El momento de inicio es obligatorio'),
 })
 
+export const requestStatusList: RequestStatus[] = [
+   'PENDING',
+   'CONTACTED',
+   'CONTRACTED',
+   'CANCELLED',
+] as const
+
 export const serviceRequestUpdateSchema = z.object({
-   status: z.enum(
-      ['PENDING', 'CONTACTED', 'CONTRACTED', 'CANCELLED'],
-      'El nuevo estado es inválido'
-   ),
+   status: z.enum(requestStatusList, 'El nuevo estado es inválido'),
 })

@@ -47,16 +47,16 @@ model PostCategory {
 }
 
 model ServiceRequest {
-   id          String   @id @default(cuid())
+   id          String @id @default(cuid())
    name        String
    email       String
    age         Int
    ubication   String
    phone       String
-   services    String[]
+   service     String
    budget      String
    startMoment String
-   //TODO: timeline
+   timeline    Json   @default("[]") // Array de eventos del timeline
 
    status RequestStatus @default(PENDING)
 
