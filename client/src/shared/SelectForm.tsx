@@ -1,4 +1,4 @@
-import { FieldErrors } from 'react-hook-form'
+import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form'
 import { OctagonAlert } from 'lucide-react'
 import {
    Label,
@@ -17,16 +17,16 @@ interface SelectOption {
 interface SelectFormProps {
    name: string
    label: string
-   value: string
-   onChange: (value: string) => void
+   value?: string
+   onChange?: (value: string) => void
    options: SelectOption[]
    placeholder?: string
    errors?: FieldErrors
    className?: string
    labelClassName?: string
+   register?: UseFormRegisterReturn
 }
 
-//TODO: PREPARAR PARA REACT-HOOK-FORM
 const SelectForm: React.FC<SelectFormProps> = ({
    name,
    label,
@@ -37,10 +37,30 @@ const SelectForm: React.FC<SelectFormProps> = ({
    errors = {},
    className = '',
    labelClassName = '',
+   register,
 }) => {
    // eslint-disable-next-line
    const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors as any)
    const hasError = !!fieldError
+
+   // Si se proporciona register, usar los valores del register
+   // Si no, usar value y onChange directamente
+   const selectValue = register ? undefined : value
+
+   const handleValueChange = (newValue: string) => {
+      if (register) {
+         // Para react-hook-form, necesitamos crear un evento sintético
+         register.onChange({
+            target: {
+               name: register.name,
+               value: newValue,
+            },
+            type: 'change',
+         })
+      } else if (onChange) {
+         onChange(newValue)
+      }
+   }
 
    return (
       <div>
@@ -48,7 +68,11 @@ const SelectForm: React.FC<SelectFormProps> = ({
             {label}
          </Label>
 
-         <Select value={value} onValueChange={onChange}>
+         <Select
+            value={selectValue}
+            onValueChange={handleValueChange}
+            name={register?.name || name}
+         >
             <SelectTrigger
                id={`select-${name}`}
                className={`w-full shadow-xs ${

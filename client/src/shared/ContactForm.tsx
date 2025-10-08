@@ -9,7 +9,7 @@ import InputForm from './InputForm'
 const initialFormData: ServiceRequestFormData = {
    name: '',
    phone: '',
-   services: ['Colorimetria'],
+   service: 'Colorimetria',
    budget: '',
    age: 0,
    email: '',
@@ -26,7 +26,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
 
    const {
       register,
-      setValue,
       reset,
       watch,
       handleSubmit,
@@ -178,19 +177,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
 
                   {isServiceInputEnabled && (
                      <SelectForm
-                        value={watch('services')?.join(', ') || ''}
-                        {...register('services', {
-                           required: 'El servicio es obligatorio',
-                        })}
-                        onChange={(value) => {
-                           setValue('services', value ? [value] : [], {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                           })
-                        }}
+                        name="service"
                         label="¿Que tipo de servicio estas buscando?"
                         labelClassName="text-silk-primary"
                         placeholder="Seleccionar"
+                        register={register('service', {
+                           required: 'El servicio es obligatorio',
+                        })}
+                        errors={errors}
                         options={[
                            {
                               label: 'Personal Shopper & Closet Detox',
@@ -201,26 +195,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                               value: 'image-transformation',
                            },
                         ]}
-                        errors={errors}
                      />
                   )}
 
                   <div className="grid grid-cols-2 gap-4 items-end">
                      <SelectForm
-                        {...register('budget', {
-                           required: 'El presupuesto es obligatorio',
-                        })}
-                        value={watch('budget') || ''}
-                        onChange={(value) =>
-                           setValue('budget', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                           })
-                        }
+                        name="budget"
                         label="¿Cual es tu presupuesto para ropa y accesorios?"
                         labelClassName="text-silk-primary"
-                        name="budget"
                         placeholder="Seleccionar"
+                        register={register('budget', {
+                           required: 'El presupuesto es obligatorio',
+                        })}
                         errors={errors}
                         options={[
                            {
@@ -247,20 +233,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                      />
 
                      <SelectForm
-                        {...register('startMoment', {
-                           required: 'El momento de inicio es obligatorio',
-                        })}
-                        value={watch('startMoment')}
-                        onChange={(value) =>
-                           setValue('startMoment', value, {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                           })
-                        }
+                        name="startMoment"
                         label="¿Cuándo te gustaría empezar?"
                         labelClassName="text-silk-primary"
-                        name="startMoment"
                         placeholder="Seleccionar"
+                        register={register('startMoment', {
+                           required: 'El momento de inicio es obligatorio',
+                        })}
                         errors={errors}
                         options={[
                            { label: 'Inmediatamente', value: 'now' },
