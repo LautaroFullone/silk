@@ -19,7 +19,7 @@ interface SelectFormProps {
    label: string
    value?: string
    onChange?: (value: string) => void
-   options: SelectOption[]
+   options: SelectOption[] | string[]
    placeholder?: string
    errors?: FieldErrors
    className?: string
@@ -33,7 +33,7 @@ const SelectForm: React.FC<SelectFormProps> = ({
    value,
    onChange,
    options,
-   placeholder = 'Selecciona una opción',
+   placeholder = 'Seleccioná una opción',
    errors = {},
    className = '',
    labelClassName = '',
@@ -42,10 +42,6 @@ const SelectForm: React.FC<SelectFormProps> = ({
    // eslint-disable-next-line
    const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors as any)
    const hasError = !!fieldError
-
-   // Si se proporciona register, usar los valores del register
-   // Si no, usar value y onChange directamente
-   const selectValue = register ? undefined : value
 
    const handleValueChange = (newValue: string) => {
       if (register) {
@@ -69,7 +65,7 @@ const SelectForm: React.FC<SelectFormProps> = ({
          </Label>
 
          <Select
-            value={selectValue}
+            value={value || ''}
             onValueChange={handleValueChange}
             name={register?.name || name}
          >
@@ -83,11 +79,21 @@ const SelectForm: React.FC<SelectFormProps> = ({
             </SelectTrigger>
 
             <SelectContent>
-               {options.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                     {opt.label}
-                  </SelectItem>
-               ))}
+               {options.map((opt) => {
+                  if (typeof opt === 'string') {
+                     return (
+                        <SelectItem key={opt} value={opt}>
+                           {opt}
+                        </SelectItem>
+                     )
+                  } else {
+                     return (
+                        <SelectItem key={opt.value} value={opt.value}>
+                           {opt.label}
+                        </SelectItem>
+                     )
+                  }
+               })}
             </SelectContent>
          </Select>
 

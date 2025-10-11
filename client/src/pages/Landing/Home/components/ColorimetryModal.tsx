@@ -52,7 +52,7 @@ const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClos
                      </ul>
                   </div>
 
-                  <ContactForm />
+                  <ContactForm onSubmitSuccess={() => onClose()} />
                </div>
             </div>
          </DialogContent>

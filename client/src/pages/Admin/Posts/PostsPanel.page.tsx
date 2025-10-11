@@ -37,7 +37,6 @@ const PostsPanel = () => {
    } = useSearchAndSort({
       data: posts || [],
       searchFields: ['title', 'author', 'category'],
-      sortableFields: ['date', 'title', 'author'],
       initialFilters: { isActive: 'all' },
    })
 

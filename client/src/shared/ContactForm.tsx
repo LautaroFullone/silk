@@ -1,7 +1,8 @@
 import useCreateRequest from '@hooks/react-query/Requests/useCreateRequest'
 import { Calendar, Mail, MapPin, Phone, User } from 'lucide-react'
 import { ServiceRequestFormData } from '@models/Request.model'
-import { Button, Card, CardContent } from '@shadcn'
+import { Card, CardContent } from '@shadcn'
+import ActionButton from './ActionButton'
 import { useForm } from 'react-hook-form'
 import SelectForm from './SelectForm'
 import InputForm from './InputForm'
@@ -9,19 +10,23 @@ import InputForm from './InputForm'
 const initialFormData: ServiceRequestFormData = {
    name: '',
    phone: '',
-   service: 'Colorimetria',
-   budget: '',
-   age: 0,
+   service: undefined,
+   budget: undefined,
+   age: undefined,
    email: '',
    ubication: '',
-   startMoment: '',
+   startMoment: undefined,
 }
 
 interface ContactFormProps {
    isServiceInputEnabled?: boolean
+   onSubmitSuccess?: () => void
 }
 
-const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false }) => {
+const ContactForm: React.FC<ContactFormProps> = ({
+   isServiceInputEnabled = false,
+   onSubmitSuccess,
+}) => {
    const { createServiceRequestMutate, isPending } = useCreateRequest()
 
    const {
@@ -31,7 +36,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
       handleSubmit,
       formState: { errors },
    } = useForm<ServiceRequestFormData>({
-      mode: 'onChange',
+      mode: 'onSubmit',
       reValidateMode: 'onChange',
       defaultValues: initialFormData,
    })
@@ -39,13 +44,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
    const handleCreateServiceRequest = async (formData: ServiceRequestFormData) => {
       const processedData = {
          ...formData,
-         age: parseInt(formData.age.toString(), 10),
+         service: (isServiceInputEnabled ? formData.service : 'Colorimetría') || '',
+         budget: formData.budget || '',
+         age: formData.age || 0,
+         startMoment: formData.startMoment || '',
       }
       await createServiceRequestMutate(processedData)
       reset()
-   }
 
-   const isButtonEnabled = !Object.keys(errors).length
+      if (onSubmitSuccess) {
+         onSubmitSuccess()
+      }
+   }
 
    return (
       <Card className="shadow-sm rounded-xl">
@@ -62,7 +72,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                </p>
 
                <div className="space-y-4 mt-6">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 items-start">
                      <InputForm
                         type="text"
                         name="name"
@@ -108,7 +118,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                      />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 items-start">
                      <InputForm
                         type="text"
                         name="ubication"
@@ -180,55 +190,36 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         name="service"
                         label="¿Que tipo de servicio estas buscando?"
                         labelClassName="text-silk-primary"
-                        placeholder="Seleccionar"
+                        placeholder="Seleccioná un servicio"
+                        value={watch('service')}
                         register={register('service', {
                            required: 'El servicio es obligatorio',
                         })}
-                        errors={errors}
                         options={[
-                           {
-                              label: 'Personal Shopper & Closet Detox',
-                              value: 'personal-shopper',
-                           },
-                           {
-                              label: 'Transfomá tu imagen',
-                              value: 'image-transformation',
-                           },
+                           'Personal Shopper & Closet Detox',
+                           'Transfomá tu imagen',
                         ]}
+                        errors={errors}
                      />
                   )}
 
-                  <div className="grid grid-cols-2 gap-4 items-end">
+                  <div className="grid grid-cols-2 gap-4 items-start">
                      <SelectForm
                         name="budget"
                         label="¿Cual es tu presupuesto para ropa y accesorios?"
                         labelClassName="text-silk-primary"
-                        placeholder="Seleccionar"
+                        placeholder="Seleccioná tu presupuesto"
+                        value={watch('budget')}
                         register={register('budget', {
                            required: 'El presupuesto es obligatorio',
                         })}
                         errors={errors}
                         options={[
-                           {
-                              label: 'Hasta 100 USD',
-                              value: 'from-0-to-100',
-                           },
-                           {
-                              label: 'Entre 100 y 250 USD',
-                              value: 'from-100-to-250',
-                           },
-                           {
-                              label: 'Entre 250 y 500 USD',
-                              value: 'from-250-to-500',
-                           },
-                           {
-                              label: 'Entre 500 y 1000 USD',
-                              value: 'from-500-to-1000',
-                           },
-                           {
-                              label: 'Más de 1000 USD',
-                              value: 'from-1000-to-x',
-                           },
+                           'Hasta 100 USD',
+                           'Entre 100 y 250 USD',
+                           'Entre 250 y 500 USD',
+                           'Entre 500 y 1000 USD',
+                           'Más de 1000 USD',
                         ]}
                      />
 
@@ -236,32 +227,25 @@ const ContactForm: React.FC<ContactFormProps> = ({ isServiceInputEnabled = false
                         name="startMoment"
                         label="¿Cuándo te gustaría empezar?"
                         labelClassName="text-silk-primary"
-                        placeholder="Seleccionar"
+                        placeholder="Seleccioná cuándo empezar"
+                        value={watch('startMoment')}
                         register={register('startMoment', {
                            required: 'El momento de inicio es obligatorio',
                         })}
                         errors={errors}
-                        options={[
-                           { label: 'Inmediatamente', value: 'now' },
-                           {
-                              label: 'El próximo mes',
-                              value: 'next-month',
-                           },
-                           { label: 'A convenir', value: 'to-agree' },
-                        ]}
+                        options={['Inmediatamente', 'El próximo mes', 'A convenir']}
                      />
                   </div>
 
                   <div className="flex justify-center">
-                     <Button
+                     <ActionButton
                         onClick={handleSubmit(handleCreateServiceRequest)}
-                        className="mt-2 px-15"
-                        variant="default"
+                        variant="primary"
                         size="lg"
-                        disabled={!isButtonEnabled || isPending}
-                     >
-                        {isPending ? 'Enviando...' : 'Enviar'}
-                     </Button>
+                        label="Enviar"
+                        loadingLabel="Enviando..."
+                        isLoading={isPending}
+                     />
                   </div>
                </div>
             </>

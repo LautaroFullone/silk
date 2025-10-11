@@ -24,7 +24,13 @@ export interface ServiceRequest {
    updatedAt?: string
 }
 
-export type ServiceRequestFormData = Omit<
-   ServiceRequest,
-   'id' | 'createdAt' | 'status' | 'timeline' | 'updatedAt'
->
+export interface ServiceRequestFormData {
+   name: string
+   phone: string
+   service?: string
+   budget?: string
+   age?: number
+   email: string
+   ubication: string
+   startMoment?: string
+}

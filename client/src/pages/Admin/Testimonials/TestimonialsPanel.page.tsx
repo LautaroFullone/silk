@@ -35,7 +35,6 @@ const TestimonialsPanel = () => {
    } = useSearchAndSort({
       data: testimonials,
       searchFields: ['personName', 'personRole'],
-      sortableFields: ['personName', 'personRole', 'isHighlight'],
       initialFilters: { isHighlight: 'all' },
    })
 

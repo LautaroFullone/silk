@@ -33,7 +33,6 @@ const RequestsPanel = () => {
    } = useSearchAndSort({
       data: requests,
       searchFields: ['name', 'email', 'budget'],
-      sortableFields: ['name', 'budget'],
       initialFilters: { status: 'all' },
    })
 

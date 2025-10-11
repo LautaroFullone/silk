@@ -16,13 +16,13 @@ const serviceRequestsRouter = Router()
 serviceRequestsRouter.get('/', async (req: Request, res: Response) => {
    await sleep(3000)
    try {
-      const serviceRequests = await prismaClient.serviceRequest.findMany({
+      const requests = await prismaClient.serviceRequest.findMany({
          orderBy: { createdAt: 'desc' },
-         omit: { createdAt: true, updatedAt: true },
+         omit: { updatedAt: true, timeline: true },
       })
 
       return res.status(200).send({
-         serviceRequests,
+         requests,
       })
    } catch (error) {
       return handleRouteError(res, error)
@@ -54,11 +54,12 @@ serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
             status: 'PENDING',
             timeline: generateTimelineEvent([], 'PENDING') as any,
          },
+         omit: { updatedAt: true, timeline: true },
       })
 
       return res.status(201).send({
          message: 'Solicitud registrada! Te contactaremos pronto.',
-         serviceRequest: createdServiceRequest,
+         request: createdServiceRequest,
       })
    } catch (error) {
       return handleRouteError(res, error)
@@ -71,13 +72,13 @@ serviceRequestsRouter.get('/:serviceRequestId', async (req: Request, res: Respon
    const { serviceRequestId } = req.params
 
    try {
-      const serviceRequest = await prismaClient.serviceRequest.findFirstOrThrow({
+      const request = await prismaClient.serviceRequest.findFirstOrThrow({
          where: { id: serviceRequestId },
-         omit: { createdAt: true },
+         omit: { updatedAt: true },
       })
 
       return res.status(200).send({
-         serviceRequest,
+         request,
       })
    } catch (error) {
       return handleRouteError(res, error)
@@ -103,7 +104,7 @@ serviceRequestsRouter.patch(
          if (!hasRealChanges(currentServiceRequest, body)) {
             return res.send({
                message: 'No hay cambios para aplicar',
-               serviceRequest: currentServiceRequest,
+               request: currentServiceRequest,
             })
          }
 
@@ -119,11 +120,12 @@ serviceRequestsRouter.patch(
                status: body.status,
                timeline: updatedTimeline as any,
             },
+            omit: { updatedAt: true, timeline: true },
          })
 
          return res.status(200).send({
             message: 'Solicitud actualizada',
-            serviceRequest: updatedServiceRequest,
+            request: updatedServiceRequest,
          })
       } catch (error) {
          return handleRouteError(res, error)
@@ -141,14 +143,14 @@ serviceRequestsRouter.delete(
       try {
          const serviceRequestDeleted = await prismaClient.serviceRequest.delete({
             where: { id: serviceRequestId },
+            omit: { updatedAt: true, timeline: true },
          })
 
          return res.status(200).send({
             message: 'Solicitud eliminada',
-            serviceRequest: serviceRequestDeleted,
+            request: serviceRequestDeleted,
          })
       } catch (error) {
-         console.log('# error', error)
          return handleRouteError(res, error)
       }
    }
