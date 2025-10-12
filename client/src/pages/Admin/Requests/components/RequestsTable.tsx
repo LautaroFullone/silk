@@ -1,7 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@shadcn'
 import { ConfirmActionModal, EmptyBanner, Pagination } from '@shared'
+import { checkStatusTransition } from '@utils/statusTransitions'
+import { useDeleteRequests, useUpdateRequest } from '@hooks'
 import { ServiceRequest } from '@models/Request.model'
-import { useDeleteRequests } from '@hooks'
 import RequestModal from './RequestModal'
 import RequestRow from './RequestRow'
 import { useState } from 'react'
@@ -39,7 +40,19 @@ const RequestsTable: React.FC<RequestTableProps> = ({
    const [requestSelected, setRequestSelected] = useState<ServiceRequest | null>(null)
    const [requestToDelete, setRequestToDelete] = useState<ServiceRequest | null>(null)
 
-   const { deleteRequestMutate, isPending } = useDeleteRequests()
+   const { deleteRequestMutate, isPending: isDeletingRequest } = useDeleteRequests()
+   const { updateServiceRequestMutate } = useUpdateRequest()
+
+   const handleServiceRequestUpdate = async (
+      requestId: ServiceRequest['id'],
+      status: ServiceRequest['status']
+   ) => {
+      const currentRequest = paginatedRequests.find((req) => req.id === requestId)
+
+      if (currentRequest && checkStatusTransition(currentRequest.status, status)) {
+         await updateServiceRequestMutate({ requestId, status })
+      }
+   }
 
    return (
       <>
@@ -102,7 +115,9 @@ const RequestsTable: React.FC<RequestTableProps> = ({
                         <RequestRow
                            key={request.id}
                            request={request}
-                           onEdit={(status) => console.log('Edit request', status)}
+                           onEdit={async (status) =>
+                              await handleServiceRequestUpdate(request.id, status)
+                           }
                            onDelete={setRequestToDelete}
                            onSelect={setRequestSelected}
                         />
@@ -135,14 +150,16 @@ const RequestsTable: React.FC<RequestTableProps> = ({
             <RequestModal
                isOpen={!!requestSelected}
                requestId={requestSelected.id}
-               onEdit={(status) => console.log('Edit request', status)}
+               onEdit={async (status) =>
+                  await handleServiceRequestUpdate(requestSelected.id, status)
+               }
                onClose={() => setRequestSelected(null)}
             />
          )}
 
          <ConfirmActionModal
             isOpen={!!requestToDelete}
-            isLoading={isPending}
+            isLoading={isDeletingRequest}
             title={
                <>
                   ¿Estás seguro que querés eliminar la solicitud de

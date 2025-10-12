@@ -8,6 +8,7 @@ import useCreateRequest from './Requests/useCreateRequest'
 import useDeleteRequests from './Requests/useDeleteRequests'
 import useFetchRequestDetails from './Requests/useFetchRequestDetails'
 import useFetchRequests from './Requests/useFetchRequests'
+import useUpdateRequest from './Requests/useUpdateRequestStatus'
 
 import useCreatePost from './Posts/useCreatePost'
 import useDeletePost from './Posts/useDeletePost'
@@ -28,6 +29,7 @@ export {
    useFetchRequestDetails,
    useDeleteRequests,
    useFetchRequests,
+   useUpdateRequest,
 
    // Posts
    useCreatePost,

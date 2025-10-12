@@ -1,5 +1,6 @@
-import { RequestStatus, ServiceRequest } from '@models/Request.model'
 import { requestStatusConfig } from '@config/requestStatusConfig'
+import { getValidTransitions } from '@utils/statusTransitions'
+import { ServiceRequest } from '@models/Request.model'
 import { MoreVertical } from 'lucide-react'
 import {
    DropdownMenu,
@@ -19,29 +20,35 @@ const RequestStatusHandler: React.FC<RequestStatusHandlerProps> = ({
    trigger,
    onStatusChange,
 }) => {
+   const validTransitions = getValidTransitions(request.status)
+   const hasValidTransitions = validTransitions.length > 0
+
    return (
       <DropdownMenu>
-         <DropdownMenuTrigger asChild>
+         <DropdownMenuTrigger asChild disabled={!hasValidTransitions}>
             {trigger ? (
                trigger
             ) : (
-               <MoreVertical className="h-5 w-5 cursor-pointer transition-all duration-200 hover:scale-105" />
+               <MoreVertical
+                  className={`h-5 w-5 transition-all duration-200 ${
+                     hasValidTransitions
+                        ? 'cursor-pointer hover:scale-105'
+                        : 'cursor-not-allowed opacity-50'
+                  }`}
+               />
             )}
          </DropdownMenuTrigger>
 
          <DropdownMenuContent align="end">
-            {Object.entries(requestStatusConfig).map(
-               ([status, { label, color, icon: Icon }]) => (
-                  <DropdownMenuItem
-                     key={status}
-                     disabled={request.status === status}
-                     onClick={() => onStatusChange(status as RequestStatus)}
-                  >
+            {validTransitions.map((status) => {
+               const { label, color, icon: Icon } = requestStatusConfig[status]
+               return (
+                  <DropdownMenuItem key={status} onClick={() => onStatusChange(status)}>
                      <Icon className={`w-4 h-4 mr-2 ${color} bg-transparent`} />
                      Marcar como {label}
                   </DropdownMenuItem>
                )
-            )}
+            })}
 
             {/* <DropdownMenuItem
                onClick={() => {}}

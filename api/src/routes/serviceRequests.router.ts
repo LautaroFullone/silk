@@ -120,7 +120,7 @@ serviceRequestsRouter.patch(
                status: body.status,
                timeline: updatedTimeline as any,
             },
-            omit: { updatedAt: true, timeline: true },
+            omit: { updatedAt: true },
          })
 
          return res.status(200).send({

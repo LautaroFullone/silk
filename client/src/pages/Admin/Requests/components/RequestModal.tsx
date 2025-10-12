@@ -43,13 +43,15 @@ const RequestModal: React.FC<RequestModalProps> = ({
                   Detalles de la Solicitud
                </DialogTitle>
 
-               <DialogDescription>
-                  Solicitud ID:{' '}
-                  {isLoading ? (
-                     <Skeleton className="inline-block h-3 w-44" />
-                  ) : (
-                     <span className="italic">{request?.id}</span>
-                  )}
+               <DialogDescription asChild>
+                  <div>
+                     Solicitud ID:{' '}
+                     {isLoading ? (
+                        <Skeleton className="inline-block h-3 w-44" />
+                     ) : (
+                        <span className="italic">{request?.id}</span>
+                     )}
+                  </div>
                </DialogDescription>
             </DialogHeader>
 
@@ -313,6 +315,8 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                                           timelineColor === 'indigo',
                                        'bg-gradient-to-b from-emerald-400 to-gray-200':
                                           timelineColor === 'emerald',
+                                       'bg-gradient-to-b from-stone-800 to-stone-200':
+                                          timelineColor === 'stone',
                                        'bg-gray-200':
                                           !timelineColor || timelineColor === 'gray',
                                     }
@@ -329,6 +333,7 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                                        'bg-amber-500': timelineColor === 'amber',
                                        'bg-indigo-500': timelineColor === 'indigo',
                                        'bg-emerald-500': timelineColor === 'emerald',
+                                       'bg-stone-500': timelineColor === 'stone',
                                        'bg-gray-500':
                                           !timelineColor || timelineColor === 'gray',
                                     }

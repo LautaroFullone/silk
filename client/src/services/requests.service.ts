@@ -35,6 +35,27 @@ export async function createServiceRequest(createRequestData: ServiceRequestForm
 }
 
 /**
+ * Actualizar el estado de una solicitud de servicio
+ * @param requestId ID de la solicitud a actualizar
+ * @param status Nuevo estado de la solicitud
+ * @returns Mensaje de éxito y datos de la solicitud actualizada
+ */
+export async function updateServiceRequestStatus({
+   requestId,
+   status,
+}: {
+   requestId: string
+   status: string
+}) {
+   console.log('Updating request status:', requestId, status)
+   type Response = Pick<ResponseApi, 'message' | 'request'>
+   const { data } = await api.patch<Response>(`/service-requests/${requestId}/status`, {
+      status,
+   })
+   return data
+}
+
+/**
  * Eliminar una solicitud del sistema
  * @param requestId ID de la solicitud a eliminar
  * @returns Mensaje de éxito y datos de la solicitud eliminada
