@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Calendar, DollarSign, Clock, Sparkles } from 'lucide-react'
 import { requestStatusConfig } from '@config/requestStatusConfig'
+import { formatRelativeTime } from '@utils/formatRelativeTime'
 import { formatDateToShow } from '@utils/formatDateToShow'
 import RequestStatusHandler from './RequestStatusHandler'
 import { ServiceRequest } from '@models/Request.model'
@@ -38,7 +39,7 @@ const RequestModal: React.FC<RequestModalProps> = ({
       <Dialog open={isOpen} onOpenChange={(open) => open || onClose()}>
          <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden bg-gray-50">
             <DialogHeader className="gap-0">
-               <DialogTitle className="text-2xl font-serif">
+               <DialogTitle className="font-bold text-2xl">
                   Detalles de la Solicitud
                </DialogTitle>
 
@@ -71,7 +72,7 @@ interface ContentProps {
 const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) => {
    if (isLoading) {
       return (
-         <div className="bg-gradient-to-r from-emerald-100 via-emerald-100 to-teal-100 rounded-md p-6">
+         <div className="bg-white border border-gray-200 rounded-md p-6 shadow-sm">
             <div className="flex items-start justify-between mb-4">
                <div className="flex items-center gap-4">
                   <Skeleton className="w-16 h-16 rounded-full" />
@@ -102,10 +103,10 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
    }
 
    return (
-      <div className="bg-gradient-to-r from-emerald-100 via-emerald-100 to-teal-100 rounded-md p-6">
+      <div className="bg-emerald-50 border rounded-md p-6 shadow-xs">
          <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-4">
-               <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center font-serif text-3xl shadow-md uppercase">
+               <div className="size-16 bg-gradient-to-br from-emerald-500 to-emerald-800 text-white rounded-full flex items-center justify-center font-serif text-3xl shadow-lg uppercase">
                   {request?.name.charAt(0)}
                </div>
 
@@ -113,7 +114,9 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
                   <h3 className="text-2xl font-serif font-bold text-silk-secondary">
                      {request?.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground font-medium">Hace 4 dias</p>
+                  <p className="text-sm text-muted-foreground font-medium">
+                     {formatRelativeTime(request?.createdAt)}
+                  </p>
                </div>
             </div>
 
@@ -246,16 +249,28 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                </CardTitle>
             </CardHeader>
             <CardContent>
-               <div className="space-y-2">
-                  {Array.from({ length: 1 }).map((_, i) => (
-                     <div
-                        key={i}
-                        className="flex items-center gap-3 p-3 bg-white rounded-md border border-gray-100"
-                     >
-                        <Skeleton className="size-2.5 rounded-full" />
-                        <div className="flex-1">
-                           <Skeleton className="h-4 w-32 mb-1" />
-                           <Skeleton className="h-3 w-48" />
+               <div className="relative">
+                  {Array.from({ length: 2 }).map((_, i) => (
+                     <div key={i} className="relative flex items-start gap-3 pb-4">
+                        {/* Línea vertical en loading */}
+                        {i < 1 && (
+                           <div className="absolute left-1 top-6 bottom-0 w-0.5 bg-gray-200 opacity-60" />
+                        )}
+
+                        {/* Bullet point skeleton */}
+                        <div className="relative z-10 mt-1">
+                           <Skeleton className="size-2.5 rounded-full border border-white shadow-sm" />
+                        </div>
+
+                        {/* Contenido skeleton */}
+                        <div className="flex-1 min-w-0">
+                           <div className="p-3 bg-white rounded-md border border-gray-100">
+                              <div className="flex items-start justify-between gap-2 mb-1">
+                                 <Skeleton className="h-4 w-32" />
+                                 <Skeleton className="h-4 w-32" />
+                              </div>
+                              <Skeleton className="h-3 w-48" />
+                           </div>
                         </div>
                      </div>
                   ))}
@@ -273,45 +288,83 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                Timeline de la Solicitud
             </CardTitle>
          </CardHeader>
+
          <CardContent>
-            <div className="space-y-2">
+            <div className="relative">
                {request?.timeline && request.timeline.length > 0 ? (
-                  request.timeline.map((event) => {
+                  request.timeline.map((event, index) => {
                      const { timelineColor } = requestStatusConfig[event.type]
+                     const isLast = index === request.timeline!.length - 1
 
                      return (
                         <div
                            key={event.id}
-                           className={cn(
-                              'flex items-center gap-3 p-3 bg-white rounded-md border',
-                              {
-                                 'border-amber-300': timelineColor === 'amber',
-                                 'border-indigo-300': timelineColor === 'indigo',
-                                 'border-emerald-300': timelineColor === 'emerald',
-                                 'border-gray-300':
-                                    !timelineColor || timelineColor === 'gray',
-                              }
-                           )}
+                           className="relative flex items-start gap-3 pb-3"
                         >
-                           <div
-                              className={cn('size-2 rounded-full', {
-                                 'bg-amber-500': timelineColor === 'amber',
-                                 'bg-indigo-500': timelineColor === 'indigo',
-                                 'bg-emerald-500': timelineColor === 'emerald',
+                           {/* Línea vertical con degradado sutil */}
+                           {!isLast && (
+                              <div
+                                 className={cn(
+                                    'absolute left-1 top-6 bottom-0 w-0.5 opacity-60',
+                                    {
+                                       'bg-gradient-to-b from-amber-400 to-gray-200':
+                                          timelineColor === 'amber',
+                                       'bg-gradient-to-b from-indigo-400 to-gray-200':
+                                          timelineColor === 'indigo',
+                                       'bg-gradient-to-b from-emerald-400 to-gray-200':
+                                          timelineColor === 'emerald',
+                                       'bg-gray-200':
+                                          !timelineColor || timelineColor === 'gray',
+                                    }
+                                 )}
+                              />
+                           )}
 
-                                 'bg-gray-500':
-                                    !timelineColor || timelineColor === 'gray',
-                              })}
-                           />
-                           <div className="flex-1">
-                              <p className="text-sm font-medium text-silk-secondary">
-                                 {event.title}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                 {formatDateToShow(event.date, 'full')}
-                                 {' -> '}
-                                 {event.description}
-                              </p>
+                           {/* Bullet point con anillo sutil */}
+                           <div className="relative z-10 mt-1">
+                              <div
+                                 className={cn(
+                                    'size-2.5 rounded-full border border-white shadow-sm',
+                                    {
+                                       'bg-amber-500': timelineColor === 'amber',
+                                       'bg-indigo-500': timelineColor === 'indigo',
+                                       'bg-emerald-500': timelineColor === 'emerald',
+                                       'bg-gray-500':
+                                          !timelineColor || timelineColor === 'gray',
+                                    }
+                                 )}
+                              />
+                           </div>
+
+                           {/* Contenido del evento con hover sutil */}
+                           <div className="flex-1 min-w-0">
+                              <div
+                                 className={cn(
+                                    'p-3 bg-white rounded-md border transition-all duration-200 hover:shadow-sm',
+                                    {
+                                       'border-amber-300 hover:border-amber-400':
+                                          timelineColor === 'amber',
+                                       'border-indigo-300 hover:border-indigo-400':
+                                          timelineColor === 'indigo',
+                                       'border-emerald-300 hover:border-emerald-400':
+                                          timelineColor === 'emerald',
+                                       'border-gray-300 hover:border-gray-400':
+                                          !timelineColor || timelineColor === 'gray',
+                                    }
+                                 )}
+                              >
+                                 <div className="flex items-start justify-between gap-2 mb-1">
+                                    <p className="text-sm font-medium text-silk-secondary">
+                                       {event.title}
+                                    </p>
+                                    <span className="text-xs text-gray-400 font-medium whitespace-nowrap">
+                                       {formatDateToShow(event.date, 'full')}
+                                    </span>
+                                 </div>
+                                 <p className="text-xs text-gray-600 leading-relaxed">
+                                    {event.description}
+                                 </p>
+                              </div>
                            </div>
                         </div>
                      )
