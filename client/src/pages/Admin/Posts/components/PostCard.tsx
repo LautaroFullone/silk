@@ -1,4 +1,5 @@
 import { Calendar, Edit, MoreVertical, Trash2, User } from 'lucide-react'
+import { formatDateToShow } from '@utils/formatDateToShow'
 import { getPublicImageUrl } from '@utils/getPublicImage'
 import { Post } from '@models/Post.model'
 import { useState } from 'react'
@@ -135,20 +136,12 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
 
                   <div className="flex items-center">
                      <Calendar className="w-4 h-4 mr-1" />
-                     <span>{new Date(post.date).toLocaleDateString('es-ES')}</span>
+                     <span>{formatDateToShow(post.date, 'date')}</span>
                   </div>
 
-                  {/* <Badge
-                     variant="default"
-                     className={
-                        'bg-emerald-800 text-white uppercase rounded-xs border-none'
-                     }
-                  >
-                     {category}
-                  </Badge> */}
                   <Badge
                      variant="outline"
-                     className="text-silk-secondary border-gray-200 bg-accent rounded-sm"
+                     className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm"
                   >
                      {post.category.name}
                   </Badge>

@@ -162,7 +162,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({
             isLoading={isDeletingRequest}
             title={
                <>
-                  ¿Estás seguro que querés eliminar la solicitud de
+                  ¿Estás seguro que querés eliminar la solicitud de{' '}
                   <span className="font-bold">{requestToDelete?.name}</span>?
                </>
             }

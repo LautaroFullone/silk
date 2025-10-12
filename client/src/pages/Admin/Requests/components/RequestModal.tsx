@@ -166,8 +166,7 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
                <div>
                   <p className="text-xs text-gray-500 font-medium">Fecha</p>
                   <p className="text-sm font-semibold text-silk-secondary">
-                     {request?.createdAt &&
-                        new Date(request.createdAt).toLocaleDateString('es-ES')}
+                     {formatDateToShow(request?.createdAt, 'date')}
                   </p>
                </div>
             </div>
@@ -250,6 +249,7 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                   Timeline de la Solicitud
                </CardTitle>
             </CardHeader>
+
             <CardContent>
                <div className="relative">
                   {Array.from({ length: 2 }).map((_, i) => (
@@ -315,7 +315,7 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                                           timelineColor === 'indigo',
                                        'bg-gradient-to-b from-emerald-400 to-gray-200':
                                           timelineColor === 'emerald',
-                                       'bg-gradient-to-b from-stone-800 to-stone-200':
+                                       'bg-gradient-to-b from-stone-400 to-stone-200':
                                           timelineColor === 'stone',
                                        'bg-gray-200':
                                           !timelineColor || timelineColor === 'gray',
@@ -353,6 +353,8 @@ const RequestTimeline: React.FC<ContentProps> = ({ isLoading, request }) => {
                                           timelineColor === 'indigo',
                                        'border-emerald-300 hover:border-emerald-400':
                                           timelineColor === 'emerald',
+                                       'border-stone-300 hover:border-stone-400':
+                                          timelineColor === 'stone',
                                        'border-gray-300 hover:border-gray-400':
                                           !timelineColor || timelineColor === 'gray',
                                     }

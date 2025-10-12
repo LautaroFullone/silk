@@ -1,4 +1,5 @@
 import { Badge, Button, Skeleton, TableCell, TableRow } from '@shadcn'
+import { formatDateToShow } from '@utils/formatDateToShow'
 import RequestStatusHandler from './RequestStatusHandler'
 import { ServiceRequest } from '@models/Request.model'
 import { Eye, SquarePen, Trash2 } from 'lucide-react'
@@ -13,8 +14,8 @@ interface RequestRowProps {
 
 const RequestRow = ({ request, onEdit, onSelect, onDelete }: RequestRowProps) => (
    <TableRow>
-      <TableCell className="text-sm">
-         {new Date(request.createdAt).toLocaleDateString('es-ES')}
+      <TableCell className="text-muted-foreground">
+         {formatDateToShow(request.createdAt, 'date')}
       </TableCell>
 
       <TableCell className="font-medium">
@@ -24,20 +25,15 @@ const RequestRow = ({ request, onEdit, onSelect, onDelete }: RequestRowProps) =>
          </div>
       </TableCell>
 
-      <TableCell>
-         <div className="text-sm">{request.email}</div>
-         <div className="text-xs text-muted-foreground">{request.phone}</div>
-      </TableCell>
+      <TableCell>{request.email}</TableCell>
 
       <TableCell>
-         <div className="flex flex-col space-y-1">
-            <Badge
-               variant="outline"
-               className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm"
-            >
-               {request.service}
-            </Badge>
-         </div>
+         <Badge
+            variant="outline"
+            className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm"
+         >
+            {request.service}
+         </Badge>
       </TableCell>
 
       <TableCell className="font-medium">{request.budget}</TableCell>
