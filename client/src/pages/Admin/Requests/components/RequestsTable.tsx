@@ -36,7 +36,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({
    onPageChange,
    emptyMessage,
 }) => {
-   const [requestToEdit, setRequestToEdit] = useState<ServiceRequest | null>(null)
+   const [requestSelected, setRequestSelected] = useState<ServiceRequest | null>(null)
    const [requestToDelete, setRequestToDelete] = useState<ServiceRequest | null>(null)
 
    const { deleteRequestMutate, isPending } = useDeleteRequests()
@@ -104,6 +104,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({
                            request={request}
                            onEdit={(status) => console.log('Edit request', status)}
                            onDelete={setRequestToDelete}
+                           onSelect={setRequestSelected}
                         />
                      ))
                   ) : (
@@ -130,12 +131,14 @@ const RequestsTable: React.FC<RequestTableProps> = ({
             />
          )}
 
-         <RequestModal
-            isOpen={!!requestToEdit}
-            request={requestToEdit}
-            onEdit={(status) => console.log('Edit request', status)}
-            onClose={() => setRequestToEdit(null)}
-         />
+         {requestSelected && (
+            <RequestModal
+               isOpen={!!requestSelected}
+               requestId={requestSelected.id}
+               onEdit={(status) => console.log('Edit request', status)}
+               onClose={() => setRequestSelected(null)}
+            />
+         )}
 
          <ConfirmActionModal
             isOpen={!!requestToDelete}

@@ -3,7 +3,10 @@ import useDeleteTestimonial from './Testimonials/useDeleteTestimonial'
 import useFetchTestimonials from './Testimonials/useFetchTestimonials'
 import useFetchTestimonial from './Testimonials/useFetchTestimonial'
 import useUpdateTestimonial from './Testimonials/useUpdateTestimonial'
+
+import useCreateRequest from './Requests/useCreateRequest'
 import useDeleteRequests from './Requests/useDeleteRequests'
+import useFetchRequestDetails from './Requests/useFetchRequestDetails'
 import useFetchRequests from './Requests/useFetchRequests'
 
 import useCreatePost from './Posts/useCreatePost'
@@ -21,6 +24,8 @@ export {
    useUpdateTestimonial,
 
    // Requests
+   useCreateRequest,
+   useFetchRequestDetails,
    useDeleteRequests,
    useFetchRequests,
 

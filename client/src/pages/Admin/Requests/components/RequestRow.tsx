@@ -7,10 +7,11 @@ import { RequestStatusBadge } from '@shared'
 interface RequestRowProps {
    request: ServiceRequest
    onEdit: (status: ServiceRequest['status']) => void
+   onSelect: (request: ServiceRequest) => void
    onDelete: (request: ServiceRequest) => void
 }
 
-const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
+const RequestRow = ({ request, onEdit, onSelect, onDelete }: RequestRowProps) => (
    <TableRow>
       <TableCell className="text-sm">
          {new Date(request.createdAt).toLocaleDateString('es-ES')}
@@ -46,7 +47,7 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
       </TableCell>
 
       <TableCell align="right" className="space-x-2">
-         <Button variant="ghost" size="sm">
+         <Button variant="ghost" size="sm" onClick={() => onSelect(request)}>
             <Eye className="size-4" />
             Ver
          </Button>
@@ -63,8 +64,8 @@ const RequestRow = ({ request, onEdit, onDelete }: RequestRowProps) => (
          />
 
          <Button
-            variant="outline"
             size="sm"
+            variant="outline"
             className="text-destructive!"
             onClick={() => onDelete(request)}
          >

@@ -4,7 +4,7 @@ import { api } from '@lib/axios'
 
 /**
  * Obtener todas las solicitudes del sistema
- * @returns Mensaje de éxito y datos de las solicitudes
+ * @returns Datos de las solicitudes
  */
 export async function getRequests() {
    type Response = Pick<ResponseApi, 'requests'>
@@ -12,6 +12,22 @@ export async function getRequests() {
    return data
 }
 
+/**
+ * Obtener los detalles de una solicitud por su ID
+ * @param requestId ID de la solicitud a obtener
+ * @returns Datos de la solicitud
+ */
+export async function getRequestDetails(requestId: string) {
+   type Response = Pick<ResponseApi, 'request'>
+   const { data } = await api.get<Response>(`/service-requests/${requestId}`)
+   return data
+}
+
+/**
+ * Crear una nueva solicitud de servicio
+ * @param createRequestData Datos de la solicitud a crear
+ * @returns Mensaje de éxito y datos de la solicitud creada
+ */
 export async function createServiceRequest(createRequestData: ServiceRequestFormData) {
    type Response = Pick<ResponseApi, 'message' | 'request'>
    const { data } = await api.post<Response>(`/service-requests`, createRequestData)

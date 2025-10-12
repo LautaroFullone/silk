@@ -43,5 +43,8 @@ export const requestStatusList: RequestStatus[] = [
 ] as const
 
 export const serviceRequestUpdateSchema = z.object({
-   status: z.enum(requestStatusList, 'El nuevo estado es inválido'),
+   status: z.enum(
+      requestStatusList,
+      'El nuevo estado es inválido, debe ser uno de: ' + requestStatusList.join(', ')
+   ),
 })

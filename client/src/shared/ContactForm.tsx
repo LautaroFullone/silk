@@ -1,7 +1,7 @@
-import useCreateRequest from '@hooks/react-query/Requests/useCreateRequest'
 import { Calendar, Mail, MapPin, Phone, User } from 'lucide-react'
 import { ServiceRequestFormData } from '@models/Request.model'
 import { Card, CardContent } from '@shadcn'
+import { useCreateRequest } from '@hooks'
 import ActionButton from './ActionButton'
 import { useForm } from 'react-hook-form'
 import SelectForm from './SelectForm'
