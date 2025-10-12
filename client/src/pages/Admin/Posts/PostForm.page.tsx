@@ -112,6 +112,7 @@ const PostForm = () => {
       } else {
          await createPostMutate(completeFormData)
          reset()
+         editor.replaceBlocks(editor.document, [])
       }
    }
 
@@ -247,7 +248,7 @@ const PostForm = () => {
                      </div>
 
                      <div className="space-y-1">
-                        <Label htmlFor="imageFile">Imagen del Post</Label>
+                        <Label htmlFor="imageFile">Imagen Portada</Label>
 
                         {isLoadingPost ? (
                            <Skeleton className="w-full h-9" />
@@ -333,7 +334,7 @@ const PostForm = () => {
                               </div>
 
                               <p className="text-xs text-gray-500">
-                                 Formatos: JPG, PNG o WEBP (máx. 3MB)
+                                 Formatos: JPG, JPEG, PNG o WEBP (máx. 3MB)
                               </p>
                            </>
                         )}
