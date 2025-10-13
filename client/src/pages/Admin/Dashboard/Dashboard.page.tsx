@@ -150,10 +150,7 @@ const Dashboard = () => {
 
    return (
       <>
-         <PageTitle
-            title="Panel de Control"
-            description="Resumen de tu plataforma SILK"
-         />
+         <PageTitle title="Panel de Control" description="Resumen de la plataforma" />
 
          {/* Estadísticas principales */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -185,8 +182,8 @@ const Dashboard = () => {
                   <CardTitle className="flex items-center gap-2">
                      {isLoading ? (
                         <>
-                           <Skeleton className="h-5 w-5" />
-                           <Skeleton className="h-6 w-32" />
+                           <Skeleton className="size-6 rounded" />
+                           <Skeleton className="h-6 w-36" />
                         </>
                      ) : (
                         <>
@@ -198,7 +195,7 @@ const Dashboard = () => {
 
                   <CardDescription>
                      {isLoading ? (
-                        <Skeleton className="h-4 w-48" />
+                        <Skeleton className="h-4 w-52 mt-2" />
                      ) : (
                         'Últimas acciones en el panel'
                      )}
@@ -212,9 +209,18 @@ const Dashboard = () => {
                            <ActivityCard.Skeleton key={`activity-skeleton-${index}`} />
                         ))
                      ) : recentActivities.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500">
-                           <Calendar className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                           <p>No hay actividad reciente</p>
+                        <div className="text-center py-12 text-gray-500">
+                           <div className="bg-gray-50 rounded-full p-3 w-16 h-16 mx-auto mb-4">
+                              <Calendar className="w-10 h-10 mx-auto text-gray-300" />
+                           </div>
+
+                           <p className="text-sm font-medium text-gray-900 mb-1">
+                              No hay actividad reciente
+                           </p>
+
+                           <p className="text-xs text-gray-500">
+                              Las acciones aparecerán aquí cuando se realicen
+                           </p>
                         </div>
                      ) : (
                         recentActivities.map((activity, index) => (
@@ -233,8 +239,8 @@ const Dashboard = () => {
                   <CardTitle className="flex items-center gap-2">
                      {isLoading ? (
                         <>
-                           <Skeleton className="h-5 w-5" />
-                           <Skeleton className="h-6 w-28" />
+                           <Skeleton className="size-6 rounded" />
+                           <Skeleton className="h-6 w-40" />
                         </>
                      ) : (
                         <>
@@ -245,7 +251,11 @@ const Dashboard = () => {
                   </CardTitle>
 
                   <CardDescription>
-                     {isLoading ? <Skeleton className="h-4 w-24" /> : 'Tareas frecuentes'}
+                     {isLoading ? (
+                        <Skeleton className="h-4 w-28 mt-2" />
+                     ) : (
+                        'Tareas frecuentes'
+                     )}
                   </CardDescription>
                </CardHeader>
 

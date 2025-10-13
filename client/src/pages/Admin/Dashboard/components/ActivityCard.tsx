@@ -24,11 +24,11 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
 
 ActivityCard.Skeleton = function ActivityCardSkeleton() {
    return (
-      <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-100">
-         <Skeleton className="h-8 w-8 rounded-full" />
-         <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-3 w-20" />
+      <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors animate-pulse">
+         <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
+         <div className="flex-1 min-w-0 space-y-2">
+            <Skeleton className="h-4 w-full max-w-xs" />
+            <Skeleton className="h-3 w-16" />
          </div>
       </div>
    )

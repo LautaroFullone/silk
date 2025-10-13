@@ -29,13 +29,18 @@ const ShortcutCard = ({ shortcut, onClick }: ShortcutCardProps) => {
    )
 }
 
-ShortcutCard.Skeleton = function ActivityCardSkeleton() {
+ShortcutCard.Skeleton = function ShortcutCardSkeleton() {
    return (
-      <div className="flex items-start space-x-3 p-3 rounded-lg border border-gray-100">
-         <Skeleton className="h-8 w-8 rounded-full" />
-         <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-3 w-20" />
+      <div className="w-full justify-start p-2 rounded-md">
+         <div className="flex items-center gap-3 w-full">
+            <Skeleton className="h-8 w-8 rounded-lg" />
+
+            <div className="text-left flex-1 space-y-1">
+               <Skeleton className="h-4 w-24 " />
+               <Skeleton className="h-3 w-32 " />
+            </div>
+
+            <Skeleton className="size-4 " />
          </div>
       </div>
    )
