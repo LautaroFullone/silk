@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@shadcn'
+import { Card, CardContent, Skeleton } from '@shadcn'
 import { LucideIcon } from 'lucide-react'
 
 interface StatsCardProps {
@@ -10,14 +10,14 @@ interface StatsCardProps {
    icon: LucideIcon
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({
+const StatsCard = ({
    title,
    value,
    description,
    icon: Icon,
    iconColor,
    iconBgColor,
-}) => {
+}: StatsCardProps) => {
    return (
       <Card className="hover:shadow-md transition-shadow">
          <CardContent>
@@ -30,6 +30,23 @@ const StatsCard: React.FC<StatsCardProps> = ({
                <div className={`p-3 rounded-full ${iconBgColor}`}>
                   <Icon className={`w-6 h-6 ${iconColor}`} />
                </div>
+            </div>
+         </CardContent>
+      </Card>
+   )
+}
+
+StatsCard.Skeleton = function StatsCardSkeleton() {
+   return (
+      <Card className="animate-pulse">
+         <CardContent>
+            <div className="flex items-center justify-between">
+               <div className="flex-1">
+                  <Skeleton className="h-4 w-24 mb-2" />
+                  <Skeleton className="h-8 w-16 mb-1" />
+                  <Skeleton className="h-3 w-20" />
+               </div>
+               <Skeleton className="h-12 w-12 rounded-full" />
             </div>
          </CardContent>
       </Card>

@@ -1,8 +1,9 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
 import { requestStatusConfig } from '@config/requestStatusConfig'
 import { formatRelativeTime } from '@utils/formatRelativeTime'
-import DashboardSkeleton from './components/DashboardSkeleton'
+import { Activity, Shortcut } from '@models/Dashboard.model'
 import { useFetchDashboardStats } from '@hooks/react-query'
+import ActivityCard from './components/ActivityCard'
+import ShortcutCard from './components/ShortcutCard'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import StatsCard from './components/StatsCard'
@@ -10,33 +11,29 @@ import { PageTitle } from '@shared'
 import { useMemo } from 'react'
 import {
    AlertCircle,
-   CheckCircle,
-   FileText,
-   MessageSquare,
-   ArrowRight,
    Calendar,
+   CheckCircle,
    ClipboardList,
-   LucideIcon,
-   Zap,
-   History,
    FilePlus2,
+   FileText,
+   History,
+   MessageSquare,
+   Zap,
 } from 'lucide-react'
-
-interface Activity {
-   action: string
-   time: string
-   type: string
-   icon: LucideIcon
-   color: string
-   sortDate: Date
-}
+import {
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+   Skeleton,
+} from '@shadcn'
 
 const Dashboard = () => {
    const navigate = useNavigate()
 
    const { stats, isLoading, isError } = useFetchDashboardStats()
 
-   // Estadísticas usando los datos optimizados
    const statsCards = useMemo(() => {
       if (!stats) return []
 
@@ -111,39 +108,35 @@ const Dashboard = () => {
          .slice(0, 6)
    }, [stats])
 
-   const shortcuts = useMemo(
+   const shortcuts: Shortcut[] = useMemo(
       () => [
          {
-            title: 'Nuevo Post',
+            label: 'Nuevo Post',
             icon: FilePlus2,
-            href: routesConfig.ADMIN_POST_NEW,
+            route: routesConfig.ADMIN_POST_NEW,
             description: 'Publicar nuevo contenido',
          },
          {
-            title: 'Nuevo Testimonio',
+            label: 'Nuevo Testimonio',
             icon: MessageSquare,
-            href: routesConfig.ADMIN_TESTIMONIAL_NEW,
+            route: routesConfig.ADMIN_TESTIMONIAL_NEW,
             description: 'Agregar testimonio',
          },
          {
-            title: 'Listado de Posts',
+            label: 'Listado de Posts',
             icon: FileText,
-            href: routesConfig.ADMIN_POST_LIST,
+            route: routesConfig.ADMIN_POST_LIST,
             description: 'Gestionar publicaciones',
          },
          {
-            title: 'Registro de Solicitudes',
+            label: 'Registro de Solicitudes',
             icon: ClipboardList,
-            href: routesConfig.ADMIN_REQUEST_LIST,
+            route: routesConfig.ADMIN_REQUEST_LIST,
             description: 'Revisar solicitudes',
          },
       ],
       []
    )
-
-   if (isLoading) {
-      return <DashboardSkeleton />
-   }
 
    if (isError) {
       return (
@@ -164,99 +157,111 @@ const Dashboard = () => {
 
          {/* Estadísticas principales */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {statsCards.map((stat, index) => (
-               <StatsCard
-                  key={`stat-card-${index}`}
-                  title={stat.title}
-                  value={stat.value}
-                  description={stat.description}
-                  icon={stat.icon}
-                  iconColor={stat.color}
-                  iconBgColor={stat.bgColor}
-               />
-            ))}
+            {isLoading ? (
+               <>
+                  {Array.from({ length: 4 }).map((_, index) => (
+                     <StatsCard.Skeleton key={`stat-skeleton-${index}`} />
+                  ))}
+               </>
+            ) : (
+               statsCards.map((stat, index) => (
+                  <StatsCard
+                     key={`stat-card-${index}`}
+                     title={stat.title}
+                     value={stat.value}
+                     description={stat.description}
+                     icon={stat.icon}
+                     iconColor={stat.color}
+                     iconBgColor={stat.bgColor}
+                  />
+               ))
+            )}
          </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Actividad Reciente - 2/3 del ancho */}
+            {/* Actividad reciente */}{' '}
             <Card className="lg:col-span-2">
                <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                     <History className="size-5 text-emerald-800" />
-                     Actividad Reciente
+                     {isLoading ? (
+                        <>
+                           <Skeleton className="h-5 w-5" />
+                           <Skeleton className="h-6 w-32" />
+                        </>
+                     ) : (
+                        <>
+                           <History className="size-5 text-emerald-800" />
+                           Actividad Reciente
+                        </>
+                     )}
                   </CardTitle>
 
-                  <CardDescription>Últimas acciones en el panel</CardDescription>
+                  <CardDescription>
+                     {isLoading ? (
+                        <Skeleton className="h-4 w-48" />
+                     ) : (
+                        'Últimas acciones en el panel'
+                     )}
+                  </CardDescription>
                </CardHeader>
 
                <CardContent>
                   <div className="space-y-4">
-                     {recentActivities.length === 0 ? (
+                     {isLoading ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                           <ActivityCard.Skeleton key={`activity-skeleton-${index}`} />
+                        ))
+                     ) : recentActivities.length === 0 ? (
                         <div className="text-center py-8 text-gray-500">
                            <Calendar className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                            <p>No hay actividad reciente</p>
                         </div>
                      ) : (
                         recentActivities.map((activity, index) => (
-                           <div
-                              key={index}
-                              className="flex items-start space-x-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
-                           >
-                              <div className={`p-2 rounded-full ${activity.color}`}>
-                                 <activity.icon className="w-4 h-4" />
-                              </div>
-
-                              <div className="flex-1 min-w-0">
-                                 <p className="text-sm font-medium text-gray-900 truncate">
-                                    {activity.action}
-                                 </p>
-                                 <p className="text-xs text-gray-500">{activity.time}</p>
-                              </div>
-                           </div>
+                           <ActivityCard
+                              key={`activity-card-${index}`}
+                              activity={activity}
+                           />
                         ))
                      )}
                   </div>
                </CardContent>
             </Card>
-
-            {/* Acciones Rápidas */}
+            {/* Acciones Rapidas */}
             <Card className="h-min">
                <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                     <Zap className="size-5 text-emerald-800" />
-                     Acciones Rápidas
+                     {isLoading ? (
+                        <>
+                           <Skeleton className="h-5 w-5" />
+                           <Skeleton className="h-6 w-28" />
+                        </>
+                     ) : (
+                        <>
+                           <Zap className="size-5 text-emerald-800" />
+                           Acciones Rápidas
+                        </>
+                     )}
                   </CardTitle>
 
-                  <CardDescription>Tareas frecuentes</CardDescription>
+                  <CardDescription>
+                     {isLoading ? <Skeleton className="h-4 w-24" /> : 'Tareas frecuentes'}
+                  </CardDescription>
                </CardHeader>
 
                <CardContent>
                   <div className="space-y-4">
-                     {shortcuts.map((shortcut) => (
-                        <div
-                           key={shortcut.title}
-                           className="w-full justify-start p-2 hover:bg-emerald-50 cursor-pointer rounded-md"
-                           onClick={() => navigate(shortcut.href)}
-                        >
-                           <div className="flex items-center gap-3 w-full">
-                              <div className="p-2 rounded-lg bg-emerald-100">
-                                 <shortcut.icon className="w-4 h-4 text-emerald-700" />
-                              </div>
-
-                              <div className="text-left flex-1">
-                                 <div className="font-medium text-gray-900 text-sm">
-                                    {shortcut.title}
-                                 </div>
-
-                                 <div className="text-xs text-gray-500">
-                                    {shortcut.description}
-                                 </div>
-                              </div>
-
-                              <ArrowRight className="w-4 h-4 text-gray-400" />
-                           </div>
-                        </div>
-                     ))}
+                     {isLoading
+                        ? Array.from({ length: 4 }).map((_, index) => (
+                             <ShortcutCard.Skeleton key={`action-skeleton-${index}`} />
+                          ))
+                        : shortcuts.map((shortcut, index) => (
+                             <ShortcutCard
+                                key={`shortcut-card-${index}`}
+                                shortcut={shortcut}
+                                onClick={() => navigate(shortcut.route)}
+                             />
+                          ))}
                   </div>
                </CardContent>
             </Card>

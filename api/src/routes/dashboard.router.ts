@@ -1,11 +1,13 @@
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
 import prismaClient from '../prisma/prismaClient'
+import { sleep } from '../utils/sleep'
 
 const dashboardRouter = Router()
 
 // GET -> estadísticas optimizadas para dashboard
 dashboardRouter.get('/stats', async (req: Request, res: Response) => {
+   await sleep(3000)
    try {
       // Ejecutar todas las queries en paralelo para mejor performance
       const [postsStats, testimonialsStats, requestsStats, recentPosts, recentRequests] =
