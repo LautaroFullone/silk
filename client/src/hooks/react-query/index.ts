@@ -16,6 +16,8 @@ import useFetchPosts from './Posts/useFetchPosts'
 import useFetchPost from './Posts/useFetchPost'
 import useUpdatePost from './Posts/useUpdatePost'
 
+import useFetchDashboardStats from './Dashboard/useFetchDashboardStats'
+
 export {
    // Testimonials
    useCreateTestimonial,
@@ -37,4 +39,7 @@ export {
    useFetchPosts,
    useFetchPost,
    useUpdatePost,
+
+   // Dashboard
+   useFetchDashboardStats,
 }

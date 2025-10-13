@@ -3,6 +3,7 @@ dotenv.config() // Cargar variables de entorno al inicio para envitar errores
 
 import serviceRequestsRouter from './routes/serviceRequests.router'
 import testimonialsRouter from './routes/testimonials.router'
+import dashboardRouter from './routes/dashboard.router'
 import postsRouter from './routes/posts.router'
 import express from 'express'
 import morgan from 'morgan'
@@ -19,6 +20,7 @@ app.use(morgan('dev'))
 app.use('/api/posts', postsRouter)
 app.use('/api/service-requests', serviceRequestsRouter)
 app.use('/api/testimonials', testimonialsRouter)
+app.use('/api/dashboard', dashboardRouter)
 
 app.listen(PORT, () => {
    console.log(`🚀 Server running on http://localhost:${PORT}`)

@@ -84,7 +84,7 @@ const RequestsTable: React.FC<RequestTableProps> = ({
                      <TableHead>
                         <div className="flex items-center gap-2">
                            <Sparkles className="w-4 h-4 text-emerald-800" />
-                           Servicios
+                           Servicio
                         </div>
                      </TableHead>
 

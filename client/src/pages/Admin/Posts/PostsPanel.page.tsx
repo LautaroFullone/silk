@@ -1,10 +1,10 @@
 import { usePagination, useSearchAndSort } from '@hooks'
+import { FileText, Plus, Search } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
 import { useFetchPosts } from '@hooks/react-query'
 import { ActionButton, PageTitle } from '@shared'
 import PostsTable from './components/PostsTable'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Search } from 'lucide-react'
 import {
    Button,
    Card,
@@ -86,7 +86,10 @@ const PostsPanel = () => {
 
          <Card>
             <CardHeader>
-               <CardTitle className="flex items-center gap-2">Listado de Posts</CardTitle>
+               <CardTitle className="flex items-center gap-2">
+                  <FileText className="size-5 text-emerald-800" />
+                  Listado de Posts
+               </CardTitle>
                <CardDescription>Filtrá por Título, Autor y/o Categoría</CardDescription>
             </CardHeader>
 

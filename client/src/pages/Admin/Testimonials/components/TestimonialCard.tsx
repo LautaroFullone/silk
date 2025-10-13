@@ -1,4 +1,4 @@
-import { Edit, MoreHorizontal, Quote, SquarePen, Star, Trash2, User } from 'lucide-react'
+import { Edit, MoreVertical, Quote, SquarePen, Star, Trash2, User } from 'lucide-react'
 import { getPublicImageUrl } from '@utils/getPublicImage'
 import { Testimonial } from '@models/Testimonial.model'
 import { routesConfig } from '@config/routesConfig'
@@ -120,7 +120,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete }: TestimonialCardProps
                      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
                         <DropdownMenuTrigger asChild>
                            <Button size="icon" variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
+                              <MoreVertical className="size-4" />
                               <span className="sr-only">Abrir menú</span>
                            </Button>
                         </DropdownMenuTrigger>

@@ -1,9 +1,9 @@
 import { useFetchTestimonials, usePagination, useSearchAndSort } from '@hooks'
 import TestimonialsTable from './components/TestimonialsTable'
+import { MessageSquare, Plus, Search } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
 import { ActionButton, PageTitle } from '@shared'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Search } from 'lucide-react'
 import {
    Button,
    Card,
@@ -85,6 +85,7 @@ const TestimonialsPanel = () => {
          <Card>
             <CardHeader>
                <CardTitle className="flex items-center gap-2">
+                  <MessageSquare className="size-5 text-emerald-800" />
                   Listado de Testimonios
                </CardTitle>
 

@@ -1,7 +1,7 @@
 import { useFetchRequests, usePagination, useSearchAndSort } from '@hooks'
 import { requestStatusConfig } from '@config/requestStatusConfig'
 import RequestsTable from './components/RequestsTable'
-import { Search } from 'lucide-react'
+import { ClipboardList, Search } from 'lucide-react'
 import { PageTitle } from '@shared'
 import {
    Button,
@@ -63,6 +63,7 @@ const RequestsPanel = () => {
          <Card>
             <CardHeader>
                <CardTitle className="flex items-center gap-2">
+                  <ClipboardList className="size-5 text-emerald-800" />
                   Listado de Solicitudes
                </CardTitle>
 

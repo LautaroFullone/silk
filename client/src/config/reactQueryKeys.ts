@@ -16,4 +16,6 @@ export const queriesKeys = {
    CREATE_REQUEST: 'create_request',
    UPDATE_REQUEST: 'update_request',
    DELETE_REQUEST: 'delete_request',
+
+   FETCH_DASHBOARD_STATS: 'dashboard_stats',
 } as const
