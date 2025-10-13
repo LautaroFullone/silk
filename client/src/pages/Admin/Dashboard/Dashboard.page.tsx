@@ -1,118 +1,167 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shadcn'
+import { requestStatusConfig } from '@config/requestStatusConfig'
+import { formatRelativeTime } from '@utils/formatRelativeTime'
+import DashboardSkeleton from './components/DashboardSkeleton'
+import { useFetchDashboardStats } from '@hooks/react-query'
+import { routesConfig } from '@config/routesConfig'
+import { useNavigate } from 'react-router-dom'
 import StatsCard from './components/StatsCard'
 import { PageTitle } from '@shared'
+import { useMemo } from 'react'
 import {
-   DollarSign,
+   AlertCircle,
+   CheckCircle,
    FileText,
    MessageSquare,
-   ShoppingBag,
-   TrendingUp,
-   Users,
+   ArrowRight,
+   Calendar,
+   ClipboardList,
+   LucideIcon,
+   Zap,
+   History,
+   FilePlus2,
 } from 'lucide-react'
 
-const stats = [
-   {
-      title: 'Posts Totales',
-      value: '24',
-      description: '3 nuevos esta semana',
-      icon: FileText,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-   },
-   {
-      title: 'Testimonios',
-      value: '18',
-      description: '2 destacados',
-      icon: MessageSquare,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-   },
-   {
-      title: 'Productos',
-      value: '12',
-      description: '8 activos',
-      icon: ShoppingBag,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-   },
-   {
-      title: 'Ingresos',
-      value: '$2,847',
-      description: '+12% vs mes anterior',
-      icon: DollarSign,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-   },
-   {
-      title: 'Visitas',
-      value: '1,234',
-      description: '+8% esta semana',
-      icon: TrendingUp,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
-   },
-   {
-      title: 'Usuarios',
-      value: '89',
-      description: '5 nuevos hoy',
-      icon: Users,
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-50',
-   },
-]
-
-const activities = [
-   {
-      action: 'Nuevo post publicado',
-      time: 'Hace 2 horas',
-      type: 'post',
-   },
-   {
-      action: 'Testimonio destacado',
-      time: 'Hace 4 horas',
-      type: 'testimonial',
-   },
-   {
-      action: 'Producto actualizado',
-      time: 'Hace 1 día',
-      type: 'product',
-   },
-   {
-      action: 'Usuario registrado',
-      time: 'Hace 2 días',
-      type: 'user',
-   },
-]
-
-const shortcuts = [
-   { title: 'Nuevo Post', icon: FileText, href: '/admin/posts' },
-   {
-      title: 'Agregar Testimonio',
-      icon: MessageSquare,
-      href: '/admin/testimonios',
-   },
-   {
-      title: 'Crear Producto',
-      icon: ShoppingBag,
-      href: '/admin/productos',
-   },
-   {
-      title: 'Ver Estadísticas',
-      icon: TrendingUp,
-      href: '/admin/estadisticas',
-   },
-]
+interface Activity {
+   action: string
+   time: string
+   type: string
+   icon: LucideIcon
+   color: string
+   sortDate: Date
+}
 
 const Dashboard = () => {
+   const navigate = useNavigate()
+
+   const { stats, isLoading, isError } = useFetchDashboardStats()
+
+   // Estadísticas usando los datos optimizados
+   const statsCards = useMemo(() => {
+      if (!stats) return []
+
+      return [
+         {
+            title: 'Posts Publicados',
+            value: stats.posts.total,
+            description: `${stats.posts.active} activos`,
+            icon: FileText,
+            color: 'text-blue-600',
+            bgColor: 'bg-blue-50',
+         },
+         {
+            title: 'Testimonios',
+            value: stats.testimonials.total,
+            description: `${stats.testimonials.highlighted} destacados`,
+            icon: MessageSquare,
+            color: 'text-emerald-600',
+            bgColor: 'bg-emerald-50',
+         },
+         {
+            title: 'Solicitudes',
+            value: stats.requests.total,
+            description: `${stats.requests.byStatus.PENDING} pendientes`,
+            icon: ClipboardList,
+            color: 'text-orange-600',
+            bgColor: 'bg-orange-50',
+         },
+         {
+            title: 'Contrataciones',
+            value: stats.requests.byStatus.CONTRACTED,
+            description: 'Este mes',
+            icon: CheckCircle,
+            color: 'text-purple-600',
+            bgColor: 'bg-purple-50',
+         },
+      ]
+   }, [stats])
+
+   const recentActivities = useMemo(() => {
+      if (!stats) return []
+
+      const activities: Activity[] = []
+
+      // Posts recientes (ya optimizados desde el servidor)
+      stats.posts.recent.forEach((post) => {
+         activities.push({
+            action: `Post "${post.title}" publicado`,
+            time: formatRelativeTime(post.date),
+            type: 'post',
+            icon: FileText,
+            color: 'bg-blue-100 text-blue-700',
+            sortDate: new Date(post.date),
+         })
+      })
+
+      // Solicitudes recientes (ya optimizadas desde el servidor)
+      stats.requests.recent.forEach((request) => {
+         const statusInfo = requestStatusConfig[request.status]
+         activities.push({
+            action: `Solicitud de ${request.name} - ${statusInfo.label}`,
+            time: formatRelativeTime(request.createdAt),
+            type: 'request',
+            icon: statusInfo.icon,
+            color: statusInfo.color,
+            sortDate: new Date(request.createdAt),
+         })
+      })
+
+      return activities
+         .sort((a, b) => b.sortDate.getTime() - a.sortDate.getTime())
+         .slice(0, 6)
+   }, [stats])
+
+   const shortcuts = [
+      {
+         title: 'Nuevo Post',
+         icon: FilePlus2,
+         href: routesConfig.ADMIN_POST_NEW,
+         description: 'Publicar nuevo contenido',
+      },
+      {
+         title: 'Nuevo Testimonio',
+         icon: MessageSquare,
+         href: routesConfig.ADMIN_TESTIMONIAL_NEW,
+         description: 'Agregar testimonio',
+      },
+      {
+         title: 'Listado de Posts',
+         icon: FileText,
+         href: routesConfig.ADMIN_POST_LIST,
+         description: 'Gestionar publicaciones',
+      },
+      {
+         title: 'Registro de Solicitudes',
+         icon: ClipboardList,
+         href: routesConfig.ADMIN_REQUEST_LIST,
+         description: 'Revisar solicitudes',
+      },
+   ]
+
+   if (isLoading) {
+      return <DashboardSkeleton />
+   }
+
+   if (isError) {
+      return (
+         <div className="flex flex-col items-center justify-center space-y-2">
+            <AlertCircle className="size-12 text-emerald-800" />
+            <p className="text-lg font-medium">Error al cargar el dashboard</p>
+            <p className="text-sm text-muted-foreground">Por favor, recarga la página</p>
+         </div>
+      )
+   }
+
    return (
       <>
          <PageTitle
             title="Panel de Control"
-            description="Bienvenido al panel de administración de SILK"
+            description="Resumen de tu plataforma SILK"
          />
 
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {stats.map((stat, index) => (
+         {/* Estadísticas principales */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {statsCards.map((stat, index) => (
                <StatsCard
                   key={`stat-card-${index}`}
                   title={stat.title}
@@ -125,51 +174,85 @@ const Dashboard = () => {
             ))}
          </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Actividad Reciente - 2/3 del ancho */}
+            <Card className="lg:col-span-2">
                <CardHeader>
-                  <CardTitle>Actividad Reciente</CardTitle>
-                  <CardDescription>Últimas acciones en tu panel</CardDescription>
+                  <CardTitle className="flex items-center gap-2">
+                     <History className="size-5 text-emerald-800" />
+                     Actividad Reciente
+                  </CardTitle>
+
+                  <CardDescription>Últimas acciones en el panel</CardDescription>
                </CardHeader>
 
                <CardContent>
                   <div className="space-y-4">
-                     {activities.map((activity, index) => (
-                        <div
-                           key={index}
-                           className="flex items-center space-x-3 p-3 rounded-md bg-gray-50"
-                        >
-                           <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                           <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                 {activity.action}
-                              </p>
-                              <p className="text-xs text-gray-500">{activity.time}</p>
-                           </div>
+                     {recentActivities.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                           <Calendar className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                           <p>No hay actividad reciente</p>
                         </div>
-                     ))}
+                     ) : (
+                        recentActivities.map((activity, index) => (
+                           <div
+                              key={index}
+                              className="flex items-start space-x-3 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                           >
+                              <div className={`p-2 rounded-full ${activity.color}`}>
+                                 <activity.icon className="w-4 h-4" />
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                 <p className="text-sm font-medium text-gray-900 truncate">
+                                    {activity.action}
+                                 </p>
+                                 <p className="text-xs text-gray-500">{activity.time}</p>
+                              </div>
+                           </div>
+                        ))
+                     )}
                   </div>
                </CardContent>
             </Card>
 
-            <Card>
+            {/* Acciones Rápidas */}
+            <Card className="h-min">
                <CardHeader>
-                  <CardTitle>Accesos Rápidos</CardTitle>
-                  <CardDescription>Acciones frecuentes</CardDescription>
+                  <CardTitle className="flex items-center gap-2">
+                     <Zap className="size-5 text-emerald-800" />
+                     Acciones Rápidas
+                  </CardTitle>
+
+                  <CardDescription>Tareas frecuentes</CardDescription>
                </CardHeader>
 
                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-4">
                      {shortcuts.map((shortcut) => (
-                        <button
+                        <div
                            key={shortcut.title}
-                           className="p-4 text-left rounded-md border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-colors"
+                           className="w-full justify-start p-2 hover:bg-emerald-50 cursor-pointer rounded-md"
+                           onClick={() => navigate(shortcut.href)}
                         >
-                           <shortcut.icon className="w-5 h-5 text-emerald-800 mb-2" />
-                           <p className="text-sm font-medium text-gray-900">
-                              {shortcut.title}
-                           </p>
-                        </button>
+                           <div className="flex items-center gap-3 w-full">
+                              <div className="p-2 rounded-lg bg-emerald-100">
+                                 <shortcut.icon className="w-4 h-4 text-emerald-700" />
+                              </div>
+
+                              <div className="text-left flex-1">
+                                 <div className="font-medium text-gray-900 text-sm">
+                                    {shortcut.title}
+                                 </div>
+
+                                 <div className="text-xs text-gray-500">
+                                    {shortcut.description}
+                                 </div>
+                              </div>
+
+                              <ArrowRight className="w-4 h-4 text-gray-400" />
+                           </div>
+                        </div>
                      ))}
                   </div>
                </CardContent>
@@ -178,4 +261,5 @@ const Dashboard = () => {
       </>
    )
 }
+
 export default Dashboard
