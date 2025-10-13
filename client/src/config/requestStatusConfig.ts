@@ -33,7 +33,7 @@ export const requestStatusConfig: Record<RequestStatus, RequestStatusInfo> = {
    CONTRACTED: {
       label: 'Contratado',
       icon: CheckCircle,
-      color: 'bg-emerald-100 text-emerald-700',
+      color: 'bg-teal-100 text-teal-700',
       timelineColor: 'emerald',
       description: 'El servicio ha sido contratado.',
    },

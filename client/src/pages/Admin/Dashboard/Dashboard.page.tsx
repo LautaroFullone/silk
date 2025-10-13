@@ -46,32 +46,32 @@ const Dashboard = () => {
             value: stats.posts.total,
             description: `${stats.posts.active} activos`,
             icon: FileText,
-            color: 'text-blue-600',
-            bgColor: 'bg-blue-50',
+            color: 'text-sky-600',
+            bgColor: 'bg-sky-50',
          },
          {
             title: 'Testimonios',
             value: stats.testimonials.total,
             description: `${stats.testimonials.highlighted} destacados`,
             icon: MessageSquare,
-            color: 'text-emerald-600',
-            bgColor: 'bg-emerald-50',
-         },
-         {
-            title: 'Solicitudes',
-            value: stats.requests.total,
-            description: `${stats.requests.byStatus.PENDING} pendientes`,
-            icon: ClipboardList,
-            color: 'text-orange-600',
-            bgColor: 'bg-orange-50',
+            color: 'text-purple-600',
+            bgColor: 'bg-purple-50',
          },
          {
             title: 'Contrataciones',
             value: stats.requests.byStatus.CONTRACTED,
             description: 'Este mes',
             icon: CheckCircle,
-            color: 'text-purple-600',
-            bgColor: 'bg-purple-50',
+            color: 'text-teal-600',
+            bgColor: 'bg-teal-50',
+         },
+         {
+            title: 'Solicitudes',
+            value: stats.requests.total,
+            description: `${stats.requests.byStatus.PENDING} pendientes`,
+            icon: ClipboardList,
+            color: 'text-rose-600',
+            bgColor: 'bg-rose-50',
          },
       ]
    }, [stats])
@@ -88,7 +88,7 @@ const Dashboard = () => {
             time: formatRelativeTime(post.date),
             type: 'post',
             icon: FileText,
-            color: 'bg-blue-100 text-blue-700',
+            color: 'bg-sky-100 text-sky-700',
             sortDate: new Date(post.date),
          })
       })
@@ -111,32 +111,35 @@ const Dashboard = () => {
          .slice(0, 6)
    }, [stats])
 
-   const shortcuts = [
-      {
-         title: 'Nuevo Post',
-         icon: FilePlus2,
-         href: routesConfig.ADMIN_POST_NEW,
-         description: 'Publicar nuevo contenido',
-      },
-      {
-         title: 'Nuevo Testimonio',
-         icon: MessageSquare,
-         href: routesConfig.ADMIN_TESTIMONIAL_NEW,
-         description: 'Agregar testimonio',
-      },
-      {
-         title: 'Listado de Posts',
-         icon: FileText,
-         href: routesConfig.ADMIN_POST_LIST,
-         description: 'Gestionar publicaciones',
-      },
-      {
-         title: 'Registro de Solicitudes',
-         icon: ClipboardList,
-         href: routesConfig.ADMIN_REQUEST_LIST,
-         description: 'Revisar solicitudes',
-      },
-   ]
+   const shortcuts = useMemo(
+      () => [
+         {
+            title: 'Nuevo Post',
+            icon: FilePlus2,
+            href: routesConfig.ADMIN_POST_NEW,
+            description: 'Publicar nuevo contenido',
+         },
+         {
+            title: 'Nuevo Testimonio',
+            icon: MessageSquare,
+            href: routesConfig.ADMIN_TESTIMONIAL_NEW,
+            description: 'Agregar testimonio',
+         },
+         {
+            title: 'Listado de Posts',
+            icon: FileText,
+            href: routesConfig.ADMIN_POST_LIST,
+            description: 'Gestionar publicaciones',
+         },
+         {
+            title: 'Registro de Solicitudes',
+            icon: ClipboardList,
+            href: routesConfig.ADMIN_REQUEST_LIST,
+            description: 'Revisar solicitudes',
+         },
+      ],
+      []
+   )
 
    if (isLoading) {
       return <DashboardSkeleton />
