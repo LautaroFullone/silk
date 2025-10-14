@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@shadcn'
 import { ContactForm } from '@shared'
+import { MockTestimonialsSection } from '../Testimonials/components'
 
 const servicios = [
    {
@@ -168,73 +169,71 @@ const servicios = [
 
 const Services = () => {
    return (
-      <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12">
-         <p className="text-silk-primary font-bold text-xl mb-6 text-center">
-            NUESTROS SERVICIOS
-         </p>
+      <>
+         <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12">
+            <p className="text-silk-primary font-bold text-xl mb-6 text-center">
+               NUESTROS SERVICIOS
+            </p>
 
-         <h2 className="font-very-vogue text-left text-3xl sm:text-5xl text-silk-primary mb-12 ml-0">
-            <span>
-               "Un armario que{' '}
-               <span className="italic font-vogue-text-italic">te inspira</span>
-               ."
-            </span>
-            <br />
-            <span>
-               "Una imagen que{' '}
-               <span className="italic font-vogue-text-italic">te representa</span>
-               ."
-            </span>
-            <br />
-            <span>
-               "Una confianza que{' '}
-               <span className="italic font-vogue-text-italic">
-                  transforma realidades
+            <h2 className="font-very-vogue text-left text-3xl sm:text-5xl text-silk-primary mb-12 ml-0">
+               <span>
+                  "Un armario que{' '}
+                  <span className="italic font-vogue-text-italic">te inspira</span>
+                  ."
                </span>
-               ."
-            </span>
-         </h2>
+               <br />
+               <span>
+                  "Una imagen que{' '}
+                  <span className="italic font-vogue-text-italic">te representa</span>
+                  ."
+               </span>
+               <br />
+               <span>
+                  "Una confianza que{' '}
+                  <span className="italic font-vogue-text-italic">
+                     transforma realidades
+                  </span>
+                  ."
+               </span>
+            </h2>
 
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 ">
-            {servicios.map((servicio) => (
-               <div key={servicio.id} className="max-w-[350px] text-silk-primary ">
-                  {/* TODO: pasaria imagen a codigo */}
-                  <img
-                     src={servicio.image}
-                     className="w-full rounded-sm mb-5 transition-transform duration-200 hover:scale-105"
-                  />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 ">
+               {servicios.map((servicio) => (
+                  <div key={servicio.id} className="max-w-[350px] text-silk-primary ">
+                     {/* TODO: pasaria imagen a codigo */}
+                     <img
+                        src={servicio.image}
+                        className="w-full rounded-sm mb-5 transition-transform duration-200 hover:scale-105"
+                     />
 
-                  <Accordion type="single" collapsible className="w-full mt-2">
-                     {servicio.opciones.map((opcion) => (
-                        <AccordionItem withBorder key={opcion.id} value={opcion.id}>
-                           <AccordionTrigger className="font-semibold pl-1 text-silk-primary py-2 text-base transition cursor-pointer ">
-                              {opcion.titulo}
-                           </AccordionTrigger>
-                           <AccordionContent className="pb-4 pt-1 pl-1 text-base cursor-default">
-                              {opcion.contenido}
-                           </AccordionContent>
-                        </AccordionItem>
-                     ))}
-                  </Accordion>
-               </div>
-            ))}
-         </div>
+                     <Accordion type="single" collapsible className="w-full mt-2">
+                        {servicio.opciones.map((opcion) => (
+                           <AccordionItem withBorder key={opcion.id} value={opcion.id}>
+                              <AccordionTrigger className="font-semibold pl-1 text-silk-primary py-2 text-base transition cursor-pointer ">
+                                 {opcion.titulo}
+                              </AccordionTrigger>
+                              <AccordionContent className="pb-4 pt-1 pl-1 text-base cursor-default">
+                                 {opcion.contenido}
+                              </AccordionContent>
+                           </AccordionItem>
+                        ))}
+                     </Accordion>
+                  </div>
+               ))}
+            </div>
 
-         {/* TODO: En vez de mostrar el formulario, poner un boton que lo abra en un modal */}
-         <ContactForm isServiceInputEnabled />
+            {/* TODO: En vez de mostrar el formulario, poner un boton que lo abra en un modal */}
+            <ContactForm isServiceInputEnabled />
+         </section>
 
-         {/* TODO: VISTA DE TESTIMONIOS */}
-
-         {/* <div className="flex justify-center ">
-            <button
-               onClick={() => alert('Hacer el quiz!')}
-               className="bg-silk-primary px-5 py-2 sm:px-6 sm:py-3 rounded-sm shadow-lg hover:scale-105          
-                  flex items-center cursor-pointer transition-all"
-            >
-               COMENZÁ HOY
-            </button>
-         </div> */}
-      </section>
+         {/* Sección de testimonios */}
+         <MockTestimonialsSection
+            title="Nuestros clientes lo confirman"
+            subtitle="Historias reales de transformación y estilo"
+            maxItems={4}
+            backgroundColor="white"
+         />
+      </>
    )
 }
 
