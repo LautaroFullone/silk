@@ -82,12 +82,17 @@ const FooterClient = () => {
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-xs opacity-70 pb-2">
                <p className="m-0">©2025 ESTUDIOSILK. TODOS LOS DERECHOS RESERVADOS</p>
                <div className="flex gap-3">
-                  <Link to="/" className="hover:underline">
+                  <span className="cursor-pointer hover:underline">
                      Términos y condiciones
-                  </Link>
+                  </span>
 
-                  <Link to="/" className="hover:underline">
-                     Privacy Policy
+                  <span className="cursor-pointer hover:underline">Privacy Policy</span>
+
+                  <Link
+                     to={routesConfig.ADMIN_DASHBOARD}
+                     className="cursor-pointer hover:underline"
+                  >
+                     Acceso
                   </Link>
                </div>
             </div>

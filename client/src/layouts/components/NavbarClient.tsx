@@ -4,11 +4,11 @@ import { Link, useLocation } from 'react-router-dom'
 import { routesConfig } from '@config/routesConfig'
 
 const navLinks = [
-   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
-   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
+   // { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
    { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
    { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
    { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
+   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
 ]
 
 const NavbarClient = forwardRef<HTMLElement>((_, ref) => {

@@ -15,17 +15,15 @@ const Home = () => {
          <MockTestimonialsSection
             title="Testimonios que inspiran"
             subtitle="Lo que dicen nuestros clientes sobre su transformación"
-            maxItems={6}
             showOnlyHighlighted={false}
-            backgroundColor="white"
          />
-         <TestimonialsSection
+         {/* <TestimonialsSection
             title="Testimonios que inspiran"
             subtitle="Lo que dicen nuestros clientes sobre su transformación"
             maxItems={6}
             showOnlyHighlighted={false}
             backgroundColor="white"
-         />
+         /> */}
          <PostsSection />
       </>
    )
