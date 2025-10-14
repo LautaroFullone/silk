@@ -67,7 +67,7 @@ const PostForm = () => {
       handleSubmit,
       formState: { errors, isDirty },
    } = useForm<PostFormData>({
-      mode: 'onChange',
+      mode: 'onSubmit',
       reValidateMode: 'onChange',
       defaultValues: initialFormData,
    })
@@ -124,9 +124,8 @@ const PostForm = () => {
       <>
          <div className="flex justify-between items-center gap-2">
             <PageTitle
-               title={isEdit ? 'Editar Post' : 'Crear Nuevo Post'}
                hasGoBack
-               goBackRoute="ADMIN_POST_LIST"
+               title={isEdit ? 'Editar Post' : 'Crear Nuevo Post'}
                description={
                   isEdit
                      ? 'Actualiza la información del post'
@@ -395,7 +394,10 @@ const PostForm = () => {
                                  editor={editor}
                                  formattingToolbar
                                  editable={!isMutationPending}
-                                 className="px-2 py-2"
+                                 className={cn(
+                                    'px-2 pt-2',
+                                    editor.document.length === 1 ? 'pb-8 sm:pb-2' : 'pb-2'
+                                 )}
                                  onChange={() => {
                                     // Actualizar el formulario cuando cambie el contenido del editor
                                     setValue('content', editor.document, {

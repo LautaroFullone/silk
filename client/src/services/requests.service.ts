@@ -47,7 +47,6 @@ export async function updateServiceRequestStatus({
    requestId: string
    status: string
 }) {
-   console.log('Updating request status:', requestId, status)
    type Response = Pick<ResponseApi, 'message' | 'request'>
    const { data } = await api.patch<Response>(`/service-requests/${requestId}/status`, {
       status,

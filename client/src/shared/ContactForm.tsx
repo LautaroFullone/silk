@@ -72,7 +72,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                </p>
 
                <div className="space-y-4 mt-6">
-                  <div className="grid grid-cols-2 gap-4 items-start">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                      <InputForm
                         type="text"
                         name="name"
@@ -118,7 +118,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                      />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 items-start">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                      <InputForm
                         type="text"
                         name="ubication"
@@ -203,7 +203,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                      />
                   )}
 
-                  <div className="grid grid-cols-2 gap-4 items-start">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
                      <SelectForm
                         name="budget"
                         label="¿Cual es tu presupuesto para ropa y accesorios?"

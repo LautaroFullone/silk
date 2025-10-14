@@ -55,7 +55,7 @@ const TestimonialForm = () => {
       handleSubmit,
       formState: { errors, isDirty },
    } = useForm<TestimonialFormData>({
-      mode: 'onChange',
+      mode: 'onSubmit',
       reValidateMode: 'onChange',
       defaultValues: initialFormData,
    })
@@ -109,9 +109,8 @@ const TestimonialForm = () => {
       <>
          <div className="flex justify-between items-center gap-2">
             <PageTitle
-               title={isEdit ? 'Editar Testimonio' : 'Crear Nuevo Testimonio'}
                hasGoBack
-               goBackRoute="ADMIN_TESTIMONIAL_LIST"
+               title={isEdit ? 'Editar Testimonio' : 'Crear Nuevo Testimonio'}
                description={
                   isEdit
                      ? 'Actualiza la información del testimonio'

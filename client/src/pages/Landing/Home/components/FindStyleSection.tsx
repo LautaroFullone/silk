@@ -22,7 +22,7 @@ const FindStyleSection = () => {
                </div>
 
                <div className="flex flex-col items-center justify-center px-10 sm:px-20 py-8 pb-13 w-full">
-                  <h1 className="font-bold text-3xl sm:text-4xl text-center mb-4">
+                  <h1 className="font-bold text-4xl text-center mb-4">
                      ¿Todavía no <br /> encontraste tu estilo?
                   </h1>
 
