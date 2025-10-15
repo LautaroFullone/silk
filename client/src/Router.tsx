@@ -14,6 +14,7 @@ import {
    TestimonialForm,
    RequestsPanel,
    NotFound,
+   Quiz,
 } from './pages'
 
 const Router = () => {
@@ -26,7 +27,7 @@ const Router = () => {
 
                <Route path={routesConfig.CLIENT_BLOG} element={<Blog />} />
 
-               <Route path={routesConfig.CLIENT_QUIZ} element={<>Quiz</>} />
+               <Route path={routesConfig.CLIENT_QUIZ} element={<Quiz />} />
 
                <Route path={routesConfig.CLIENT_SERVICES} element={<Services />} />
 
