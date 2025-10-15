@@ -35,7 +35,7 @@ const PostsPanel = () => {
       clearFilters,
       hasActiveFilters,
    } = useSearchAndSort({
-      data: posts || [],
+      data: posts,
       searchFields: ['title', 'author', 'category'],
       initialFilters: { isActive: 'all' },
    })
