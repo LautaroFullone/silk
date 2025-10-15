@@ -55,7 +55,9 @@ const PostForm = () => {
    const { post: postToEdit, isLoading: isLoadingPost } = useFetchPost({
       postId,
    })
-   const { categories, isLoading: isCategoriesLoading } = useFetchPosts()
+   const { categories, isLoading: isCategoriesLoading } = useFetchPosts({
+      onlyActive: false,
+   })
    const { createPostMutate, isPending: isCreatePostPending } = useCreatePost()
    const { updatePostMutate, isPending: isUpdatePostPending } = useUpdatePost()
 

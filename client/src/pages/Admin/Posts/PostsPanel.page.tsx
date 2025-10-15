@@ -24,7 +24,7 @@ import {
 const PostsPanel = () => {
    const navigate = useNavigate()
 
-   const { posts, isLoading: isLoadingPosts } = useFetchPosts()
+   const { posts, isLoading: isLoadingPosts } = useFetchPosts({ onlyActive: false })
 
    const {
       items: filteredAndSortedPosts,

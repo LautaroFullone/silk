@@ -10,7 +10,7 @@ const Quiz = () => {
       <div className="bg-silk-tertiary overflow-hidden">
          <div className="min-h-dvh flex flex-col items-center justify-center px-4 ">
             <div className="max-w-2xl mx-auto text-center">
-               <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary mb-6 leading-tight">
+               <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary mb-4 leading-tight">
                   ¡Estamos creando algo
                   <br />
                   <span className="italic font-light">increíble</span> para vos!
