@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-r
 import { Button } from '@shadcn'
 
 interface PaginationProps {
+   isLanding?: boolean
    currentPage: number
    totalPages: number
    onPageChange: (page: number) => void
@@ -10,6 +11,7 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({
+   isLanding = false,
    currentPage,
    totalPages,
    onPageChange,
@@ -17,8 +19,12 @@ const Pagination: React.FC<PaginationProps> = ({
    canGoPrevious,
 }) => {
    return (
-      <div className={'flex items-center justify-end gap-4'}>
-         <div className="flex  items-center justify-center text-sm font-medium">
+      <div className="flex items-center justify-end gap-4">
+         <div
+            className={`flex items-center justify-center text-sm font-medium ${
+               isLanding && 'text-silk-secondary/80'
+            }`}
+         >
             Página {currentPage} de {totalPages}
          </div>
 
@@ -26,7 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <Button
                variant="outline"
                size="icon"
-               className="size-8"
+               className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
                onClick={() => onPageChange(1)}
                disabled={!canGoPrevious}
             >
@@ -37,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <Button
                variant="outline"
                size="icon"
-               className="size-8"
+               className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
                onClick={() => onPageChange(currentPage - 1)}
                disabled={!canGoPrevious}
             >
@@ -48,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <Button
                variant="outline"
                size="icon"
-               className="size-8"
+               className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
                onClick={() => onPageChange(currentPage + 1)}
                disabled={!canGoNext}
             >
@@ -59,7 +65,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <Button
                variant="outline"
                size="icon"
-               className="size-8"
+               className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
                onClick={() => onPageChange(totalPages)}
                disabled={!canGoNext}
             >

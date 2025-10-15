@@ -2,6 +2,7 @@ import { usePagination, useSearchAndSort, useMobile } from '@hooks'
 import { useFetchPosts } from '@hooks/react-query'
 import { FileText, Search } from 'lucide-react'
 import PostCard from './components/PostCard'
+import { Pagination } from '@shared'
 import {
    Button,
    Input,
@@ -12,14 +13,6 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@shadcn'
-import {
-   Pagination,
-   PaginationContent,
-   PaginationItem,
-   PaginationLink,
-   PaginationNext,
-   PaginationPrevious,
-} from '@shadcn/pagination'
 
 const Blog = () => {
    const isMobile = useMobile()
@@ -46,10 +39,9 @@ const Blog = () => {
          categoryName: post.category.name, // Flatten category name for search
       })),
       searchFields: ['title', 'author', 'description'],
-      initialFilters: { category: 'all' },
+      initialFilters: { categoryName: 'all' },
    })
 
-   // Pagination
    const {
       currentPage,
       totalPages,
@@ -62,7 +54,7 @@ const Blog = () => {
       setItemsPerPage,
    } = usePagination({
       totalItems: filteredAndSortedPosts.length,
-      itemsPerPage: 10,
+      itemsPerPage: 6,
    })
 
    const paginatedPosts = filteredAndSortedPosts.slice(startIndex, endIndex)
@@ -88,7 +80,7 @@ const Blog = () => {
                      htmlFor="search-filter"
                      className="text-silk-secondary font-medium"
                   >
-                     Buscar por título, autor o categoría
+                     Buscar por título, autor o descripción
                   </Label>
                   <div className="relative mt-2">
                      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-silk-secondary/60" />
@@ -97,7 +89,7 @@ const Blog = () => {
                         value={searchTerm}
                         disabled={isLoadingPosts}
                         className="pl-10 bg-white/80 backdrop-blur-sm border-silk-secondary/30 text-silk-secondary placeholder:text-silk-secondary/60"
-                        placeholder="Ej: Tendencias de Moda, Colores..."
+                        placeholder="Ej: Tendencias en Colores..."
                         onChange={(e) => setSearchTerm(e.target.value)}
                      />
                   </div>
@@ -111,8 +103,8 @@ const Blog = () => {
                      Categoría
                   </Label>
                   <Select
-                     value={filters.category || 'all'}
-                     onValueChange={(value) => updateFilter('category', value)}
+                     value={filters.categoryName || 'all'}
+                     onValueChange={(value) => updateFilter('categoryName', value)}
                      disabled={isLoadingPosts}
                   >
                      <SelectTrigger
@@ -124,9 +116,9 @@ const Blog = () => {
 
                      <SelectContent>
                         <SelectItem value="all">Todas las categorías</SelectItem>
-                        {Object.keys(categories).map((categoryName) => (
-                           <SelectItem key={categoryName} value={categoryName}>
-                              {categories[categoryName]}
+                        {Object.keys(categories).map((categoryId) => (
+                           <SelectItem key={categoryId} value={categories[categoryId]}>
+                              {categories[categoryId]}
                            </SelectItem>
                         ))}
                      </SelectContent>
@@ -155,7 +147,9 @@ const Blog = () => {
                      <Select
                         value={itemsPerPage.toString()}
                         disabled={isLoadingPosts}
-                        onValueChange={(v) => setItemsPerPage(Number(v))}
+                        onValueChange={(v) =>
+                           setItemsPerPage(v === '*' ? '*' : Number(v))
+                        }
                      >
                         <SelectTrigger
                            id="items-per-page"
@@ -165,9 +159,9 @@ const Blog = () => {
                         </SelectTrigger>
 
                         <SelectContent>
-                           <SelectItem value="5">5</SelectItem>
-                           <SelectItem value="10">10</SelectItem>
-                           <SelectItem value="25">25</SelectItem>
+                           <SelectItem value="3">3</SelectItem>
+                           <SelectItem value="6">6</SelectItem>
+                           <SelectItem value="12">12</SelectItem>
                            <SelectItem value="*">Todos</SelectItem>
                         </SelectContent>
                      </Select>
@@ -207,69 +201,37 @@ const Blog = () => {
                </p>
             </div>
          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-               {paginatedPosts.map((post, index) => (
-                  <PostCard key={`post-card-client-${post.id}-${index}`} post={post} />
-               ))}
-            </div>
+            <>
+               {totalPages > 1 && !isLoadingPosts && (
+                  <div className="mb-2">
+                     <Pagination
+                        isLanding
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={goToPage}
+                        canGoNext={canGoNext}
+                        canGoPrevious={canGoPrevious}
+                     />
+                  </div>
+               )}
+
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                  {paginatedPosts.map((post, index) => (
+                     <PostCard key={`post-card-client-${post.id}-${index}`} post={post} />
+                  ))}
+               </div>
+            </>
          )}
 
-         {/* Pagination */}
-         {totalPages > 1 && (
-            <div className="flex justify-center">
-               <Pagination>
-                  <PaginationContent className="cursor-pointer select-none">
-                     <PaginationItem>
-                        <PaginationPrevious
-                           onClick={() => canGoPrevious && goToPage(currentPage - 1)}
-                           className={`${
-                              canGoPrevious
-                                 ? 'text-silk-secondary hover:text-silk-primary'
-                                 : 'text-silk-secondary/40 cursor-not-allowed'
-                           }`}
-                        />
-                     </PaginationItem>
-
-                     {!isMobile &&
-                        Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                           (page) => (
-                              <PaginationItem key={page}>
-                                 <PaginationLink
-                                    onClick={() => goToPage(page)}
-                                    isActive={currentPage === page}
-                                    className={
-                                       currentPage === page
-                                          ? 'bg-silk-secondary text-white'
-                                          : 'text-silk-secondary hover:text-silk-primary'
-                                    }
-                                 >
-                                    {page}
-                                 </PaginationLink>
-                              </PaginationItem>
-                           )
-                        )}
-
-                     {isMobile && (
-                        <PaginationItem>
-                           <span className="text-sm text-silk-secondary">
-                              Página {currentPage} de {totalPages}
-                           </span>
-                        </PaginationItem>
-                     )}
-
-                     <PaginationItem>
-                        <PaginationNext
-                           onClick={() => canGoNext && goToPage(currentPage + 1)}
-                           className={`${
-                              canGoNext
-                                 ? 'text-silk-secondary hover:text-silk-primary'
-                                 : 'text-silk-secondary/40 cursor-not-allowed'
-                           }`}
-                        />
-                     </PaginationItem>
-                  </PaginationContent>
-               </Pagination>
-            </div>
+         {totalPages > 1 && !isLoadingPosts && (
+            <Pagination
+               isLanding
+               currentPage={currentPage}
+               totalPages={totalPages}
+               onPageChange={goToPage}
+               canGoNext={canGoNext}
+               canGoPrevious={canGoPrevious}
+            />
          )}
       </section>
    )

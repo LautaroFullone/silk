@@ -138,8 +138,8 @@ const PostsPanel = () => {
                            ? 'Mostrando 0 de 0 posts'
                            : `Mostrando ${startIndex + 1}-${Math.min(
                                 endIndex,
-                                paginatedPosts.length
-                             )} de ${paginatedPosts.length} posts`}
+                                filteredAndSortedPosts.length
+                             )} de ${filteredAndSortedPosts.length} posts`}
                      </div>
 
                      <div className="flex items-center gap-4 justify-between">
@@ -154,7 +154,9 @@ const PostsPanel = () => {
                            <Select
                               value={itemsPerPage.toString()}
                               disabled={isLoadingPosts}
-                              onValueChange={(v) => setItemsPerPage(Number(v))}
+                              onValueChange={(v) =>
+                                 setItemsPerPage(v === '*' ? '*' : Number(v))
+                              }
                            >
                               <SelectTrigger id="items-per-page">
                                  <SelectValue />

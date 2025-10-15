@@ -122,8 +122,8 @@ const RequestsPanel = () => {
                            ? 'Mostrando 0 de 0 solicitudes'
                            : `Mostrando ${startIndex + 1}-${Math.min(
                                 endIndex,
-                                paginatedRequests.length
-                             )} de ${paginatedRequests.length} solicitudes`}
+                                filteredRequests.length
+                             )} de ${filteredRequests.length} solicitudes`}
                      </div>
 
                      <div className="flex items-center gap-4 justify-between">
@@ -138,7 +138,9 @@ const RequestsPanel = () => {
                            <Select
                               value={itemsPerPage.toString()}
                               disabled={isLoadingRequests}
-                              onValueChange={(v) => setItemsPerPage(Number(v))}
+                              onValueChange={(v) =>
+                                 setItemsPerPage(v === '*' ? '*' : Number(v))
+                              }
                            >
                               <SelectTrigger id="items-per-page">
                                  <SelectValue />
