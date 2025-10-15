@@ -11,12 +11,12 @@ const Home = () => {
          <HeroSection />
          <MiniCarrouselSection />
          <ConfidenceSection />
-         <FindStyleSection />
          <MockTestimonialsSection
             title="Testimonios que inspiran"
             subtitle="Lo que dicen nuestros clientes sobre su transformación"
             showOnlyHighlighted={false}
          />
+         <FindStyleSection />
          {/* <TestimonialsSection
             title="Testimonios que inspiran"
             subtitle="Lo que dicen nuestros clientes sobre su transformación"

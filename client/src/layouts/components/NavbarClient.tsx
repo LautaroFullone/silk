@@ -4,11 +4,11 @@ import { Link, useLocation } from 'react-router-dom'
 import { routesConfig } from '@config/routesConfig'
 
 const navLinks = [
-   // { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
-   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
-   { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
    { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
    { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
+   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
+   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
+   // { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
 ]
 
 const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
@@ -76,7 +76,7 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
                   )
                })}
 
-               {process.env.NODE_ENV !== 'production' && (
+               {/* {process.env.NODE_ENV !== 'production' && (
                   <li className="relative group">
                      <Link
                         to={routesConfig.ADMIN_DASHBOARD}
@@ -86,7 +86,7 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
                         <span className="block absolute left-0 -bottom-2 h-[1px] bg-silk-tertiary transition-all duration-300 w-0 group-hover:w-full" />
                      </Link>
                   </li>
-               )}
+               )} */}
             </ul>
          </nav>
       </header>

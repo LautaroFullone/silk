@@ -24,7 +24,7 @@ const FindStyleSection = () => {
                   <span className="tracking-wider">ESTUDIOSILK</span>
                   <span className="tracking-wider">EVERYDAY LUXURY</span>
                </div>
-               <div className="flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 py-6 sm:py-8 lg:py-12 w-full">
+               <div className="flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 py-6 sm:py-8  w-full">
                   <div className="text-center mb-4">
                      <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl text-center mb-3 sm:mb-4 leading-tight">
                         ¿Todavía no <br />

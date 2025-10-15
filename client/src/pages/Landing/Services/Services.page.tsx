@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@shadcn'
 import { ContactForm } from '@shared'
-import { MockTestimonialsSection } from '../Testimonials/components'
+import Faq from '../Faq/Faq.page'
 
 const servicios = [
    {
@@ -171,11 +171,21 @@ const Services = () => {
    return (
       <>
          <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12">
-            <p className="text-silk-primary font-bold text-xl mb-6 text-center">
-               NUESTROS SERVICIOS
-            </p>
+            <div className="text-center mx-auto mb-8">
+               <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary mb-4 leading-tight">
+                  Descubrí los servicios que{' '}
+                  <span className="italic font-light">transforman</span> tu estilo
+               </h1>
 
-            <h2 className="font-very-vogue text-left text-3xl sm:text-5xl text-silk-primary mb-12 ml-0">
+               <p className="max-w-3xl text-lg md:text-xl text-silk-secondary/80 leading-relaxed mx-auto">
+                  En Silk, creemos que la moda es una herramienta poderosa para expresar
+                  quién sos. Nuestros servicios están diseñados para ayudarte a descubrir
+                  y potenciar tu estilo único, alineando tu imagen con tus objetivos
+                  personales y profesionales.
+               </p>
+            </div>
+
+            <h2 className="font-very-vogue text-right text-3xl sm:text-5xl text-silk-primary mb-12 ml-0">
                <span>
                   "Un armario que{' '}
                   <span className="italic font-vogue-text-italic">te inspira</span>
@@ -224,15 +234,9 @@ const Services = () => {
 
             {/* TODO: En vez de mostrar el formulario, poner un boton que lo abra en un modal */}
             <ContactForm isServiceInputEnabled />
-         </section>
 
-         {/* Sección de testimonios */}
-         <MockTestimonialsSection
-            title="Nuestros clientes lo confirman"
-            subtitle="Historias reales de transformación y estilo"
-            maxItems={4}
-            backgroundColor="white"
-         />
+            <Faq />
+         </section>
       </>
    )
 }

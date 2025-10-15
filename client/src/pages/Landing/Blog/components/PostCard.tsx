@@ -1,17 +1,18 @@
-import { Post } from '@models/Post.model'
-import { Badge } from '@shadcn'
+import { getPublicImageUrl } from '@utils/getPublicImage'
 import { ChevronRight } from 'lucide-react'
+import { Post } from '@models/Post.model'
 import { Link } from 'react-router-dom'
+import { Badge } from '@shadcn'
 
 interface PostCardProps {
    post: Post
 }
 
 const PostCard: React.FC<PostCardProps> = ({
-   post: { id, date, description, title, image, category },
+   post: { id, date, description, title, imageFilePath, category },
 }) => {
    return (
-      <Link to={`/Post/${id}`} className="group">
+      <Link to={`/post/${id}`} className="group">
          <div
             className="bg-silk-secondary border border-silk-secondary rounded-sm shadow-lg 
                transition-all overflow-hidden flex flex-col h-full"
@@ -23,21 +24,17 @@ const PostCard: React.FC<PostCardProps> = ({
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
                   <span className="block w-2 h-2 bg-gray-400 rounded-full" />
                </div>
-
-               {/* <span className="text-sm font-classy-vogue text-white tracking-widest uppercase">
-                  {category}
-               </span> */}
             </div>
 
             {/* Contenido */}
             <div className="flex flex-col flex-1 bg-silk-secondary">
                {/* Imagen */}
-               {image && (
+               {imageFilePath && (
                   <div className="h-48 overflow-hidden border-b border-silk-secondary">
                      <img
-                        src={image}
                         alt={title}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        src={getPublicImageUrl(imageFilePath)}
+                        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
                      />
                   </div>
                )}
@@ -54,7 +51,7 @@ const PostCard: React.FC<PostCardProps> = ({
                         variant="default"
                         className="bg-silk-primary text-white border-none rounded-xs uppercase"
                      >
-                        {category}
+                        {category.name}
                      </Badge>
 
                      {/* <span className="inline-block border border-silk-primary text-silk-primary bg-white px-2 py-0.5 rounded font-semibold text-xs uppercase tracking-wide">

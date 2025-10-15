@@ -2,11 +2,11 @@ import { routesConfig } from '@config/routesConfig'
 import { Link } from 'react-router-dom'
 
 const navLinks = [
-   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
-   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
-   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
-   { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
    { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
+   { label: 'BLOG', route: routesConfig.CLIENT_BLOG },
+   { label: 'SERVICIOS', route: routesConfig.CLIENT_SERVICES },
+   { label: 'QUIZ', route: routesConfig.CLIENT_QUIZ },
+   // { label: 'FAQ', route: routesConfig.CLIENT_FAQ },
 ]
 
 const FooterClient = () => {
@@ -80,7 +80,7 @@ const FooterClient = () => {
             <div className="w-full h-[1px] bg-silk-tertiary/40 my-5" />
 
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-xs opacity-70 pb-2">
-               <p className="m-0">©2025 ESTUDIOSILK. TODOS LOS DERECHOS RESERVADOS</p>
+               <p className="m-0">ESTUDIOSILK. TODOS LOS DERECHOS RESERVADOS</p>
                <div className="flex gap-3">
                   <span className="cursor-pointer hover:underline">
                      Términos y condiciones

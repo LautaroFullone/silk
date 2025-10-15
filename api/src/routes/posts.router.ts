@@ -17,7 +17,10 @@ const postsRouter = Router()
 postsRouter.get('/', async (req: Request, res: Response) => {
    await sleep(3000)
    try {
+      const { onlyActive } = req.query
+
       const posts = await prismaClient.post.findMany({
+         where: onlyActive === 'true' ? { isActive: true } : {},
          orderBy: { createdAt: 'desc' },
          include: { category: true },
          omit: { createdAt: true, categoryId: true },

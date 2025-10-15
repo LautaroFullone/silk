@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, ChevronRight } from 'lucide-react'
+import { Clock, ChevronRight } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@shadcn'
@@ -7,25 +7,9 @@ const Quiz = () => {
    const navigate = useNavigate()
 
    return (
-      <div className="min-h-screen bg-gradient-to-br from-silk-tertiary via-silk-tertiary to-silk-tertiary/90 relative overflow-hidden">
-         {/* Elementos decorativos de fondo */}
-
-         <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20">
+      <div className="bg-silk-tertiary overflow-hidden">
+         <div className="min-h-dvh flex flex-col items-center justify-center px-4 ">
             <div className="max-w-2xl mx-auto text-center">
-               {/* Botón de volver */}
-               <div className="mb-8 flex justify-start">
-                  <Button
-                     onClick={() => navigate('/')}
-                     variant="ghost"
-                     size="sm"
-                     className="text-silk-secondary hover:text-silk-primary hover:bg-silk-secondary/10"
-                  >
-                     <ArrowLeft size={16} className="mr-2" />
-                     Volver al inicio
-                  </Button>
-               </div>
-
-               {/* Contenido principal */}
                <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary mb-6 leading-tight">
                   ¡Estamos creando algo
                   <br />
