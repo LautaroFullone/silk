@@ -179,7 +179,6 @@ const Blog = () => {
             </div>
          </div>
 
-         {/* Posts Grid */}
          {isLoadingPosts ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                {Array.from({ length: 6 }).map((_, index) => (
@@ -220,18 +219,18 @@ const Blog = () => {
                      <PostCard key={`post-card-client-${post.id}-${index}`} post={post} />
                   ))}
                </div>
-            </>
-         )}
 
-         {totalPages > 1 && !isLoadingPosts && (
-            <Pagination
-               isLanding
-               currentPage={currentPage}
-               totalPages={totalPages}
-               onPageChange={goToPage}
-               canGoNext={canGoNext}
-               canGoPrevious={canGoPrevious}
-            />
+               {totalPages > 1 && !isLoadingPosts && (
+                  <Pagination
+                     isLanding
+                     currentPage={currentPage}
+                     totalPages={totalPages}
+                     onPageChange={goToPage}
+                     canGoNext={canGoNext}
+                     canGoPrevious={canGoPrevious}
+                  />
+               )}
+            </>
          )}
       </section>
    )
