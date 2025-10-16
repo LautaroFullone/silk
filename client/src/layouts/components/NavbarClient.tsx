@@ -2,6 +2,7 @@ import { checkIsLinkActive } from '@utils/checkIsLinkActive'
 import { useState, useEffect, forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { routesConfig } from '@config/routesConfig'
+import { cn } from '@shadcn'
 
 const navLinks = [
    { label: 'NOSOTROS', route: routesConfig.CLIENT_ABOUT },
@@ -13,15 +14,27 @@ const navLinks = [
 
 const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
+   const [isScrollingUp, setIsScrollingUp] = useState(false)
+   const [lastScrollY, setLastScrollY] = useState(0)
    const { pathname } = useLocation()
 
    useEffect(() => {
       const handleScroll = () => {
-         setIsScrolled(window.scrollY > 50)
+         const currentScrollY = window.scrollY
+
+         // Detectar dirección del scroll
+         const scrollingUp = currentScrollY < lastScrollY
+         setIsScrollingUp(scrollingUp)
+
+         // Mantener la lógica original para isScrolled
+         setIsScrolled(currentScrollY > 50)
+
+         setLastScrollY(currentScrollY)
       }
+
       window.addEventListener('scroll', handleScroll)
       return () => window.removeEventListener('scroll', handleScroll)
-   }, [])
+   }, [lastScrollY])
 
    const scrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -30,10 +43,13 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
    return (
       <header
          ref={ref}
-         className={`fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300
-            bg-silk-secondary font-acumin ${isScrolled ? 'py-4' : 'py-2'} select-none`}
+         className={cn(
+            'fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300',
+            'bg-silk-secondary font-acumin select-none',
+            isScrollingUp && 'pb-2'
+         )}
       >
-         <div className="flex justify-center transition-all duration-300">
+         <div className="flex justify-center transition-all duration-300 py-2">
             <Link to="/" onClick={scrollToTop}>
                <img
                   src="/silk-main-logo.png"
@@ -46,13 +62,13 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
          </div>
 
          <div
-            className={`w-screen h-[1px] bg-[#e0e0e0] my-2 transition-opacity duration-300 
-               ${isScrolled ? 'hidden' : 'block'}`}
+            className={`w-screen h-[1px] bg-[#e0e0e0] mb-2 transition-opacity duration-300 
+               ${isScrolled && !isScrollingUp ? 'hidden' : 'block'}`}
          />
 
          <nav
             className={`w-full flex justify-center transition-all duration-300
-               ${isScrolled ? 'hidden' : 'block'}`}
+               ${isScrolled && !isScrollingUp ? 'hidden' : 'block'}`}
          >
             <ul className="flex gap-9 justify-center items-center w-full m-0 p-0 list-none">
                {navLinks.map(({ label, route }, index) => {
