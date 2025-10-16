@@ -14,27 +14,18 @@ const navLinks = [
 
 const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
    const [isScrolled, setIsScrolled] = useState(false)
-   const [isScrollingUp, setIsScrollingUp] = useState(false)
-   const [lastScrollY, setLastScrollY] = useState(0)
    const { pathname } = useLocation()
 
    useEffect(() => {
       const handleScroll = () => {
          const currentScrollY = window.scrollY
 
-         // Detectar dirección del scroll
-         const scrollingUp = currentScrollY < lastScrollY
-         setIsScrollingUp(scrollingUp)
-
-         // Mantener la lógica original para isScrolled
          setIsScrolled(currentScrollY > 50)
-
-         setLastScrollY(currentScrollY)
       }
 
       window.addEventListener('scroll', handleScroll)
       return () => window.removeEventListener('scroll', handleScroll)
-   }, [lastScrollY])
+   }, [])
 
    const scrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -45,8 +36,7 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
          ref={ref}
          className={cn(
             'fixed top-0 left-0 w-full z-50 flex-col items-center transition-all duration-300',
-            'bg-silk-secondary font-acumin select-none',
-            isScrollingUp && 'pb-2'
+            'bg-silk-secondary font-acumin select-none pb-2'
          )}
       >
          <div className="flex justify-center transition-all duration-300 py-2">
@@ -61,15 +51,9 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
             </Link>
          </div>
 
-         <div
-            className={`w-screen h-[1px] bg-[#e0e0e0] mb-2 transition-opacity duration-300 
-               ${isScrolled && !isScrollingUp ? 'hidden' : 'block'}`}
-         />
+         <div className="w-screen h-[1px] bg-[#e0e0e0] mb-2 transition-opacity duration-300" />
 
-         <nav
-            className={`w-full flex justify-center transition-all duration-300
-               ${isScrolled && !isScrollingUp ? 'hidden' : 'block'}`}
-         >
+         <nav className="w-full flex justify-center transition-all duration-300">
             <ul className="flex gap-9 justify-center items-center w-full m-0 p-0 list-none">
                {navLinks.map(({ label, route }, index) => {
                   const isActive = checkIsLinkActive(pathname, route)
