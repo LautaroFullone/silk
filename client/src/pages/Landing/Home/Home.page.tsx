@@ -1,5 +1,5 @@
-import { MockTestimonialsSection } from '../Testimonials/components'
 import MiniCarrouselSection from './components/MiniCarrouselSection'
+import TestimonialsSection from './components/TestimonialsSection'
 import ConfidenceSection from './components/ConfidenceSection'
 import FindStyleSection from './components/FindStyleSection'
 import PostsSection from './components/PostsSection'
@@ -11,19 +11,8 @@ const Home = () => {
          <HeroSection />
          <MiniCarrouselSection />
          <ConfidenceSection />
-         <MockTestimonialsSection
-            title="Testimonios que inspiran"
-            subtitle="Lo que dicen nuestros clientes sobre su transformación"
-            showOnlyHighlighted={false}
-         />
+         <TestimonialsSection />
          <FindStyleSection />
-         {/* <TestimonialsSection
-            title="Testimonios que inspiran"
-            subtitle="Lo que dicen nuestros clientes sobre su transformación"
-            maxItems={6}
-            showOnlyHighlighted={false}
-            backgroundColor="white"
-         /> */}
          <PostsSection />
       </>
    )

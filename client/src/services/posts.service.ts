@@ -7,12 +7,12 @@ import { api } from '@lib/axios'
  * @param onlyActive Si es true, solo devuelve posts activos. Si es false o undefined, devuelve todos
  * @returns Mensaje de éxito y datos de los posts
  */
-export async function getPosts(onlyActive?: boolean) {
+export async function getPosts(onlyActive: boolean) {
    type Response = Pick<ResponseApi, 'posts' | 'categories'>
 
    const { data } = await api.get<Response>('/posts', {
       params: {
-         ...(onlyActive !== undefined && { onlyActive }),
+         onlyActive,
       },
    })
    return data

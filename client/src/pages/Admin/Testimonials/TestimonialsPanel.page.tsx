@@ -22,7 +22,9 @@ import {
 
 const TestimonialsPanel = () => {
    const navigate = useNavigate()
-   const { testimonials, isLoading: isLoadingTestimonials } = useFetchTestimonials()
+   const { testimonials, isLoading: isLoadingTestimonials } = useFetchTestimonials({
+      onlyActive: false,
+   })
 
    const {
       items: filteredTestimonials,

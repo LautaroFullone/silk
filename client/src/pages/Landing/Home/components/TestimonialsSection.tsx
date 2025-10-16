@@ -1,52 +1,25 @@
-import { mockTestimonials } from './mockTestimonials'
+import { useFetchTestimonials } from '@hooks/react-query'
+import { getPublicImageUrl } from '@utils/getPublicImage'
 import { Quote, Star } from 'lucide-react'
 
-interface MockTestimonialsSectionProps {
-   title?: string
-   subtitle?: string
-   showOnlyHighlighted?: boolean
-}
-
-const MockTestimonialsSection: React.FC<MockTestimonialsSectionProps> = ({
-   title = 'Lo que dicen nuestros clientes',
-   subtitle = 'Historias reales de transformación y confianza',
-   showOnlyHighlighted = false,
-}) => {
-   // Usar testimonios mock para prueba visual
-   const filteredTestimonials = mockTestimonials
-      .filter((testimonial) => testimonial.isActive)
-      .filter((testimonial) => !showOnlyHighlighted || testimonial.isHighlight)
-
-   if (!filteredTestimonials.length) {
-      return (
-         <section className="bg-gradient-to-br from-silk-tertiary via-silk-tertiary to-silk-tertiary/90 py-20 relative overflow-hidden">
-            <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto text-center relative z-10">
-               <h2 className="font-very-vogue text-4xl md:text-5xl text-silk-secondary mb-4">
-                  {title}
-               </h2>
-               <p className="text-silk-secondary/70 text-xl">
-                  Próximamente encontrarás testimonios de nuestros clientes.
-               </p>
-            </div>
-         </section>
-      )
-   }
+const TestimonialsSection = () => {
+   const { testimonials, isLoading } = useFetchTestimonials({ onlyActive: true })
 
    return (
       <section className="bg-gradient-to-br from-silk-tertiary via-silk-tertiary to-silk-tertiary/90 py-20 relative overflow-hidden">
          <div className="max-w-xs sm:max-w-xl lg:max-w-6xl mx-auto text-silk-secondary px-4 relative z-10">
             <div className="text-center mb-16">
                <h2 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
-                  {title}
+                  Testimonios que inspiran
                </h2>
                <p className="text-silk-secondary/80 text-lg max-w-2xl mx-auto leading-relaxed">
-                  {subtitle}
+                  Lo que dicen nuestros clientes sobre su transformación
                </p>
             </div>
 
             {/* Layout masonry único para testimonios */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min">
-               {filteredTestimonials.map((testimonial, index) => (
+               {testimonials.map((testimonial, index) => (
                   <div
                      key={testimonial.id}
                      className={`group ${
@@ -69,10 +42,9 @@ const MockTestimonialsSection: React.FC<MockTestimonialsSectionProps> = ({
                                     <img
                                        alt={testimonial.personName}
                                        className="w-full h-full object-cover"
-                                       src={
-                                          testimonial.avatarImagePath ||
-                                          '/image-placeholder.svg'
-                                       }
+                                       src={getPublicImageUrl(
+                                          testimonial.avatarImagePath
+                                       )}
                                     />
                                  </div>
 
@@ -118,4 +90,4 @@ const MockTestimonialsSection: React.FC<MockTestimonialsSectionProps> = ({
    )
 }
 
-export default MockTestimonialsSection
+export default TestimonialsSection

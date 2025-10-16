@@ -4,10 +4,10 @@ import { queriesKeys } from '@config/reactQueryKeys'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-const useFetchTestimonials = () => {
+const useFetchTestimonials = (param: { onlyActive: boolean }) => {
    const { data, isLoading, error, isError } = useQuery({
-      queryKey: [queriesKeys.FETCH_TESTIMONIALS],
-      queryFn: getTestimonials,
+      queryKey: [queriesKeys.FETCH_TESTIMONIALS, param.onlyActive],
+      queryFn: () => getTestimonials(param.onlyActive),
       staleTime: 20 * 60 * 1000, //20min
       retry: 1,
    })

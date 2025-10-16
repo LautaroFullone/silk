@@ -7,7 +7,7 @@ const ClientLayout = () => {
    const { ref: headerRef, height: headerHeight } = useDinamicHeight()
 
    return (
-      <div className="font-acumin text-silk-tertiary flex flex-col min-h-screen">
+      <div className="font-acumin text-silk-tertiary flex flex-col min-h-screen bg-silk-secondary">
          <NavbarClient ref={headerRef} />
 
          <main
