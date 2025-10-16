@@ -79,7 +79,7 @@ const SidebarAdmin = () => {
          >
             {/* Header con botón cerrar solo visible en mobile */}
             <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-               <Link to="/" className="select-none">
+               <Link to={routesConfig.CLIENT_HOME} className="select-none">
                   <div className="flex items-center space-x-2">
                      <h1 className="font-classy-vogue text-silk-secondary text-4xl">
                         SILK

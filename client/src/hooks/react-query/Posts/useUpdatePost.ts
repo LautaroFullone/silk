@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { extractErrorData } from '@utils/extractErrorDetails'
 import { queriesKeys } from '@config/reactQueryKeys'
-import { updatePost, getPosts } from '@services/posts.service'
-import { Post } from '@models/Post.model'
+import { updatePost } from '@services/posts.service'
 import { toast } from 'sonner'
 
 const useUpdatePost = () => {
@@ -16,23 +15,8 @@ const useUpdatePost = () => {
          } else {
             toast.success(message)
 
-            //queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
-            // queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], (old: Post) => ({
-            //    ...old,
-            //    post,
-            // }))
-
             // Actualizar el caché de la lista de posts
-            queryClient.setQueryData(
-               [queriesKeys.FETCH_POSTS],
-               (oldData: Awaited<ReturnType<typeof getPosts>> | undefined) => {
-                  if (!oldData) return oldData
-                  return {
-                     ...oldData,
-                     posts: oldData.posts.map((p: Post) => (p.id === post.id ? post : p)),
-                  }
-               }
-            )
+            queryClient.invalidateQueries({ queryKey: [queriesKeys.FETCH_POSTS] })
 
             // Actualizar el caché del post individual
             queryClient.setQueryData([queriesKeys.FETCH_POST, post.id], () => ({

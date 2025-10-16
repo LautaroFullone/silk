@@ -7,8 +7,16 @@ import path from 'path'
 export default defineConfig({
    plugins: [react(), tailwindcss()],
    server: {
-      host: true,
-      port: 5174,
+      host: true, // expone el front en la LAN (0.0.0.0)
+      port: 5174, // o el que uses
+      proxy: {
+         // todo lo que empiece con /api va a tu backend local
+         '/api': {
+            target: 'http://127.0.0.1:3031', // puerto real de tu API en tu PC
+            changeOrigin: true,
+            secure: false,
+         },
+      },
    },
    resolve: {
       alias: {

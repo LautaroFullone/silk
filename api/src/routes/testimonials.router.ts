@@ -18,7 +18,10 @@ const testimonialsRouter = Router()
 testimonialsRouter.get('/', async (req: Request, res: Response) => {
    await sleep(3000)
    try {
+      const { onlyActive } = req.query
+
       const testimonials = await prismaClient.testimonial.findMany({
+         where: onlyActive === 'true' ? { isActive: true } : {},
          orderBy: { createdAt: 'desc' },
          omit: { createdAt: true },
       })
