@@ -5,7 +5,7 @@ import Faq from '../Faq/Faq.page'
 const servicios = [
    {
       id: 1,
-      image: '/service-personal-shopping.png',
+      image: '/personal-shopping.png',
       opciones: [
          {
             id: 'incluye',
@@ -62,7 +62,7 @@ const servicios = [
    },
    {
       id: 2,
-      image: '/service-transform-image.png',
+      image: '/transform-image.png',
       opciones: [
          {
             id: 'incluye',
@@ -105,7 +105,7 @@ const servicios = [
    },
    {
       id: 3,
-      image: '/service-transform-life.png',
+      image: '/transform-life.png',
       opciones: [
          {
             id: 'incluye',
@@ -212,7 +212,7 @@ const Services = () => {
                   <div key={servicio.id} className="max-w-[350px] text-silk-primary ">
                      {/* TODO: pasaria imagen a codigo */}
                      <img
-                        src={servicio.image}
+                        src={`/services-images/${servicio.image}`}
                         className="w-full rounded-sm mb-5 transition-transform duration-200 hover:scale-105"
                      />
 

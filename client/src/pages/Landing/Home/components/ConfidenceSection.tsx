@@ -5,25 +5,25 @@ import { Button } from '@shadcn'
 
 const items = [
    {
-      image: '/Fotos_sección_pre-blog-04.jpg',
+      image: 'closet-image.jpg',
       title: 'DIGITALIZAMOS TU CLOSET',
       description:
          'Accede a tu guardarropa desde cualquier lugar con nuestro sistema digital.',
    },
    {
-      image: '/Fotos_sección_pre-blog-05.jpg',
+      image: 'style-up-image.jpg',
       title: 'ELEVAMOS TU ESTILO',
       description:
          'De la mano de tu estilista personal, creamos looks que reflejan quién sos y potencian tu mejor versión.',
    },
    {
-      image: '/Fotos_sección_pre-blog-06.jpg',
+      image: 'empower-image.jpg',
       title: 'EMPODERAMOS TU IMAGEN',
       description:
          'Te ayudamos a proyectar confianza y seguridad a través de un estilo auténtico y único.',
    },
    {
-      image: '/recomendacion-lauti.png',
+      image: 'recomendation-image.png',
       title: 'RECOMENDACIÓN DEV',
       description:
          'Agregando una imagen más en esa seccion, la grilla se ve mejor cuando hay 2 columnas (pantalla más chica) ',
@@ -50,7 +50,7 @@ const ConfidenceSection = () => {
                   >
                      <div className="w-full aspect-[4/5] rounded-md overflow-hidden mb-6 relative">
                         <img
-                           src={item.image}
+                           src={`/confidence-images/${item.image}`}
                            alt={item.title}
                            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                         />
@@ -80,7 +80,7 @@ const ConfidenceSection = () => {
                <Button
                   onClick={() => navigate(routesConfig.CLIENT_SERVICES)}
                   variant="tertiary"
-                  size="xl"
+                  size="lg"
                   className=" group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                >
                   <span className="relative z-10 flex items-center">

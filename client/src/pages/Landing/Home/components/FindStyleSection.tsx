@@ -7,7 +7,7 @@ const FindStyleSection = () => {
    const navigate = useNavigate()
 
    return (
-      <div className="min-h-[70vh] bg-[url('/Quiz_assets-07.png')] bg-cover bg-center flex items-center justify-center py-12 md:py-20 text-silk-secondary relative">
+      <div className="min-h-[70dvh] bg-[url('/find-images/cloud-image.png')] bg-cover bg-center flex items-center justify-center py-12 md:py-20 text-silk-secondary relative">
          <div className="absolute inset-0 bg-silk-primary/20"></div>
 
          <div className="relative z-10 overflow-hidden bg-silk-secondary border border-silk-secondary rounded-lg shadow-2xl w-full max-w-xs sm:max-w-md lg:max-w-xl mx-4 flex flex-col items-center transform hover:scale-105 transition-transform duration-300">

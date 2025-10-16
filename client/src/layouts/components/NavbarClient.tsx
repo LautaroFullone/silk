@@ -36,7 +36,7 @@ const NavbarClient = forwardRef<HTMLElement>((_, ref) => {
          <div className="flex justify-center transition-all duration-300">
             <Link to="/" onClick={scrollToTop}>
                <img
-                  src="/silk_logo-02.png"
+                  src="/silk-main-logo.png"
                   alt="Logo de Estudio Silk"
                   className={`transition-all duration-300 
                      ${isScrolled ? 'h-10' : 'h-15'}

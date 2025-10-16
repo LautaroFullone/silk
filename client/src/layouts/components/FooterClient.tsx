@@ -15,7 +15,7 @@ const FooterClient = () => {
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
             <div className="flex flex-col items-start">
                <img
-                  src="/silk_logo-02.png"
+                  src="/silk-main-logo.png"
                   alt="Logo de Estudiosilk footer"
                   className="w-[100px] mb-2"
                />
@@ -37,39 +37,39 @@ const FooterClient = () => {
 
                <div className="flex gap-6">
                   <Link
-                     to="/"
+                     to="https://www.instagram.com/estudiosilk/?hl=es"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
+                     className="size-7"
                   >
                      <img
-                        src="/instagram.png"
+                        src="/socials-images/instagram.png"
                         alt="Instagram"
                         className="w-full h-full object-contain"
                      />
                   </Link>
 
                   <Link
-                     to="/"
+                     to="https://www.facebook.com/estudiosilk"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
+                     className="size-7"
                   >
                      <img
-                        src="/facebook.png"
+                        src="/socials-images/facebook.png"
                         alt="Facebook"
                         className="w-full h-full object-contain"
                      />
                   </Link>
 
                   <Link
-                     to="/"
+                     to="https://www.tiktok.com/@lucasccontardi"
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="w-[30px] h-[30px] transition-transform duration-200 hover:scale-105"
+                     className="size-7"
                   >
                      <img
-                        src="/tik-tok.png"
+                        src="/socials-images/tik-tok.png"
                         alt="TikTok"
                         className="w-full h-full object-contain"
                      />

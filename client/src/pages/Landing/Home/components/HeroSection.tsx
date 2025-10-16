@@ -4,11 +4,11 @@ import { ChevronRight } from 'lucide-react'
 import { Button } from '@shadcn'
 
 const images = [
-   '/Banner-1.png',
-   '/Banner-2.png',
-   '/Banner-3.png',
-   '/Banner-4.png',
-   '/Banner-5.png',
+   'banner-hero-1.png',
+   'banner-hero-2.png',
+   'banner-hero-3.png',
+   'banner-hero-4.png',
+   'banner-hero-5.png',
 ]
 
 const HeroSection = () => {
@@ -37,7 +37,7 @@ const HeroSection = () => {
             {images.map((img, idx) => (
                <img
                   key={`hero-image-${img}`}
-                  src={img}
+                  src={`hero-images/${img}`}
                   alt={`Transformación de imagen ${idx + 1}`}
                   className={`absolute h-full w-full object-cover transition-opacity duration-1000 ease-in-out
                   ${idx === currentImage ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
@@ -76,7 +76,8 @@ const HeroSection = () => {
                      imagen con
                      <span className="font-medium">
                         {' '}
-                        nuestro análisis personalizado gratuito
+                        nuestro análisis personalizado{' '}
+                        <span className="underline">gratuito</span>
                      </span>
                   </p>
 
@@ -87,7 +88,7 @@ const HeroSection = () => {
                      className="mt-8 group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                      <span className="relative z-10 flex items-center">
-                        OBTENER MI ANÁLISIS GRATUITO
+                        OBTENER MI ANÁLISIS
                         <ChevronRight
                            className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
                            size={19}
