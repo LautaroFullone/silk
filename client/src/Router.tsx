@@ -5,7 +5,6 @@ import AdminLayout from '@layouts/Admin.layout'
 import {
    Blog,
    Dashboard,
-   Faq,
    Home,
    Services,
    PostsPanel,
@@ -31,7 +30,6 @@ const Router = () => {
 
                <Route path={routesConfig.CLIENT_SERVICES} element={<Services />} />
 
-               {/* <Route path={routesConfig.CLIENT_FAQ} element={<Faq />} /> */}
                <Route path={routesConfig.CLIENT_ABOUT} element={<div>About Page</div>} />
 
                <Route path="*" element={<Navigate to={routesConfig.CLIENT_HOME} />} />

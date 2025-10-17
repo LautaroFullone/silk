@@ -1,5 +1,4 @@
 import Blog from './Landing/Blog/Blog.page'
-import Faq from './Landing/Faq/Faq.page'
 import Home from './Landing/Home/Home.page'
 import Quiz from './Landing/Quiz/Quiz.page'
 import Services from './Landing/Services/Services.page'
@@ -14,7 +13,6 @@ import NotFound from './Admin/NotFound.page'
 
 export {
    Blog,
-   Faq,
    Home,
    Quiz,
    Services,

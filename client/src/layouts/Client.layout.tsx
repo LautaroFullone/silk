@@ -11,7 +11,7 @@ const ClientLayout = () => {
          <NavbarClient ref={headerRef} />
 
          <main
-            className="flex-1 transition-[margin] duration-500 bg-silk-tertiary"
+            className="flex-1 transition-[margin] duration-300 bg-silk-tertiary"
             style={{ marginTop: headerHeight }}
          >
             <Outlet />

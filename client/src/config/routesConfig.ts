@@ -4,7 +4,6 @@ export const routesConfig = {
    CLIENT_SERVICES: '/servicios',
    CLIENT_QUIZ: '/quiz',
    CLIENT_ABOUT: '/nosotros',
-   CLIENT_FAQ: '/preguntas-frecuentes',
 
    ADMIN_DASHBOARD: '/panel-admin',
 
