@@ -1,8 +1,8 @@
 import { usePagination, useSearchAndSort, useMobile } from '@hooks'
+import PostsTableSection from './components/PostsTableSection'
 import { useFetchPosts } from '@hooks/react-query'
-import { FileText, Search } from 'lucide-react'
-import PostCard from './components/PostCard'
-import { Pagination } from '@shared'
+import { PageTitleLanding } from '@shared'
+import { Search } from 'lucide-react'
 import {
    Button,
    Input,
@@ -60,20 +60,17 @@ const Blog = () => {
    const paginatedPosts = filteredAndSortedPosts.slice(startIndex, endIndex)
 
    return (
-      <section className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto py-12">
-         {/* Header */}
-         <div className="text-center mb-8">
-            <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary mb-4 leading-tight">
-               Explorá nuestro <span className="italic font-light">blog</span>
-            </h1>
+      <div className="container py-15 md:py-20 space-y-10">
+         <PageTitleLanding
+            title={
+               <>
+                  Explorá nuestro <span className="italic">blog</span>
+               </>
+            }
+            description="Consejos de estilo, tendencias y secretos para potenciar tu imagen personal"
+         />
 
-            <p className="max-w-3xl text-lg md:text-xl text-silk-secondary/80 leading-relaxe mx-auto">
-               Consejos de estilo, tendencias y secretos para potenciar tu imagen personal
-            </p>
-         </div>
-
-         {/* Search and Filters */}
-         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-silk-secondary/20">
+         <section className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-silk-secondary/20">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                <div className="md:col-span-2">
                   <Label
@@ -177,62 +174,23 @@ const Blog = () => {
                   </Button>
                </div>
             </div>
-         </div>
+         </section>
 
-         {isLoadingPosts ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-               {Array.from({ length: 6 }).map((_, index) => (
-                  <PostCard.Skeleton key={`post-skeleton-${index}`} />
-               ))}
-            </div>
-         ) : paginatedPosts.length === 0 ? (
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-12 border border-silk-secondary/20 text-center">
-               <FileText size={80} className="mx-auto text-silk-secondary/60 mb-4" />
-               <h3 className="font-very-vogue text-2xl text-silk-secondary mb-2">
-                  {hasActiveFilters
-                     ? 'No hay posts que coincidan'
-                     : 'Aún no hay posts publicados'}
-               </h3>
-               <p className="text-silk-secondary/80">
-                  {hasActiveFilters
-                     ? 'Probá limpiar los filtros o buscar con otros términos'
-                     : 'Pronto tendremos contenido increíble para vos'}
-               </p>
-            </div>
-         ) : (
-            <>
-               {totalPages > 1 && !isLoadingPosts && (
-                  <div className="mb-2">
-                     <Pagination
-                        isLanding
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={goToPage}
-                        canGoNext={canGoNext}
-                        canGoPrevious={canGoPrevious}
-                     />
-                  </div>
-               )}
-
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                  {paginatedPosts.map((post, index) => (
-                     <PostCard key={`post-card-client-${post.id}-${index}`} post={post} />
-                  ))}
-               </div>
-
-               {totalPages > 1 && !isLoadingPosts && (
-                  <Pagination
-                     isLanding
-                     currentPage={currentPage}
-                     totalPages={totalPages}
-                     onPageChange={goToPage}
-                     canGoNext={canGoNext}
-                     canGoPrevious={canGoPrevious}
-                  />
-               )}
-            </>
-         )}
-      </section>
+         <PostsTableSection
+            paginatedPosts={paginatedPosts}
+            isLoading={isLoadingPosts}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            canGoNext={canGoNext}
+            canGoPrevious={canGoPrevious}
+            onPageChange={goToPage}
+            emptyMessage={
+               hasActiveFilters
+                  ? 'Probá limpiar los filtros o buscar con otros términos'
+                  : 'Pronto tendremos contenido increíble para vos'
+            }
+         />
+      </div>
    )
 }
 

@@ -66,6 +66,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility container {
+   margin: auto;
+   padding: 0 1rem;
+}
+
 @theme inline {
    /* Fuentes SILK */
    --font-acumin: 'Acumin Pro', sans-serif;

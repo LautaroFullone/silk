@@ -14,7 +14,7 @@ const PostCard = ({
    return (
       <Link to={`/post/${id}`} className="group">
          <div
-            className="bg-silk-secondary border border-silk-secondary rounded-sm shadow-lg 
+            className="bg-silk-secondary border border-silk-secondary rounded-lg shadow-lg 
                transition-all overflow-hidden flex flex-col h-full"
          >
             {/* Barra tipo ventana */}
@@ -30,12 +30,13 @@ const PostCard = ({
             <div className="flex flex-col flex-1 bg-silk-secondary">
                {/* Imagen */}
                {imageFilePath && (
-                  <div className="h-48 overflow-hidden border-b border-silk-secondary">
+                  <div className="relative h-48 overflow-hidden border-b border-silk-secondary">
                      <img
                         alt={title}
                         src={getPublicImageUrl(imageFilePath)}
                         className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
                      />
+                     <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/10 transition-colors duration-300"></div>
                   </div>
                )}
 

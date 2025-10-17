@@ -19,11 +19,15 @@ const initialFormData: ServiceRequestFormData = {
 }
 
 interface ContactFormProps {
+   title?: string
+   subTitle?: string
    isServiceInputEnabled?: boolean
    onSubmitSuccess?: () => void
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({
+   title = 'Tomá el primer paso',
+   subTitle = 'Completá tus datos para recibir tu diagnóstico',
    isServiceInputEnabled = false,
    onSubmitSuccess,
 }) => {
@@ -63,12 +67,12 @@ const ContactForm: React.FC<ContactFormProps> = ({
             <>
                <div className="text-center">
                   <h3 className="text-2xl md:text-3xl font-semibold text-silk-primary">
-                     Tomá el primer paso
+                     {title}
                   </h3>
                </div>
 
                <p className="text-center text-xs tracking-wide text-silk-primary/80 uppercase">
-                  Completa tus datos para recibir tu diagnóstico
+                  {subTitle}
                </p>
 
                <div className="space-y-4 mt-6">

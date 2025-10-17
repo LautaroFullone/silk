@@ -6,6 +6,7 @@ import ContactForm from './ContactForm'
 import EmptyBanner from './EmptyBanner'
 import InputForm from './InputForm'
 import PageTitle from './PageTitle'
+import PageTitleLanding from './PageTitleLanding'
 import Pagination from './Pagination'
 import RequestStatusBadge from './RequestStatusBadge'
 import SelectForm from './SelectForm'
@@ -20,6 +21,7 @@ export {
    EmptyBanner,
    InputForm,
    PageTitle,
+   PageTitleLanding,
    Pagination,
    RequestStatusBadge,
    SelectForm,
