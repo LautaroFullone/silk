@@ -9,20 +9,16 @@ const miniImages = [
 ]
 
 const MiniCarrouselSection = () => (
-   <div className="flex justify-center">
-      <div className="w-full sm:max-w-5xl py-10">
-         <Marquee autoFill gradient={false} speed={30} loop={0}>
-            {miniImages.map((img, i) => (
-               <img
-                  key={img + i}
-                  src={`/mini-images/${img}`}
-                  alt={`Prenda ${i + 1}`}
-                  className={`ml-4 w-[80px] sm:w-[100px] h-auto object-contain`}
-               />
-            ))}
-         </Marquee>
-      </div>
-   </div>
+   <Marquee autoFill gradient={false} speed={30} loop={0} className="py-5 sm:py-10">
+      {miniImages.map((img, i) => (
+         <img
+            key={img + i}
+            src={`/mini-images/${img}`}
+            alt={`Prenda ${i + 1}`}
+            className="mx-2 w-20 sm:w-24 h-auto object-contain"
+         />
+      ))}
+   </Marquee>
 )
 
 export default MiniCarrouselSection

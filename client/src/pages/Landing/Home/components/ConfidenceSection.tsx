@@ -2,6 +2,8 @@ import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { Button } from '@shadcn'
+import { PageTitleLanding } from '@shared'
+import { useMobile } from '@hooks'
 
 const items = [
    {
@@ -32,32 +34,41 @@ const items = [
 
 const ConfidenceSection = () => {
    const navigate = useNavigate()
+   const isMobile = useMobile()
 
    return (
-      <section className="bg-silk-secondary py-20">
-         <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto px-4 pb-4">
-            <h2 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-center mb-16 leading-tight">
-               En <span className="font-classy-vogue">SILK</span> creamos más que looks:
-               <br />
-               <span className="italic font-light">construimos confianza</span>
-            </h2>
+      <section className="bg-silk-secondary">
+         {/* <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto px-4 pb-4"> */}
+         <div className="container py-15 md:py-20 space-y-10">
+            <PageTitleLanding
+               element="h2"
+               textColor="text-silk-tertiary"
+               title={
+                  <>
+                     En <span className="font-classy-vogue">SILK</span> creamos más que
+                     looks:
+                     <br />
+                     <span className="italic font-light">construimos confianza</span>
+                  </>
+               }
+            />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 sm:px-0">
                {items.map((item, index) => (
                   <div
                      key={`confidence-image-${index}`}
                      className="w-full flex flex-col items-start group"
                   >
-                     <div className="w-full aspect-[4/5] rounded-md overflow-hidden mb-6 relative">
+                     <div className="w-full aspect-[4/5] rounded-lg overflow-hidden mb-6 relative">
                         <img
                            src={`/confidence-images/${item.image}`}
                            alt={item.title}
                            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/10 transition-colors duration-300"></div>
+                        <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/20 transition-colors duration-300"></div>
                      </div>
 
-                     <h3 className="text-xl font-bold mb-3 tracking-wide uppercase">
+                     <h3 className="font-very-vogue text-3xl tracking-wide mb-1">
                         {item.title}
                      </h3>
 
@@ -67,9 +78,7 @@ const ConfidenceSection = () => {
             </div>
 
             {/* Separador estético */}
-            <div className="flex items-center justify-center my-10">
-               <div className="w-128 h-px bg-silk-tertiary/20"></div>
-            </div>
+            <div className="h-px bg-silk-tertiary/20"></div>
 
             {/* CTA Section */}
             <div className="text-center">
@@ -80,7 +89,7 @@ const ConfidenceSection = () => {
                <Button
                   onClick={() => navigate(routesConfig.CLIENT_SERVICES)}
                   variant="tertiary"
-                  size="lg"
+                  size={isMobile ? 'lg' : 'xl'}
                   className=" group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                >
                   <span className="relative z-10 flex items-center">

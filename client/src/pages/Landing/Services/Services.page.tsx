@@ -228,6 +228,7 @@ const Services = () => {
                   ¿Listo para <span className="italic font-light">transformar</span> tu
                   imagen?
                </h3>
+
                <p className="text-silk-secondary/80 text-lg leading-relaxed max-w-2xl mx-auto">
                   Contános sobre tus objetivos y necesidades. Nuestro equipo te ayudará a
                   elegir el servicio ideal para vos.

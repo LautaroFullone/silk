@@ -36,7 +36,7 @@ const PostCard = ({
                         src={getPublicImageUrl(imageFilePath)}
                         className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
                      />
-                     <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/10 transition-colors duration-300"></div>
+                     <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/20 transition-colors duration-300"></div>
                   </div>
                )}
 
