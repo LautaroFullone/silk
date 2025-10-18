@@ -4,6 +4,7 @@ import CommandForm from './CommandForm'
 import ConfirmActionModal from './ConfirmActionModal'
 import ContactForm from './ContactForm'
 import EmptyBanner from './EmptyBanner'
+import EmptyBannerLanding from './EmptyBannerLanding'
 import InputForm from './InputForm'
 import PageTitle from './PageTitle'
 import PageTitleLanding from './PageTitleLanding'
@@ -19,6 +20,7 @@ export {
    CheckboxForm,
    ContactForm,
    EmptyBanner,
+   EmptyBannerLanding,
    InputForm,
    PageTitle,
    PageTitleLanding,

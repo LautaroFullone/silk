@@ -53,13 +53,13 @@ const ConfidenceSection = () => {
                }
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 sm:px-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6 sm:px-0">
                {items.map((item, index) => (
                   <div
                      key={`confidence-image-${index}`}
                      className="w-full flex flex-col items-start group"
                   >
-                     <div className="w-full aspect-[4/5] rounded-lg overflow-hidden mb-6 relative">
+                     <div className="w-full aspect-[4/5] rounded-lg overflow-hidden mb-2 relative">
                         <img
                            src={`/confidence-images/${item.image}`}
                            alt={item.title}

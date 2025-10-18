@@ -44,7 +44,7 @@ const HeroSection = () => {
                />
             ))}
 
-            <div className="absolute inset-0 bg-silk-secondary/70 z-20 pointer-events-none" />
+            <div className="absolute inset-0 bg-silk-secondary/80 z-20 pointer-events-none" />
 
             {/* Carousel Indicators */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 flex gap-2">
