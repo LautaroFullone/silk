@@ -33,7 +33,7 @@ const PostsSection = () => {
             />
 
             {isLoading ? (
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
                   {Array.from({ length: isMobile ? 1 : 3 }).map((_, index) => (
                      <PostCard.Skeleton key={`post-skeleton-${index}`} />
                   ))}
@@ -64,7 +64,7 @@ const PostsSection = () => {
                         {posts.map((post, index) => (
                            <CarouselItem
                               key={`post-slot-${index}`}
-                              className="basis-full sm:basis-1/2 lg:basis-1/3 px-2"
+                              className="basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 px-2"
                            >
                               <PostCard key={`post-client-${post.id}`} post={post} />
                            </CarouselItem>

@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import { Badge, Skeleton } from '@shadcn'
 import { Post } from '@models/Post.model'
 import { Link } from 'react-router-dom'
+import { routesConfig } from '@config/routesConfig'
 
 interface PostCardProps {
    post: Post
@@ -12,9 +13,9 @@ const PostCard = ({
    post: { id, date, description, title, imageFilePath, category },
 }: PostCardProps) => {
    return (
-      <Link to={`/post/${id}`} className="group">
+      <Link to={routesConfig.CLIENT_BLOG_POST.replace(':postId', id)} className="group">
          <div
-            className="bg-silk-secondary border border-silk-secondary rounded-lg shadow-lg 
+            className="bg-silk-secondary border border-silk-secondary rounded-md shadow-lg 
                transition-all overflow-hidden flex flex-col h-full"
          >
             {/* Barra tipo ventana */}
@@ -76,7 +77,7 @@ PostCard.Skeleton = function PostCardSkeleton() {
    return (
       <div className="group">
          <div
-            className="border border-silk-secondary rounded-sm shadow-lg 
+            className="border border-silk-secondary rounded-md shadow-lg 
                transition-all overflow-hidden flex flex-col h-full"
          >
             {/* Barra tipo ventana */}

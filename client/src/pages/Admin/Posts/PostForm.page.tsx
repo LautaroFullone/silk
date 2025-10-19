@@ -30,7 +30,6 @@ import {
    Skeleton,
 } from '@shadcn'
 
-// import '@blocknote/core/fonts/inter.css'
 import { BlockNoteView } from '@blocknote/mantine'
 import '@blocknote/mantine/style.css'
 import { useCreateBlockNote } from '@blocknote/react'
@@ -392,13 +391,17 @@ const PostForm = () => {
                               )}
                            >
                               <BlockNoteView
+                                 data-headings-font
                                  theme="light"
                                  editor={editor}
                                  formattingToolbar
                                  editable={!isMutationPending}
                                  className={cn(
-                                    'px-2 pt-2',
-                                    editor.document.length === 1 ? 'pb-8 sm:pb-2' : 'pb-2'
+                                    'px-2 pt-2 ',
+                                    editor.document.length === 1
+                                       ? 'pb-8 sm:pb-2'
+                                       : 'pb-2',
+                                    ''
                                  )}
                                  onChange={() => {
                                     // Actualizar el formulario cuando cambie el contenido del editor

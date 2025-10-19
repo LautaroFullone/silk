@@ -14,6 +14,7 @@ import {
    RequestsPanel,
    NotFound,
    Quiz,
+   PostDetails,
 } from './pages'
 
 const Router = () => {
@@ -24,7 +25,10 @@ const Router = () => {
             <Route path={routesConfig.CLIENT_HOME} element={<ClientLayout />}>
                <Route index element={<Home />} />
 
-               <Route path={routesConfig.CLIENT_BLOG} element={<Blog />} />
+               <Route path={routesConfig.CLIENT_BLOG}>
+                  <Route index element={<Blog />} />
+                  <Route path={routesConfig.CLIENT_BLOG_POST} element={<PostDetails />} />
+               </Route>
 
                <Route path={routesConfig.CLIENT_QUIZ} element={<Quiz />} />
 

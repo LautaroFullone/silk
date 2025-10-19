@@ -1,6 +1,7 @@
 export const routesConfig = {
    CLIENT_HOME: '/',
    CLIENT_BLOG: '/blog',
+   CLIENT_BLOG_POST: '/blog/post/:postId',
    CLIENT_SERVICES: '/servicios',
    CLIENT_QUIZ: '/quiz',
    CLIENT_ABOUT: '/nosotros',

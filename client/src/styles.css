@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@source "../node_modules/@blocknote";
 
 @font-face {
    font-family: 'Acumin Pro';
@@ -66,9 +67,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Contenedor centrado con padding horizontal para las secciones */
 @utility container {
    margin: auto;
    padding: 0 1rem;
+}
+
+/*TODO: Aplicar esta fuente y corregir altura de texto */
+/* .bn-container[data-headings-font] .bn-editor {
+   font-family: 'Acumin Pro', sans-serif;
+
+} */
+
+/* Estilo personalizado para los encabezados del editor de BlockNote */
+.bn-container[data-headings-font] .bn-editor h1,
+.bn-container[data-headings-font] .bn-editor h2,
+.bn-container[data-headings-font] .bn-editor h3,
+.bn-container[data-headings-font] .bn-editor h4,
+.bn-container[data-headings-font] .bn-editor h5,
+.bn-container[data-headings-font] .bn-editor h6 {
+   font-family: 'Very Vogue', serif;
+   font-weight: normal;
 }
 
 @theme inline {

@@ -1,13 +1,14 @@
 import { TestimonialFormData } from '@models/Testimonial.model'
 import { ResponseApi } from './ResponseApi'
 import { api } from '@lib/axios'
+import axios from 'axios'
 /**
  * Obtener todos los testimonios del sistema
  * @returns Mensaje de éxito y datos de los testimonios
  */
 export async function getTestimonials(onlyActive: boolean) {
    type Response = Pick<ResponseApi, 'testimonials'>
-   const { data } = await api.get<Response>(`/testimonials`, {
+   const { data } = await axios.get<Response>(`/api/testimonials`, {
       params: {
          onlyActive,
       },
