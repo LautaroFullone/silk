@@ -26,7 +26,7 @@ const Quiz = () => {
                <div className="flex items-center justify-center gap-3 mb-4">
                   <Clock className="w-5 h-5 text-silk-secondary" />
                   <span className="font-semibold text-silk-secondary uppercase tracking-wide text-sm">
-                     En Desarrollo
+                     Próximamente disponible
                   </span>
                </div>
 
@@ -34,10 +34,6 @@ const Quiz = () => {
                <div className="w-full bg-silk-secondary/20 rounded-full h-2 mb-3">
                   <div className="bg-gradient-to-r from-silk-secondary to-silk-primary h-2 rounded-full w-3/4 animate-pulse"></div>
                </div>
-
-               <p className="text-sm text-silk-secondary/70">
-                  Lanzamiento estimado: Próximamente
-               </p>
             </div>
          </div>
 

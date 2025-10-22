@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { routesConfig } from '@config/routesConfig'
 import ClientLayout from '@layouts/Client.layout'
 import AdminLayout from '@layouts/Admin.layout'
+import { ScrollToTop } from '@shared'
 import {
    Blog,
    Dashboard,
@@ -20,6 +21,7 @@ import {
 const Router = () => {
    return (
       <BrowserRouter>
+         <ScrollToTop />
          <Routes>
             {/* CLIENT Routes */}
             <Route path={routesConfig.CLIENT_HOME} element={<ClientLayout />}>
