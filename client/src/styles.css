@@ -74,10 +74,10 @@
 }
 
 /*TODO: Aplicar esta fuente y corregir altura de texto */
-/* .bn-container[data-headings-font] .bn-editor {
+.bn-container[data-headings-font] .bn-editor {
    font-family: 'Acumin Pro', sans-serif;
 
-} */
+}
 
 /* Estilo personalizado para los encabezados del editor de BlockNote */
 .bn-container[data-headings-font] .bn-editor h1,

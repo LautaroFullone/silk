@@ -28,14 +28,16 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
    return (
       <Card
          className={cn(
-            'overflow-hidden flex flex-col md:flex-row transition-all p-0 hover:shadow-md cursor-pointer h-auto',
+            'overflow-hidden transition-all p-0 hover:shadow-md cursor-pointer',
+            ' md:h-45 flex flex-col md:flex-row',
             post.isActive
                ? 'border-l-6 border-l-emerald-700'
                : 'border-l-6 border-l-gray-600'
          )}
       >
          <CardContent className="p-0 flex flex-col md:flex-row h-full w-full cursor-default">
-            <div className="w-full h-32 md:h-40 md:w-48 flex-shrink-0 overflow-hidden relative">
+            {/* Imagen */}
+            <div className="relative w-full h-40 md:h-full md:w-48 flex-shrink-0 overflow-hidden">
                <img
                   alt={post.title}
                   className="w-full h-full object-cover"
@@ -64,14 +66,18 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
                </div>
             </div>
 
-            <div className="p-6 w-full min-w-0 flex flex-col">
-               <div className="flex items-center gap-2 min-w-0">
-                  <h3
-                     className="flex-1 min-w-0 text-xl font-serif text-silk-secondary truncate"
-                     title={post.title}
-                  >
-                     {post.title}
-                  </h3>
+            {/* Contenido */}
+            <div className="flex-1 p-4 flex flex-col h-40 md:h-full">
+               {/* Header con título y acciones */}
+               <div className="flex items-start gap-2 mb-3 min-w-0">
+                  <div className="flex-1 min-w-0">
+                     <h3
+                        className="font-very-vogue text-xl md:text-2xl text-silk-secondary line-clamp-2 leading-tight"
+                        title={post.title}
+                     >
+                        {post.title}
+                     </h3>
+                  </div>
 
                   {/* Acciones - versión desktop */}
                   <div className="flex-shrink-0 gap-2 hidden lg:flex">
@@ -128,26 +134,28 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
                   </div>
                </div>
 
-               <div className="flex flex-wrap items-center text-sm mb-2 gap-x-4 gap-y-2 text-muted-foreground">
+               {/* Metadata */}
+               <div className="flex flex-wrap items-center text-xs md:text-sm gap-x-3 gap-y-1 text-muted-foreground mb-2">
                   <div className="flex items-center">
-                     <User className="w-4 h-4 mr-1" />
+                     <User className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                      <span className="truncate">{post.author}</span>
                   </div>
 
                   <div className="flex items-center">
-                     <Calendar className="w-4 h-4 mr-1" />
+                     <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                      <span>{formatDateToShow(post.date, 'date')}</span>
                   </div>
 
                   <Badge
                      variant="outline"
-                     className=" border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm"
+                     className="border-silk-primary-200 bg-silk-primary-100 text-silk-primary-800 rounded-sm text-xs"
                   >
                      {post.category.name}
                   </Badge>
                </div>
 
-               <p className="text-sm text-muted-foreground line-clamp-2 min-w-0">
+               {/* Descripción */}
+               <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
                   {post.description}
                </p>
             </div>
@@ -158,10 +166,10 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
 
 PostCard.Skeleton = function PostCardSkeleton() {
    return (
-      <Card className="overflow-hidden flex flex-col md:flex-row transition-all p-0 h-auto md:45">
+      <Card className="overflow-hidden transition-all p-0 h-80 md:h-45 flex flex-col md:flex-row">
          <div className="p-0 flex flex-col md:flex-row h-full w-full">
             {/* Skeleton de la imagen */}
-            <div className="w-full md:w-48 h-32 md:h-40 flex-shrink-0 overflow-hidden relative">
+            <div className="relative w-full h-40 md:h-full md:w-48 flex-shrink-0 overflow-hidden">
                <Skeleton className="w-full h-full" />
 
                {/* Skeleton del badge */}
@@ -171,11 +179,11 @@ PostCard.Skeleton = function PostCardSkeleton() {
             </div>
 
             {/* Skeleton del contenido */}
-            <div className="p-6 w-full min-w-0 flex flex-col">
-               <div className="flex items-center gap-2 min-w-0 mb-4">
-                  {/* Skeleton del título */}
-                  <div className="flex-1 min-w-0">
-                     <Skeleton className="h-6 max-w-48" />
+            <div className="flex-1 p-4 flex flex-col h-40 md:h-full">
+               {/* Header con título y acciones */}
+               <div className="flex items-start gap-2 mb-3">
+                  <div className="flex-1">
+                     <Skeleton className="h-5 md:h-6 w-full max-w-48" />
                   </div>
 
                   {/* Skeleton de las acciones - versión desktop */}
@@ -191,18 +199,16 @@ PostCard.Skeleton = function PostCardSkeleton() {
                </div>
 
                {/* Skeleton de la metadata */}
-               <div className="flex flex-wrap items-center mb-2 gap-x-4 gap-y-2 ">
-                  <Skeleton className="h-4 w-24" />
-
-                  <Skeleton className="h-4 w-20" />
-
-                  <Skeleton className="h-4 w-16 rounded-sm" />
+               <div className="flex flex-wrap items-center mb-2 gap-x-3 gap-y-1">
+                  <Skeleton className="h-3 md:h-4 w-20" />
+                  <Skeleton className="h-3 md:h-4 w-16" />
+                  <Skeleton className="h-4 w-12 rounded-sm" />
                </div>
 
                {/* Skeleton de la descripción */}
-               <div className="space-y-2">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-3/4" />
+               <div className="flex-1 space-y-1">
+                  <Skeleton className="h-3 md:h-4 w-full" />
+                  <Skeleton className="h-3 md:h-4 w-3/4" />
                </div>
             </div>
          </div>
