@@ -13,8 +13,7 @@ const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClos
             onOpenAutoFocus={
                (e) => e.preventDefault() // <- evita que se enfoque el contenido al abrir el modal
             }
-            className="max-w-6xl max-h-[90dvh] overflow-y-auto bg-silk-tertiary text-silk-primary 
-            w-[calc(100vw-2rem)] mx-auto sm:w-full sm:mx-4"
+            className="max-w-6xl! max-h-[90dvh] overflow-y-auto bg-silk-tertiary text-silk-primary sm:w-full"
          >
             <DialogTitle className="hidden">
                ANÁLISIS DE COLOR HECHO POR EXPERTOS

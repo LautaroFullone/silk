@@ -26,8 +26,8 @@ interface ContactFormProps {
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({
-   title = 'Tomá el primer paso',
-   subTitle = 'Completá tus datos para recibir tu diagnóstico',
+   title = 'Comenzá tu transformación',
+   subTitle = 'Completá tus datos',
    isServiceInputEnabled = false,
    onSubmitSuccess,
 }) => {

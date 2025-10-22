@@ -1,8 +1,10 @@
+import ServicesModal from './components/ServicesModal'
 import ServiceCard from './components/ServiceCard'
 import FaqSection from './components/FaqSection'
 import { ChevronRight } from 'lucide-react'
 import { PageTitleLanding } from '@shared'
 import { Button } from '@shadcn'
+import { useState } from 'react'
 
 const services = [
    {
@@ -176,6 +178,8 @@ const services = [
 ]
 
 const Services = () => {
+   const [isModalOpen, setIsModalOpen] = useState(false)
+
    return (
       <div className="container py-15 md:py-20 space-y-10">
          <PageTitleLanding
@@ -236,7 +240,7 @@ const Services = () => {
 
             <div className="flex justify-center">
                <Button
-                  onClick={() => {}}
+                  onClick={() => setIsModalOpen(true)}
                   variant="primary"
                   size="xl"
                   className="mt-8 group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
@@ -254,6 +258,8 @@ const Services = () => {
          </section>
 
          <FaqSection />
+
+         <ServicesModal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
    )
 }
