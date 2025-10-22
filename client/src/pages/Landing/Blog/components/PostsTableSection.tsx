@@ -51,6 +51,7 @@ const PostsTableSection: React.FC<PostsTableSectionProps> = ({
                      onPageChange={onPageChange}
                      canGoNext={canGoNext}
                      canGoPrevious={canGoPrevious}
+                     scrollToTop={false}
                   />
                )}
 
@@ -63,6 +64,7 @@ const PostsTableSection: React.FC<PostsTableSectionProps> = ({
                {totalPages > 1 && !isLoading && (
                   <Pagination
                      isLanding
+                     scrollToTop
                      currentPage={currentPage}
                      totalPages={totalPages}
                      onPageChange={onPageChange}

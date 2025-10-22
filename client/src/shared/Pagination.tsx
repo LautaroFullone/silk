@@ -8,6 +8,7 @@ interface PaginationProps {
    onPageChange: (page: number) => void
    canGoNext: boolean
    canGoPrevious: boolean
+   scrollToTop?: boolean
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -17,7 +18,23 @@ const Pagination: React.FC<PaginationProps> = ({
    onPageChange,
    canGoNext,
    canGoPrevious,
+   scrollToTop = false,
 }) => {
+   const handlePageChange = (page: number) => {
+      onPageChange(page)
+      if (scrollToTop) {
+         // Uso
+         //  setTimeout para asegurar que el cambio de página ocurra primero
+         setTimeout(() => {
+            try {
+               window.scrollTo({ top: 200, behavior: 'smooth' })
+            } catch {
+               // Fallback para browsers que no soportan behavior: 'smooth'
+               window.scrollTo(0, 200)
+            }
+         }, 100)
+      }
+   }
    return (
       <div className="flex items-center justify-end gap-4">
          <div
@@ -33,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({
                variant="outline"
                size="icon"
                className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
-               onClick={() => onPageChange(1)}
+               onClick={() => handlePageChange(1)}
                disabled={!canGoPrevious}
             >
                <span className="sr-only">Ir a la primer página</span>
@@ -44,7 +61,7 @@ const Pagination: React.FC<PaginationProps> = ({
                variant="outline"
                size="icon"
                className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
-               onClick={() => onPageChange(currentPage - 1)}
+               onClick={() => handlePageChange(currentPage - 1)}
                disabled={!canGoPrevious}
             >
                <span className="sr-only">Ir a la página anterior</span>
@@ -55,7 +72,7 @@ const Pagination: React.FC<PaginationProps> = ({
                variant="outline"
                size="icon"
                className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
-               onClick={() => onPageChange(currentPage + 1)}
+               onClick={() => handlePageChange(currentPage + 1)}
                disabled={!canGoNext}
             >
                <span className="sr-only">Ir a la página siguiente</span>
@@ -66,7 +83,7 @@ const Pagination: React.FC<PaginationProps> = ({
                variant="outline"
                size="icon"
                className={`size-8 ${isLanding && 'text-silk-secondary/80'}`}
-               onClick={() => onPageChange(totalPages)}
+               onClick={() => handlePageChange(totalPages)}
                disabled={!canGoNext}
             >
                <span className="sr-only">Ir a la última página</span>
