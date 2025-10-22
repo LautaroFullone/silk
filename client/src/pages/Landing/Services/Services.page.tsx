@@ -116,6 +116,7 @@ const services = [
       id: 3,
       image: 'transform-life.jpg',
       title: 'Transformación Integral',
+      comingSoon: true,
       description:
          'Un enfoque integral que une el asesoramiento de imagen con herramientas de coaching ontológico para trabajar tu imagen desde dentro hacia afuera. Más que elegir ropa que te quede bien, se trata de construir una relación sólida con vos mismo/a, una que esté alineada la identidad, autoestima y estilo de vida que deseás.',
 
@@ -166,13 +167,7 @@ const services = [
             label: 'LA INVERSIÓN',
             content: (
                <>
-                  <p>
-                     ¡Próximamente! Anotate en la lista de espera y obtené una guía gratis
-                     de <b>Cómo utilizar el color a tu favor.</b>
-                  </p>
-                  <button className="bg-silk-primary text-white mt-3 px-4 py-2 rounded-sm text-base hover:bg-silk-primary/90 transition">
-                     Lista de Espera
-                  </button>
+                  <p>¡Próximamente!</p>
                </>
             ),
          },

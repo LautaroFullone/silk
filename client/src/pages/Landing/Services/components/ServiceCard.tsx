@@ -7,6 +7,7 @@ interface ServiceCardProps {
       image: string
       title: string
       description: string
+      comingSoon?: boolean
       options: {
          id: string
          label: string
@@ -17,19 +18,39 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service }: ServiceCardProps) => {
    return (
-      <div className="group bg-white rounded-lg shadow-sm border border-silk-primary/10 overflow-hidden hover:shadow-lg transition-all duration-300">
+      <div className="group bg-white rounded-lg shadow-sm border border-silk-primary/10 overflow-hidden hover:shadow-lg transition-all duration-300 relative">
          {/* Image Container with Overlay Effect */}
          <div className="relative overflow-hidden aspect-[4/5] bg-silk-tertiary/20">
             <img
                src={`services-images/${service.image}`}
                alt={service.title}
-               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+               className={`w-full h-full object-cover transition-all duration-300 ${
+                  service.comingSoon ? 'grayscale opacity-80' : 'group-hover:scale-105'
+               }`}
             />
             <div className="absolute inset-0 bg-silk-secondary/0 group-hover:bg-silk-secondary/20 transition-colors duration-300"></div>
+
+            {/* Coming Soon Overlay and Banner */}
+            {service.comingSoon && (
+               <>
+                  {/* Dark overlay */}
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+                  {/* Centered banner */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                     <div className="bg-silk-primary text-white px-6 py-3 rounded-lg shadow-xl border-2 border-white/20 backdrop-blur-md">
+                        <div className="text-center">
+                           <div className="font-semibold text-lg mb-1">Próximamente</div>
+                           <div className="text-sm opacity-90">Muy pronto disponible</div>
+                        </div>
+                     </div>
+                  </div>
+               </>
+            )}
          </div>
 
          {/* Content Container */}
-         <div className="p-6">
+         <div className={`p-6 ${service.comingSoon ? 'opacity-75' : ''}`}>
             <h3 className="font-very-vogue text-2xl lg:text-3xl text-silk-primary mb-3 leading-tight">
                {service.title}
             </h3>
