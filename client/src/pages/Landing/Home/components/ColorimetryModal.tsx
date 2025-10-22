@@ -9,12 +9,18 @@ interface ColorimetryModalProps {
 const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClose }) => {
    return (
       <Dialog open={isModalOpen} onOpenChange={(open) => open || onClose()}>
-         <DialogContent className="max-w-6xl! max-h-[90dvh] overflow-y-auto bg-silk-tertiary text-silk-primary mx-4">
+         <DialogContent
+            onOpenAutoFocus={
+               (e) => e.preventDefault() // <- evita que se enfoque el contenido al abrir el modal
+            }
+            className="max-w-6xl max-h-[90dvh] overflow-y-auto bg-silk-tertiary text-silk-primary 
+            w-[calc(100vw-2rem)] mx-auto sm:w-full sm:mx-4"
+         >
             <DialogTitle className="hidden">
                ANÁLISIS DE COLOR HECHO POR EXPERTOS
             </DialogTitle>
 
-            <div className="container mx-auto px-4 py-6">
+            <div className="mx-auto sm:px-4 py-6">
                <div className="grid lg:grid-cols-2 gap-x-4 gap-y-8 items-center">
                   <div>
                      <p className="text-sm font-semibold uppercase">

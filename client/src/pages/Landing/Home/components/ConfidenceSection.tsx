@@ -89,11 +89,11 @@ const ConfidenceSection = () => {
                <Button
                   onClick={() => navigate(routesConfig.CLIENT_SERVICES)}
                   variant="tertiary"
-                  size={isMobile ? 'lg' : 'xl'}
-                  className=" group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                  size="xl"
+                  className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                >
                   <span className="relative z-10 flex items-center">
-                     CONOCÉ NUESTROS SERVICIOS
+                     NUESTROS SERVICIOS
                      <ChevronRight
                         className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
                         size={19}
