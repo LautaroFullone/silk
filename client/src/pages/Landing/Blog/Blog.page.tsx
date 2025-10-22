@@ -26,7 +26,7 @@ const Blog = () => {
    })
 
    const {
-      items: filteredAndSortedPosts,
+      items: filteredPosts,
       searchTerm,
       setSearchTerm,
       filters,
@@ -53,11 +53,11 @@ const Blog = () => {
       canGoPrevious,
       setItemsPerPage,
    } = usePagination({
-      totalItems: filteredAndSortedPosts.length,
+      totalItems: filteredPosts.length,
       itemsPerPage: 6,
    })
 
-   const paginatedPosts = filteredAndSortedPosts.slice(startIndex, endIndex)
+   const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
 
    return (
       <div className="container py-15 md:py-20 space-y-10">
@@ -126,11 +126,11 @@ const Blog = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                <div className="text-sm text-silk-secondary/80">
                   {paginatedPosts.length === 0
-                     ? 'No se encontraron posts'
+                     ? 'Mostrando 0 de 0 posts'
                      : `Mostrando ${startIndex + 1}-${Math.min(
                           endIndex,
-                          filteredAndSortedPosts.length
-                       )} de ${filteredAndSortedPosts.length} posts`}
+                          filteredPosts.length
+                       )} de ${filteredPosts.length} posts`}
                </div>
 
                <div className="flex items-center gap-4">

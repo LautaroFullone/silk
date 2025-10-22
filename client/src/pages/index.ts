@@ -1,3 +1,4 @@
+import About from './Landing/About/About.page'
 import Blog from './Landing/Blog/Blog.page'
 import PostDetails from './Landing/Blog/PostDetails.page'
 import Home from './Landing/Home/Home.page'
@@ -13,6 +14,7 @@ import RequestsPanel from './Admin/Requests/RequestsPanel.page'
 import NotFound from './Admin/NotFound.page'
 
 export {
+   About,
    Blog,
    PostDetails,
    Home,

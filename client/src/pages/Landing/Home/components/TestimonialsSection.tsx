@@ -1,10 +1,13 @@
 import { useFetchTestimonials } from '@hooks/react-query'
 import { getPublicImageUrl } from '@utils/getPublicImage'
-import { Quote, Star } from 'lucide-react'
+import { ChevronRight, Quote, Star } from 'lucide-react'
 import { PageTitleLanding } from '@shared'
-import { Skeleton } from '@shadcn'
+import { Button, Skeleton } from '@shadcn'
+import { routesConfig } from '@config/routesConfig'
+import { useNavigate } from 'react-router-dom'
 
 const TestimonialsSection = () => {
+   const navigate = useNavigate()
    const { testimonials, isLoading } = useFetchTestimonials({ onlyActive: true })
 
    return (
@@ -95,6 +98,31 @@ const TestimonialsSection = () => {
                      </div>
                   ))
                )}
+            </div>
+
+            {/* Separador estético */}
+            <div className="h-px bg-silk-secondary/20"></div>
+
+            <div className="text-center text-silk-secondary">
+               <p className="text-tertiary/80 text-lg mb-6 max-w-md mx-auto leading-relaxed">
+                  ¿Te interesa transformar tu imagen y ganar confianza?
+               </p>
+
+               <Button
+                  onClick={() => navigate(routesConfig.CLIENT_SERVICES)}
+                  variant="primary"
+                  size="xl"
+                  className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+               >
+                  <span className="relative z-10 flex items-center">
+                     NUESTROS SERVICIOS
+                     <ChevronRight
+                        className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
+                        size={19}
+                     />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+               </Button>
             </div>
          </div>
       </section>

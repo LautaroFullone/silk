@@ -5,11 +5,11 @@ import { PageTitleLanding } from '@shared'
 import { Button } from '@shadcn'
 
 const images = [
-   'banner-hero-1.png',
-   'banner-hero-2.png',
-   'banner-hero-3.png',
-   'banner-hero-4.png',
-   'banner-hero-5.png',
+   'banner-hero-1.webp',
+   'banner-hero-2.webp',
+   'banner-hero-3.webp',
+   'banner-hero-4.webp',
+   'banner-hero-5.webp',
 ]
 
 const HeroSection = () => {

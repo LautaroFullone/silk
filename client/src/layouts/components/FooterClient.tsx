@@ -50,7 +50,7 @@ const FooterClient = () => {
                   </Link>
 
                   <Link
-                     to="https://www.facebook.com/estudiosilk"
+                     to="https://www.facebook.com/profile.php?id=61565342986870"
                      target="_blank"
                      rel="noopener noreferrer"
                      className="size-7"

@@ -4,6 +4,7 @@ import ClientLayout from '@layouts/Client.layout'
 import AdminLayout from '@layouts/Admin.layout'
 import { ScrollToTop } from '@shared'
 import {
+   About,
    Blog,
    Dashboard,
    Home,
@@ -36,7 +37,7 @@ const Router = () => {
 
                <Route path={routesConfig.CLIENT_SERVICES} element={<Services />} />
 
-               <Route path={routesConfig.CLIENT_ABOUT} element={<div>About Page</div>} />
+               <Route path={routesConfig.CLIENT_ABOUT} element={<About />} />
 
                <Route path="*" element={<Navigate to={routesConfig.CLIENT_HOME} />} />
             </Route>

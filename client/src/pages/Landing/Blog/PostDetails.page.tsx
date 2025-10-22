@@ -144,7 +144,7 @@ const PostDetails = () => {
 
             {/* Separador elegante */}
             <div className="flex justify-center">
-               <div className="w-96 h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
+               <div className="w-full h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
             </div>
 
             {/* Call to action */}
@@ -163,7 +163,7 @@ const PostDetails = () => {
                   className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                >
                   <span className="relative z-10 flex items-center">
-                     Ir al Blog
+                     IR AL BLOG
                      <ChevronRight
                         className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
                         size={19}
@@ -227,7 +227,7 @@ const PostDetailsSkeleton = () => {
 
             {/* Skeleton del separador elegante */}
             <div className="flex justify-center">
-               <Skeleton className="w-96 h-px" />
+               <Skeleton className="w-full h-px" />
             </div>
 
             {/* Skeleton del call to action */}

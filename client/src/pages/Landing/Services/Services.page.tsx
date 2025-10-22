@@ -224,19 +224,16 @@ const Services = () => {
             {/* Contact Form Section */}
             <div className="text-center">
                <h3 className="font-very-vogue text-4xl md:text-5xl text-silk-secondary mb-4">
-                  ¿Listo para <span className="italic font-light">transformar</span> tu
-                  imagen?
+                  ¿Cuál de estos servicios es{' '}
+                  <span className="italic font-light">perfecto</span> para vos?
                </h3>
 
                <p className="text-silk-secondary/80 text-lg leading-relaxed max-w-2xl mx-auto">
-                  Contános sobre tus objetivos y necesidades. Nuestro equipo te ayudará a
-                  elegir el servicio ideal para vos.
+                  Si no estás seguro cuál elegir o necesitás una consulta personalizada,
+                  contactanos y te ayudamos a encontrar la opción ideal según tus
+                  objetivos y estilo de vida.
                </p>
             </div>
-
-            {/* <div className="max-w-xl mx-auto">
-               <ContactForm isServiceInputEnabled />
-            </div> */}
 
             <div className="flex justify-center">
                <Button
