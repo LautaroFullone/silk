@@ -22,7 +22,7 @@ const Blog = () => {
       categories,
       isLoading: isLoadingPosts,
    } = useFetchPosts({
-      onlyActive: false,
+      onlyActive: true,
    })
 
    const {

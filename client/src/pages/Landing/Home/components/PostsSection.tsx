@@ -15,9 +15,8 @@ const PostsSection = () => {
 
    const isMobile = useMobile()
 
-   const showArrows = !isMobile && posts.length >= 3
-   const showSlideMessage =
-      (isMobile && posts.length > 1) || (!isMobile && posts.length > 3)
+   const shouldShowCarousel = posts.length > 3
+   const showArrows = !isMobile && shouldShowCarousel
 
    return (
       <section className="bg-silk-tertiary">
@@ -44,13 +43,11 @@ const PostsSection = () => {
                   title="No hay Posts registrados"
                   description="Pronto tendremos contenido increíble para vos"
                />
-            ) : (
+            ) : shouldShowCarousel ? (
                <>
-                  {showSlideMessage && (
-                     <div className="text-center mb-2 text-xs text-muted-foreground">
-                        Desliza para ver más
-                     </div>
-                  )}
+                  <div className="text-center mb-2 text-xs text-muted-foreground">
+                     Desliza para ver más
+                  </div>
 
                   <Carousel
                      opts={{
@@ -74,6 +71,12 @@ const PostsSection = () => {
                      {showArrows && <CarouselNext />}
                   </Carousel>
                </>
+            ) : (
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {posts.map((post) => (
+                     <PostCard key={`post-grid-${post.id}`} post={post} />
+                  ))}
+               </div>
             )}
          </div>
       </section>
