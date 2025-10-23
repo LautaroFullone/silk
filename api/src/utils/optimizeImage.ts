@@ -14,7 +14,7 @@ export interface OptimizeImageOptions {
  * @returns Buffer optimizado y extensión del archivo
  */
 export async function optimizeImage(buffer: Buffer, options: OptimizeImageOptions = {}) {
-   const { maxWidth = 800, maxHeight = 600, quality = 85, format = 'webp' } = options
+   const { maxWidth = 800, maxHeight = 600, quality = 100, format = 'webp' } = options
 
    try {
       let sharpInstance = sharp(buffer)
