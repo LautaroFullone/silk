@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { routesConfig } from '@config/routesConfig'
 import ClientLayout from '@layouts/Client.layout'
 import AdminLayout from '@layouts/Admin.layout'
+import AuthLayout from '@layouts/AuthLayout'
 import { ScrollToTop } from '@shared'
 import {
    About,
@@ -17,6 +18,7 @@ import {
    NotFound,
    Quiz,
    PostDetails,
+   Login,
 } from './pages'
 
 const Router = () => {
@@ -40,6 +42,11 @@ const Router = () => {
                <Route path={routesConfig.CLIENT_ABOUT} element={<About />} />
 
                <Route path="*" element={<Navigate to={routesConfig.CLIENT_HOME} />} />
+            </Route>
+
+            {/* AUTH Routes */}
+            <Route element={<AuthLayout />}>
+               <Route path={routesConfig.ADMIN_LOGIN} element={<Login />} />
             </Route>
 
             {/* ADMIN Routes */}

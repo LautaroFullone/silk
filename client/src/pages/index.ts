@@ -5,6 +5,7 @@ import Home from './Landing/Home/Home.page'
 import Quiz from './Landing/Quiz/Quiz.page'
 import Services from './Landing/Services/Services.page'
 
+import Login from './Admin/Auth/Login.page'
 import Dashboard from './Admin/Dashboard/Dashboard.page'
 import PostsPanel from './Admin/Posts/PostsPanel.page'
 import PostForm from './Admin/Posts/PostForm.page'
@@ -19,6 +20,7 @@ export {
    PostDetails,
    Home,
    Quiz,
+   Login,
    Services,
    Dashboard,
    PostsPanel,

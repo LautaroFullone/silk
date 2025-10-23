@@ -89,7 +89,7 @@ const FooterClient = () => {
                   <span className="cursor-pointer hover:underline">Privacy Policy</span>
 
                   <Link
-                     to={routesConfig.ADMIN_DASHBOARD}
+                     to={routesConfig.ADMIN_LOGIN}
                      className="cursor-pointer hover:underline"
                   >
                      Acceso
