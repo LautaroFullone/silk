@@ -24,10 +24,10 @@ const items = [
          'Te ayudamos a proyectar confianza y seguridad a través de un estilo auténtico y único.',
    },
    {
-      image: 'dressess-image.webp',
-      title: 'RECOMENDACIÓN DEV',
+      image: 'dresses-image.webp',
+      title: 'TRANSFORMAMOS TU EXPERIENCIA',
       description:
-         'Agregando una imagen más en esa seccion, la grilla se ve mejor cuando hay 2 columnas (pantalla más chica) ',
+         'Cada consulta es personalizada, diseñada para adaptarse a tu estilo de vida y necesidades únicas.',
    },
 ]
 

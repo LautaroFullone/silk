@@ -39,7 +39,7 @@ const MissionSection = () => {
                   </p>
                </div>
 
-               <div className="flex items-center justify-center lg:row-span-2 lg:col-start-2 lg:row-start-1">
+               <div className="hidden sm:flex items-center justify-center lg:row-span-2 lg:col-start-2 lg:row-start-1">
                   <div className="relative">
                      <img
                         src="/team-images/team-mission.webp"

@@ -49,16 +49,13 @@ const PostCard = ({
 
                   <div className="flex items-center justify-between gap-2 mb-2">
                      <span className="text-muted-foreground text-sm">{date}</span>
+
                      <Badge
                         variant="default"
-                        className="bg-silk-primary text-white border-none rounded-xs uppercase"
+                        className="bg-silk-primary text-white border-none rounded-full uppercase tracking-wide px-4 py-1"
                      >
                         {category.name}
                      </Badge>
-
-                     {/* <span className="inline-block border border-silk-primary text-silk-primary bg-white px-2 py-0.5 rounded font-semibold text-xs uppercase tracking-wide">
-                        {category}
-                     </span> */}
                   </div>
 
                   <p className="text-muted-foreground flex-1 mb-4">{description}</p>
