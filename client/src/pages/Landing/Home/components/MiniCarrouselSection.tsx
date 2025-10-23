@@ -1,11 +1,11 @@
 import Marquee from 'react-fast-marquee'
 
 const miniImages = [
-   'cher-cap-mini.png',
-   'battlo-sandals-mini.png',
-   'anita-ring-mini.png',
-   'adidas-shoes-mini.png',
-   'bottega-bag-mini.png',
+   'cher-cap-mini.webp',
+   'battlo-sandals-mini.webp',
+   'anita-ring-mini.webp',
+   'adidas-shoes-mini.webp',
+   'bottega-bag-mini.webp',
 ]
 
 const MiniCarrouselSection = () => (

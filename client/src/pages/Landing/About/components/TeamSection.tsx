@@ -93,7 +93,7 @@ const TeamSection = () => {
                               className="size-7"
                            >
                               <img
-                                 src="/socials-images/instagram.png"
+                                 src="/socials-images/instagram.webp"
                                  alt="Instagram"
                                  className="w-full h-full object-contain"
                               />
@@ -110,7 +110,7 @@ const TeamSection = () => {
                               className="size-7"
                            >
                               <img
-                                 src="/socials-images/tik-tok.png"
+                                 src="/socials-images/tik-tok.webp"
                                  alt="TikTok"
                                  className="w-full h-full object-contain"
                               />

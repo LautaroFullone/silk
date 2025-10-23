@@ -15,7 +15,7 @@ const FooterClient = () => {
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
             <div className="flex flex-col items-start">
                <img
-                  src="/silk-main-logo.png"
+                  src="/silk-main-logo.webp"
                   alt="Logo de Estudiosilk footer"
                   className="w-[100px] mb-2"
                />
@@ -43,7 +43,7 @@ const FooterClient = () => {
                      className="size-7"
                   >
                      <img
-                        src="/socials-images/instagram.png"
+                        src="/socials-images/instagram.webp"
                         alt="Instagram"
                         className="w-full h-full object-contain"
                      />
@@ -56,7 +56,7 @@ const FooterClient = () => {
                      className="size-7"
                   >
                      <img
-                        src="/socials-images/facebook.png"
+                        src="/socials-images/facebook.webp"
                         alt="Facebook"
                         className="w-full h-full object-contain"
                      />
@@ -69,7 +69,7 @@ const FooterClient = () => {
                      className="size-7"
                   >
                      <img
-                        src="/socials-images/tik-tok.png"
+                        src="/socials-images/tik-tok.webp"
                         alt="TikTok"
                         className="w-full h-full object-contain"
                      />

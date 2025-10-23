@@ -9,7 +9,7 @@ import { useState } from 'react'
 const services = [
    {
       id: 1,
-      image: 'personal-shopping.jpg',
+      image: 'personal-shopping.webp',
       title: 'Personal Shopping',
       description:
          'Un servicio 100% personalizado para actualizar, renovar o construir tu armario desde cero. Ya sea que necesites armar tu guardarropa para una nueva temporada, encontrar el look ideal para un evento o planificar outfits para tus viajes, elegimos las piezas justas para vos.',
@@ -69,7 +69,7 @@ const services = [
    },
    {
       id: 2,
-      image: 'transform-image.jpg',
+      image: 'transform-image.webp',
       title: 'Asesoramiento de Imagen',
       description:
          'El servicio de asesoramiento de imagen está diseñado para ayudarte a descubrir y potenciar tu estilo único. A través de un análisis personalizado, definimos tu paleta de colores ideal, identificamos las prendas que mejor te favorecen y creamos una guía de estilo acorde a tu personalidad, estilo de vida y objetivos.',
@@ -116,7 +116,7 @@ const services = [
    },
    {
       id: 3,
-      image: 'transform-life.jpg',
+      image: 'transform-life.webp',
       title: 'Transformación Integral',
       comingSoon: true,
       description:
