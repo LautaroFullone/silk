@@ -75,7 +75,7 @@ const RequestsPanel = () => {
             <CardContent className="space-y-4">
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="md:col-span-2">
-                     <Label htmlFor="search-filter">Buscar por Nombre o Rol</Label>
+                     <Label htmlFor="search-filter">Buscar por Nombre, Email o Presupuesto</Label>
 
                      <div className="relative mt-1">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -91,15 +91,15 @@ const RequestsPanel = () => {
                   </div>
 
                   <div>
-                     <Label htmlFor="highlight-filter">Estado</Label>
+                     <Label htmlFor="status-filter">Estado</Label>
                      <Select
-                        value={filters.isHighlight || 'all'}
+                        value={filters.status || 'all'}
                         onValueChange={(value: string) =>
-                           updateFilter('isHighlight', value)
+                           updateFilter('status', value)
                         }
                         disabled={isLoadingRequests}
                      >
-                        <SelectTrigger className="mt-1 w-full" id="highlight-filter">
+                        <SelectTrigger className="mt-1 w-full" id="status-filter">
                            <SelectValue placeholder="Todos" />
                         </SelectTrigger>
 
