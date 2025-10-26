@@ -6,7 +6,7 @@ import { hasRealChanges } from '../utils/hasRealChanges'
 import { uploadImage } from '../middlewares/uploadImage'
 import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
-import { sleep } from '../utils/sleep'
+
 import {
    testimonialCreateSchema,
    testimonialUpdateSchema,
@@ -16,7 +16,7 @@ const testimonialsRouter = Router()
 
 // GET -> listar testimonios
 testimonialsRouter.get('/', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    try {
       const { onlyActive } = req.query
 
@@ -39,7 +39,7 @@ testimonialsRouter.post(
    '/',
    uploadImage.single('avatarFile'),
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       try {
          const body = testimonialCreateSchema.parse(req.body)
 
@@ -115,7 +115,7 @@ testimonialsRouter.post(
 
 // GET -> obtener testimonio por id
 testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    const { testimonialId } = req.params
 
    try {
@@ -137,7 +137,7 @@ testimonialsRouter.patch(
    '/:testimonialId',
    uploadImage.single('avatarFile'),
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       const { testimonialId } = req.params
 
       try {
@@ -250,7 +250,7 @@ testimonialsRouter.patch(
 
 // DELETE -> eliminar testimonio
 testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    const { testimonialId } = req.params
 
    try {

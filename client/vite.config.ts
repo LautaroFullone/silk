@@ -7,14 +7,28 @@ import path from 'path'
 export default defineConfig({
    plugins: [react(), tailwindcss()],
    server: {
-      host: true, // expone el front en la LAN (0.0.0.0)
+      // host: true, // expone el front en la LAN (0.0.0.0)
       port: 5174, // o el que uses
-      proxy: {
-         // todo lo que empiece con /api va a tu backend local
-         '/api': {
-            target: 'http://127.0.0.1:3031', // puerto real de tu API en tu PC
-            changeOrigin: true,
-            secure: false,
+      // proxy: {
+      //    // todo lo que empiece con /api va a tu backend local
+      //    '/api': {
+      //       target: 'http://127.0.0.1:3031', // En desarrollo usa localhost
+      //       changeOrigin: true,
+      //       secure: false,
+      //    },
+      // },
+   },
+   build: {
+      outDir: 'dist',
+      sourcemap: false,
+      minify: 'terser',
+      rollupOptions: {
+         output: {
+            manualChunks: {
+               vendor: ['react', 'react-dom'],
+               router: ['react-router-dom'],
+               ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
+            },
          },
       },
    },

@@ -9,13 +9,13 @@ import { hasRealChanges } from '../utils/hasRealChanges'
 import { uploadImage } from '../middlewares/uploadImage'
 import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
-import { sleep } from '../utils/sleep'
+
 
 const postsRouter = Router()
 
 // GET -> listar posts
 postsRouter.get('/', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    try {
       const { onlyActive } = req.query
 
@@ -39,7 +39,7 @@ postsRouter.get('/', async (req: Request, res: Response) => {
 
 // GET -> obtener post por id
 postsRouter.get('/:postId', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    const { postId } = req.params
 
    try {
@@ -62,7 +62,7 @@ postsRouter.post(
    '/',
    uploadImage.single('imageFile'),
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       try {
          // Parsear el contenido JSON si viene como string
          const body = postCreateSchema.parse({
@@ -164,7 +164,7 @@ postsRouter.patch(
    '/:postId',
    uploadImage.single('imageFile'),
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       const { postId } = req.params
 
       try {
@@ -311,7 +311,7 @@ postsRouter.patch(
 
 // DELETE -> eliminar post
 postsRouter.delete('/:postId', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    const { postId } = req.params
 
    try {

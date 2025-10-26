@@ -4,7 +4,7 @@ import { handleRouteError } from '../errors/handleRouteError'
 import { hasRealChanges } from '../utils/hasRealChanges'
 import { ConflictError } from '../errors/ApiError'
 import prismaClient from '../prisma/prismaClient'
-import { sleep } from '../utils/sleep'
+
 import {
    serviceRequestCreateSchema,
    serviceRequestUpdateSchema,
@@ -14,7 +14,7 @@ const serviceRequestsRouter = Router()
 
 // GET -> listar solicitudes de servicio
 serviceRequestsRouter.get('/', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    try {
       const requests = await prismaClient.serviceRequest.findMany({
          orderBy: { createdAt: 'desc' },
@@ -31,7 +31,7 @@ serviceRequestsRouter.get('/', async (req: Request, res: Response) => {
 
 // POST -> crear solicitud de servicio
 serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    try {
       const body = serviceRequestCreateSchema.parse(req.body)
 
@@ -68,7 +68,7 @@ serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
 
 // GET -> obtener solicitud de servicio por id
 serviceRequestsRouter.get('/:serviceRequestId', async (req: Request, res: Response) => {
-   await sleep(3000)
+
    const { serviceRequestId } = req.params
 
    try {
@@ -90,7 +90,7 @@ serviceRequestsRouter.patch(
    '/:serviceRequestId/status',
 
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       const { serviceRequestId } = req.params
 
       try {
@@ -137,7 +137,7 @@ serviceRequestsRouter.patch(
 serviceRequestsRouter.delete(
    '/:serviceRequestId',
    async (req: Request, res: Response) => {
-      await sleep(3000)
+
       const { serviceRequestId } = req.params
 
       try {
