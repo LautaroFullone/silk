@@ -5,6 +5,7 @@ import ConfirmActionModal from './ConfirmActionModal'
 import ContactForm from './ContactForm'
 import EmptyBanner from './EmptyBanner'
 import EmptyBannerLanding from './EmptyBannerLanding'
+import InfoBanner from './InfoBanner'
 import InputForm from './InputForm'
 import PageTitle from './PageTitle'
 import PageTitleLanding from './PageTitleLanding'
@@ -22,6 +23,7 @@ export {
    ContactForm,
    EmptyBanner,
    EmptyBannerLanding,
+   InfoBanner,
    InputForm,
    PageTitle,
    PageTitleLanding,

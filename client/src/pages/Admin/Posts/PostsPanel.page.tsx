@@ -1,8 +1,8 @@
+import { ActionButton, InfoBanner, PageTitle } from '@shared'
 import { usePagination, useSearchAndSort } from '@hooks'
 import { FileText, Plus, Search } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
 import { useFetchPosts } from '@hooks/react-query'
-import { ActionButton, PageTitle } from '@shared'
 import PostsTable from './components/PostsTable'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -74,6 +74,14 @@ const PostsPanel = () => {
                onClick={() => navigate(routesConfig.ADMIN_POST_NEW)}
             />
          </div>
+
+         <InfoBanner
+            title="Información importante"
+            withDropdown
+            description={[
+               'Las categorías se generan automáticamente a partir de los posts. Si se crea un post nuevo con una categoría distinta, ésta se añadirá. Si se elimina el único post de una categoría, esa categoría también será eliminada.',
+            ]}
+         />
 
          <ActionButton
             size="lg"

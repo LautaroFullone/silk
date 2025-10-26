@@ -152,6 +152,13 @@ const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
                   >
                      {post.category.name}
                   </Badge>
+
+                  {/* <Badge
+                     variant="default"
+                     className="bg-silk-primary text-white border-none rounded-full uppercase tracking-wide px-4 py-1"
+                  >
+                     {post.category.name}
+                  </Badge> */}
                </div>
 
                {/* Descripción */}
