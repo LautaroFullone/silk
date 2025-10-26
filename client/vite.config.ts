@@ -1,37 +1,11 @@
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite
 import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
    plugins: [react(), tailwindcss()],
-   server: {
-      // host: true, // expone el front en la LAN (0.0.0.0)
-      port: 5174, // o el que uses
-      // proxy: {
-      //    // todo lo que empiece con /api va a tu backend local
-      //    '/api': {
-      //       target: 'http://127.0.0.1:3031', // En desarrollo usa localhost
-      //       changeOrigin: true,
-      //       secure: false,
-      //    },
-      // },
-   },
-   build: {
-      outDir: 'dist',
-      sourcemap: false,
-      minify: 'terser',
-      rollupOptions: {
-         output: {
-            manualChunks: {
-               vendor: ['react', 'react-dom'],
-               router: ['react-router-dom'],
-               ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-            },
-         },
-      },
-   },
    resolve: {
       alias: {
          '@config': path.resolve(__dirname, './src/config'),
@@ -46,5 +20,53 @@ export default defineConfig({
          '@utils': path.resolve(__dirname, './src/utils'),
          '@shadcn': path.resolve(__dirname, './src/shared/shadcn/ui'),
       },
+   },
+   define: {
+      __APP_ENV__: JSON.stringify(process.env.VITE_VERCEL_ENV),
+   },
+   build: {
+      minify: 'esbuild',
+
+      // 📦 Configuraciones de producción optimizadas
+      sourcemap: false,
+      target: 'esnext',
+
+      rollupOptions: {
+         output: {
+            // 🔀 Code splitting inteligente
+            manualChunks: {
+               // Librerías principales
+               vendor: ['react', 'react-dom'],
+
+               // Router y estado
+               routing: ['react-router-dom', 'zustand'],
+
+               // Queries y HTTP
+               data: ['@tanstack/react-query', 'axios'],
+            },
+         },
+      },
+
+      // 🎯 Configuraciones adicionales de rendimiento
+      chunkSizeWarningLimit: 1000,
+      assetsDir: 'assets',
+   },
+
+   // 🔧 Optimizaciones para desarrollo
+   server: {
+      port: 5174,
+      host: true,
+   },
+
+   // 📦 Optimizar dependencias
+   optimizeDeps: {
+      include: [
+         'react',
+         'react-dom',
+         'react-router-dom',
+         '@tanstack/react-query',
+         'axios',
+         'zustand',
+      ],
    },
 })
