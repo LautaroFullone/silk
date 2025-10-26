@@ -65,6 +65,7 @@ const PostsTable: React.FC<PostsTableProps> = ({
 
          {totalPages > 1 && !isLoading && (
             <Pagination
+               scrollToTop
                currentPage={currentPage}
                totalPages={totalPages}
                onPageChange={onPageChange}

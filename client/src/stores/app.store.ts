@@ -1,5 +1,5 @@
-import { User } from '@supabase/supabase-js'
 import { devtools } from 'zustand/middleware'
+import { User } from '@supabase/supabase-js'
 import { create } from 'zustand'
 
 interface AppStoreProps {

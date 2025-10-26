@@ -23,14 +23,25 @@ const Pagination: React.FC<PaginationProps> = ({
    const handlePageChange = (page: number) => {
       onPageChange(page)
       if (scrollToTop) {
-         // Uso
-         //  setTimeout para asegurar que el cambio de página ocurra primero
+         // Uso de setTimeout para asegurar que el cambio de página ocurra primero
          setTimeout(() => {
+            // Buscar el contenedor principal con scroll (layout admin)
+            const mainContainer = document.querySelector('main.overflow-y-auto')
             try {
-               window.scrollTo({ top: 200, behavior: 'smooth' })
+               if (mainContainer) {
+                  // Si hay un contenedor con overflow-y-auto, hacer scroll en ese contenedor
+                  mainContainer.scrollTo({ top: 0, behavior: 'smooth' })
+               } else {
+                  // Si no hay contenedor específico, usar window scroll (layout client)
+                  window.scrollTo({ top: 200, behavior: 'smooth' })
+               }
             } catch {
                // Fallback para browsers que no soportan behavior: 'smooth'
-               window.scrollTo(0, 200)
+               if (mainContainer) {
+                  mainContainer.scrollTo(0, 0)
+               } else {
+                  window.scrollTo(0, 200)
+               }
             }
          }, 100)
       }

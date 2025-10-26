@@ -51,7 +51,6 @@ const PostsTableSection: React.FC<PostsTableSectionProps> = ({
                      onPageChange={onPageChange}
                      canGoNext={canGoNext}
                      canGoPrevious={canGoPrevious}
-                     scrollToTop={false}
                   />
                )}
 

@@ -70,6 +70,7 @@ const TestimonialsTable: React.FC<TestimonialsTableProps> = ({
 
          {totalPages > 1 && !isLoading && (
             <Pagination
+               scrollToTop
                currentPage={currentPage}
                totalPages={totalPages}
                onPageChange={onPageChange}
