@@ -6,10 +6,8 @@ export const routesConfig = {
    CLIENT_QUIZ: '/quiz',
    CLIENT_ABOUT: '/nosotros',
 
+   ADMIN_LOGIN: '/login',
    ADMIN_DASHBOARD: '/panel-admin',
-
-   ADMIN_LOGIN: '/panel-admin/login',
-
    ADMIN_POST_LIST: '/panel-admin/posts',
    ADMIN_POST_NEW: '/panel-admin/posts/formulario',
    ADMIN_POST_EDIT: '/panel-admin/posts/formulario/:postId',

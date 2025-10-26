@@ -4,6 +4,7 @@ import { routesConfig } from '@config/routesConfig'
 import useMobile from '@hooks/useMobile'
 import { Button, cn } from '@shadcn'
 import { useState } from 'react'
+import { useAuth } from '@hooks'
 import {
    ClipboardList,
    FileText,
@@ -28,8 +29,6 @@ const navigation = [
       route: routesConfig.ADMIN_REQUEST_LIST,
       icon: ClipboardList,
    },
-   // { label: 'Órdenes de Compra', route: '/admin/orders', icon: DollarSign },
-   // { label: 'Configuración', route: '/admin/config', icon: Settings },
 ]
 
 const SidebarAdmin = () => {
@@ -37,6 +36,7 @@ const SidebarAdmin = () => {
 
    const { pathname } = useLocation()
    const navigate = useNavigate()
+   const { logout } = useAuth()
    const isMobile = useMobile()
 
    return (
@@ -131,7 +131,7 @@ const SidebarAdmin = () => {
                <Button
                   variant="ghost"
                   className="w-full justify-start text-destructive hover:text-red-700 hover:bg-red-50!"
-                  onClick={isMobile ? () => setMobileMenuOpen(false) : undefined}
+                  onClick={() => logout()}
                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar Sesión

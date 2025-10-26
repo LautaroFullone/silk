@@ -1,4 +1,5 @@
 import { routesConfig } from '@config/routesConfig'
+import useAppStore from '@stores/app.store'
 import { Link } from 'react-router-dom'
 
 const navLinks = [
@@ -10,6 +11,8 @@ const navLinks = [
 ]
 
 const FooterClient = () => {
+   const user = useAppStore((state) => state.user)
+
    return (
       <footer className="bg-silk-primary py-20">
          <div className="max-w-xs sm:max-w-xl lg:max-w-5xl mx-auto">
@@ -89,7 +92,7 @@ const FooterClient = () => {
                   <span className="cursor-pointer hover:underline">Privacy Policy</span>
 
                   <Link
-                     to={routesConfig.ADMIN_LOGIN}
+                     to={user ? routesConfig.ADMIN_DASHBOARD : routesConfig.ADMIN_LOGIN}
                      className="cursor-pointer hover:underline"
                   >
                      Acceso

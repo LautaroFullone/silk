@@ -1,85 +1,144 @@
-﻿import { routesConfig } from '@config/routesConfig'
-import { Lock, LogIn, User } from 'lucide-react'
+﻿import { LogIn, UserLock, LockKeyhole, ArrowLeft } from 'lucide-react'
+import { routesConfig } from '@config/routesConfig'
 import ActionButton from '@shared/ActionButton'
 import { useNavigate } from 'react-router-dom'
-import { Input, Label } from '@shadcn'
-import { useState } from 'react'
+import useAppStore from '@stores/app.store'
+import { useForm } from 'react-hook-form'
+import InputForm from '@shared/InputForm'
+import { useEffect } from 'react'
+import { useAuth } from '@hooks'
+import {
+   Card,
+   CardContent,
+   CardDescription,
+   CardFooter,
+   CardHeader,
+   CardTitle,
+} from '@shadcn'
+
+interface LoginFormData {
+   email: string
+   password: string
+}
+
+const initialFormData: LoginFormData = {
+   email: '',
+   password: '',
+}
 
 const Login = () => {
-   const [name, setname] = useState('')
-   const [password, setPassword] = useState('')
-
    const navigate = useNavigate()
+
+   // Auth hook y store
+   const { login, isLoading } = useAuth()
+   const user = useAppStore((state) => state.user)
+
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<LoginFormData>({
+      mode: 'onSubmit',
+      reValidateMode: 'onChange',
+      defaultValues: initialFormData,
+   })
+
+   // Redirigir si ya está autenticado
+   useEffect(() => {
+      if (user) {
+         navigate(routesConfig.ADMIN_DASHBOARD)
+      }
+   }, [user, navigate])
+
+   const onSubmit = async (formData: LoginFormData) => {
+      const result = await login(formData)
+
+      if (result.success) {
+         navigate(routesConfig.ADMIN_DASHBOARD)
+      }
+      // Los errores se muestran automáticamente via toast en useAuth
+   }
 
    return (
       <div className="container py-15 md:py-20 space-y-10">
          <section className="max-w-md mx-auto">
-            <div className="bg-white backdrop-blur-sm rounded-2xl p-8 border border-silk-secondary/20 space-y-8">
-               <div className="text-center space-y-2">
-                  <h1 className="font-very-vogue text-4xl text-silk-secondary">
+            <Card>
+               <CardHeader className="text-center">
+                  <CardTitle className="font-very-vogue text-4xl font-normal text-silk-secondary">
                      Panel Administrativo
-                  </h1>
-
-                  <p className="text-silk-secondary/80 text-sm">
+                  </CardTitle>
+                  <CardDescription>
                      Ingresá tus credenciales para continuar
-                  </p>
-               </div>
+                  </CardDescription>
+               </CardHeader>
+               <CardContent className="space-y-4">
+                  <InputForm
+                     type="email"
+                     name="email"
+                     label="Email"
+                     labelClassName="flex items-center gap-2 text-silk-secondary font-medium"
+                     icon={UserLock}
+                     placeholder="admin@silk.com"
+                     className="h-12"
+                     disabled={isLoading}
+                     register={register('email', {
+                        required: 'El email es obligatorio',
+                        pattern: {
+                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                           message: 'Ingresá un email válido',
+                        },
+                     })}
+                     errors={errors}
+                  />
 
-               <div className="space-y-6">
-                  <div className="space-y-3">
-                     <Label
-                        htmlFor="name"
-                        className="flex items-center gap-2 text-silk-secondary font-medium"
-                     >
-                        <User className="h-4 w-4 text-silk-secondary/60" />
-                        Usuario
-                     </Label>
-                     <Input
-                        id="name"
-                        placeholder="Ingresá tu usuario"
-                        value={name}
-                        onChange={(e) => setname(e.target.value)}
-                        className="bg-white/80 backdrop-blur-sm border-silk-secondary/30 text-silk-secondary placeholder:text-silk-secondary/60 h-12"
-                     />
+                  <InputForm
+                     type="password"
+                     name="password"
+                     label="Contraseña"
+                     labelClassName="flex items-center gap-2 text-silk-secondary font-medium"
+                     icon={LockKeyhole}
+                     placeholder="Ingresá tu contraseña"
+                     className="h-12"
+                     disabled={isLoading}
+                     register={register('password', {
+                        required: 'La contraseña es obligatoria',
+                        minLength: {
+                           value: 6,
+                           message: 'La contraseña debe tener al menos 6 caracteres',
+                        },
+                     })}
+                     errors={errors}
+                  />
+
+                  <ActionButton
+                     size="lg"
+                     variant="primary"
+                     icon={LogIn}
+                     className="w-full"
+                     label="Iniciar Sesión"
+                     loadingLabel="Iniciando sesión..."
+                     isLoading={isLoading}
+                     disabled={isLoading}
+                     onClick={handleSubmit(onSubmit)}
+                  />
+                  <ActionButton
+                     size="lg"
+                     variant="outline"
+                     icon={ArrowLeft}
+                     className="w-full"
+                     label="Volver al sitio"
+                     onClick={() => navigate(routesConfig.CLIENT_HOME)}
+                  />
+               </CardContent>
+
+               <CardFooter>
+                  <div className="text-center pt-4 ">
+                     <p className="text-silk-secondary/60 text-sm italic font-light">
+                        "Transformá vidas a través del color y el estilo"
+                     </p>
                   </div>
-
-                  <div className="space-y-3">
-                     <Label
-                        htmlFor="password"
-                        className="flex items-center gap-2 text-silk-secondary font-medium"
-                     >
-                        <Lock className="h-4 w-4 text-silk-secondary/60" />
-                        Contraseña
-                     </Label>
-                     <Input
-                        id="password"
-                        type="password"
-                        placeholder="Ingresá tu contraseña"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="bg-white/80 backdrop-blur-sm border-silk-secondary/30 text-silk-secondary placeholder:text-silk-secondary/60 h-12"
-                     />
-                  </div>
-
-                  <div className="pt-4">
-                     <ActionButton
-                        size="xl"
-                        variant="primary"
-                        icon={LogIn}
-                        className="w-full group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                        label="Iniciar Sesión"
-                        loadingLabel="Iniciando..."
-                        onClick={() => navigate(routesConfig.ADMIN_DASHBOARD)}
-                     />
-                  </div>
-               </div>
-
-               <div className="text-center pt-4 border-t border-silk-secondary/20">
-                  <p className="text-silk-secondary/60 text-sm italic font-light">
-                     "Transformá vidas a través del color y el estilo"
-                  </p>
-               </div>
-            </div>
+               </CardFooter>
+            </Card>
          </section>
       </div>
    )

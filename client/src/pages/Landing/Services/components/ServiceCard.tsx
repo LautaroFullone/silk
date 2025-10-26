@@ -67,7 +67,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                      value={option.id}
                      className="border-silk-primary/20"
                   >
-                     <AccordionTrigger className="font-semibold text-silk-primary py-4 text-base transition-colors hover:text-silk-primary/80 [&[data-state=open]]:text-silk-primary">
+                     <AccordionTrigger className="font-semibold cursor-pointer text-silk-primary py-4 text-base transition-colors hover:text-silk-primary/80 [&[data-state=open]]:text-silk-primary">
                         {option.label}
                      </AccordionTrigger>
 
