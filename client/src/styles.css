@@ -73,9 +73,9 @@
    padding: 0 1rem;
 }
 
-/*TODO: Aplicar esta fuente y corregir altura de texto */
 .bn-container[data-headings-font] .bn-editor {
    font-family: 'Acumin Pro', sans-serif;
+   padding-inline: 0;
 
 }
 

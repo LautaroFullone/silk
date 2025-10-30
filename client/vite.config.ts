@@ -21,9 +21,6 @@ export default defineConfig({
          '@shadcn': path.resolve(__dirname, './src/shared/shadcn/ui'),
       },
    },
-   define: {
-      __APP_ENV__: JSON.stringify(process.env.VITE_VERCEL_ENV),
-   },
    build: {
       minify: 'esbuild',
 
@@ -54,8 +51,16 @@ export default defineConfig({
 
    // 🔧 Optimizaciones para desarrollo
    server: {
-      port: 5174,
-      host: true,
+      host: true, // expone el front en la LAN (0.0.0.0)
+      port: 5174, // o el que uses
+      proxy: {
+         // todo lo que empiece con /api va a tu backend local
+         '/api': {
+            target: 'http://127.0.0.1:3031', // puerto real de tu API en tu PC
+            changeOrigin: true,
+            secure: false,
+         },
+      },
    },
 
    // 📦 Optimizar dependencias
