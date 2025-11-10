@@ -25,8 +25,9 @@ import {
 
 // Loading component for Suspense fallback
 const PageLoader = () => (
-   <div className="flex items-center justify-center min-h-[50vh]">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+   <div className="flex flex-col items-center justify-center h-dvh space-y-4">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-800"></div>
+      <p className="text-gray-600 animate-pulse font-medium">Cargando página...</p>
    </div>
 )
 
