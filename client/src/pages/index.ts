@@ -1,18 +1,24 @@
-import About from './Landing/About/About.page'
-import Blog from './Landing/Blog/Blog.page'
-import PostDetails from './Landing/Blog/PostDetails.page'
-import Home from './Landing/Home/Home.page'
-import Quiz from './Landing/Quiz/Quiz.page'
-import Services from './Landing/Services/Services.page'
+import { lazy } from 'react'
 
-import Login from './Admin/Auth/Login.page'
-import Dashboard from './Admin/Dashboard/Dashboard.page'
-import PostsPanel from './Admin/Posts/PostsPanel.page'
-import PostForm from './Admin/Posts/PostForm.page'
-import TestimonialsPanel from './Admin/Testimonials/TestimonialsPanel.page'
-import TestimonialForm from './Admin/Testimonials/TestimonialForm.page'
-import RequestsPanel from './Admin/Requests/RequestsPanel.page'
-import NotFound from './Admin/NotFound.page'
+// Landing Pages - Lazy Loading
+const About = lazy(() => import('./Landing/About/About.page'))
+const Blog = lazy(() => import('./Landing/Blog/Blog.page'))
+const PostDetails = lazy(() => import('./Landing/Blog/PostDetails.page'))
+const Home = lazy(() => import('./Landing/Home/Home.page'))
+const Quiz = lazy(() => import('./Landing/Quiz/Quiz.page'))
+const Services = lazy(() => import('./Landing/Services/Services.page'))
+
+// Admin Pages - Lazy Loading
+const Login = lazy(() => import('./Admin/Auth/Login.page'))
+const Dashboard = lazy(() => import('./Admin/Dashboard/Dashboard.page'))
+const PostsPanel = lazy(() => import('./Admin/Posts/PostsPanel.page'))
+const PostForm = lazy(() => import('./Admin/Posts/PostForm.page'))
+const TestimonialsPanel = lazy(
+   () => import('./Admin/Testimonials/TestimonialsPanel.page')
+)
+const TestimonialForm = lazy(() => import('./Admin/Testimonials/TestimonialForm.page'))
+const RequestsPanel = lazy(() => import('./Admin/Requests/RequestsPanel.page'))
+const NotFound = lazy(() => import('./Admin/NotFound.page'))
 
 export {
    About,
