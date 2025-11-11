@@ -89,7 +89,7 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
                </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-2">
                      <Skeleton className="size-4 rounded" />
@@ -106,9 +106,17 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
 
    return (
       <div className="bg-emerald-50 border rounded-md p-6 shadow-xs">
+         {/* Mobile: Status Badge y Handler arriba del nombre */}
+         <div className="flex sm:hidden items-center justify-end gap-3 mb-4">
+            {request?.status && <RequestStatusBadge status={request.status} />}
+            {request && (
+               <RequestStatusHandler request={request} onStatusChange={onEdit!} />
+            )}
+         </div>
+
          <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-4">
-               <div className="size-16 bg-gradient-to-br from-emerald-500 to-emerald-800 text-white rounded-full flex items-center justify-center font-serif text-3xl shadow-lg uppercase">
+               <div className="shrink-0 size-16 bg-gradient-to-br from-emerald-500 to-emerald-800 text-white rounded-full flex items-center justify-center font-serif text-3xl shadow-lg uppercase">
                   {request?.name.charAt(0)}
                </div>
 
@@ -122,7 +130,8 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
                </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* Desktop: Status Badge y Handler a la derecha */}
+            <div className="hidden sm:flex items-center gap-3 ">
                {request?.status && <RequestStatusBadge status={request.status} />}
                {request && (
                   <RequestStatusHandler request={request} onStatusChange={onEdit!} />
@@ -130,7 +139,7 @@ const RequestHeader: React.FC<ContentProps> = ({ isLoading, request, onEdit }) =
             </div>
          </div>
 
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="flex items-center gap-2">
                <Mail className="w-4 h-4 text-emerald-600" />
                <div>
