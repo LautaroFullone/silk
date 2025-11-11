@@ -1,0 +1,1 @@
+import{j as m}from"./data-DYEAm0ln.js";import{n}from"./index-Btd106Xw.js";function t({className:r,...e}){return m.jsx("div",{className:n("animate-pulse rounded-md bg-primary/10",r),...e})}export{t as S};

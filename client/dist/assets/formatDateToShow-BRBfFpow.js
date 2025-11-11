@@ -1,0 +1,1 @@
+function a(t,o="full"){if(!t)return"";const e=typeof t=="string"?new Date(t):t,i=e.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:!1}),r=e.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"});switch(o){case"time":return i;case"date":return r;case"full":default:return`${r} - ${i}hs`}}export{a as f};

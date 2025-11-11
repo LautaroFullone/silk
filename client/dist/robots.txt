@@ -1,0 +1,42 @@
+# Robots.txt para Estudio Silk - Colorimetría y Estilismo Personal
+# Sitio web: https://estudiosilk.com
+
+User-agent: *
+Allow: /
+
+# Permitir acceso a todas las páginas principales
+Allow: /servicios
+Allow: /nosotros  
+Allow: /blog
+Allow: /quiz
+
+# Permitir acceso a recursos estáticos importantes para SEO
+Allow: /silk-main-logo.webp
+Allow: /silk-logo.webp
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.webp$
+Allow: /*.jpg$
+Allow: /*.png$
+
+# Bloquear áreas administrativas
+Disallow: /panel-admin
+Disallow: /login
+
+# Bloquear archivos y directorios técnicos
+Disallow: /src/
+Disallow: /*.json$
+Disallow: /*.ts$
+Disallow: /*.tsx$
+
+# Configuración para bots específicos
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://estudiosilk.com/sitemap.xml

@@ -1,0 +1,20 @@
+# Humans.txt - La gente detrás de Estudio Silk
+# https://estudiosilk.com
+
+/* EQUIPO */
+Fundadores: Magalí Cruz Frezzini y Lucas Contardi
+Contactos: maggie@estudiosilk.com / lucas@estudiosilk.com
+Instagram: @estudiosilk
+Ubicación: Argentina
+
+Desarrollador: Lautaro Fullone
+LinkedIn: https://www.linkedin.com/in/lautaro-fullone-77320a197/
+GitHub: https://github.com/LautaroFullone
+
+/* SITIO */
+Última actualización: 2024/11/10
+Lenguaje: Español
+Doctype: HTML5
+IDE: Visual Studio Code
+Tecnologías: React, TypeScript, Vite, Tailwind CSS
+Backend: Node.js, Express, Prisma, Supabase
