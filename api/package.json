@@ -10,7 +10,7 @@
       "prisma:studio": "prisma studio"
    },
    "keywords": [],
-   "author": "",
+   "author": "Lautaro Fullone",
    "license": "ISC",
    "description": "",
    "dependencies": {

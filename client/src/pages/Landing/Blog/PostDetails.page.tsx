@@ -4,8 +4,8 @@ import { formatDateToShow } from '@utils/formatDateToShow'
 import { getPublicImageUrl } from '@utils/getPublicImage'
 import { routesConfig } from '@config/routesConfig'
 import { Badge, Button, Skeleton } from '@shadcn'
+import { EmptyBannerLanding, Seo } from '@shared'
 import { useFetchPost } from '@hooks/react-query'
-import { EmptyBannerLanding } from '@shared'
 import { useEffect } from 'react'
 
 import { useCreateBlockNote } from '@blocknote/react'
@@ -60,120 +60,176 @@ const PostDetails = () => {
       )
    }
 
+   const postJsonLd = post
+      ? {
+           '@context': 'https://schema.org',
+           '@type': 'BlogPosting',
+           headline: post.title,
+           description: post.description,
+           image: post.imageFilePath
+              ? getPublicImageUrl(post.imageFilePath)
+              : 'https://estudiosilk.com/og-image.jpg',
+           author: {
+              '@type': 'Person',
+              name: post.author || 'Estudio Silk',
+           },
+           publisher: {
+              '@type': 'Organization',
+              name: 'Estudio Silk',
+              logo: 'https://estudiosilk.com/silk-main-logo.webp',
+           },
+           datePublished: post.date,
+           dateModified: post.date,
+           mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `https://estudiosilk.com/blog/post/${post.id}`,
+           },
+           articleSection: post.category?.name || 'Estilo y Moda',
+           keywords: ['estilo', 'moda', 'colorimetría', post.category?.name || ''],
+        }
+      : undefined
+
    return (
-      <div className="container py-15 md:py-20">
-         <div className="max-w-4xl mx-auto space-y-8">
-            <Button
-               asChild
-               variant="ghost"
-               className="text-silk-secondary hover:text-silk-primary hover:bg-white/20 transition-colors"
-            >
-               <Link to={routesConfig.CLIENT_BLOG}>
-                  <ArrowLeft size={16} className="mr-2" />
-                  Volver al blog
-               </Link>
-            </Button>
+      <>
+         {post && (
+            <Seo
+               title={post.title}
+               description={post.description}
+               url={`https://estudiosilk.com/blog/post/${post.id}`}
+               image={
+                  post.imageFilePath ? getPublicImageUrl(post.imageFilePath) : undefined
+               }
+               type="article"
+               author={post.author || 'Estudio Silk'}
+               publishedTime={post.date}
+               modifiedTime={post.date}
+               section={post.category?.name || 'Estilo y Moda'}
+               tags={['estilo', 'moda', 'colorimetría']}
+               keywords={[
+                  post.title?.toLowerCase(),
+                  post.category?.name?.toLowerCase(),
+                  'blog silk',
+                  'consejos estilo',
+                  'moda argentina',
+                  'estilo personal',
+               ].filter(Boolean)}
+               jsonLd={postJsonLd}
+            />
+         )}
+         <div className="container py-15 md:py-20">
+            <div className="max-w-4xl mx-auto space-y-8">
+               <Button
+                  asChild
+                  variant="ghost"
+                  className="text-silk-secondary hover:text-silk-primary hover:bg-white/20 transition-colors"
+               >
+                  <Link to={routesConfig.CLIENT_BLOG}>
+                     <ArrowLeft size={16} className="mr-2" />
+                     Volver al blog
+                  </Link>
+               </Button>
 
-            {/* Contenido principal del artículo */}
-            <article className="space-y-8">
-               {post.imageFilePath && (
-                  <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden rounded-lg shadow-xl">
-                     <img
-                        alt={post.title}
-                        src={getPublicImageUrl(post.imageFilePath)}
-                        className="w-full h-full object-cover"
+               {/* Contenido principal del artículo */}
+               <article className="space-y-8">
+                  {post.imageFilePath && (
+                     <div className="relative h-64 md:h-80 lg:h-96 overflow-hidden rounded-lg shadow-xl">
+                        <img
+                           alt={post.title}
+                           src={getPublicImageUrl(post.imageFilePath)}
+                           className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                     </div>
+                  )}
+
+                  {/* Header del artículo */}
+                  <header className="text-center space-y-4">
+                     <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary leading-tight">
+                        {post.title}
+                     </h1>
+
+                     <p className="text-lg md:text-xl text-silk-secondary/80 max-w-3xl mx-auto leading-relaxed">
+                        {post.description}
+                     </p>
+
+                     <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-silk-secondary/60 pt-4">
+                        <div className="flex items-center gap-2">
+                           <User size={16} />
+                           <span>Por {post.author}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                           <Calendar size={16} />
+                           <span>{formatDateToShow(post.date, 'date')}</span>
+                        </div>
+
+                        {/* Categoría */}
+                        <Badge
+                           variant="default"
+                           className="bg-silk-primary text-white border-none rounded-full uppercase tracking-wide text-sm px-4 py-1"
+                        >
+                           {post.category.name}
+                        </Badge>
+                     </div>
+                  </header>
+
+                  {/* Contenido del post */}
+                  {Array.isArray(post.content) && post.content.length > 0 ? (
+                     <BlockNoteView
+                        data-headings-font
+                        editable={false}
+                        editor={editor}
+                        theme={{
+                           colors: {
+                              editor: {
+                                 background: 'transparent',
+                                 text: '#161616',
+                              },
+                           },
+                        }}
                      />
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  </div>
-               )}
+                  ) : (
+                     <div className="text-center py-16">
+                        <p className="text-silk-secondary/60 text-lg">
+                           Este artículo no tiene contenido disponible.
+                        </p>
+                     </div>
+                  )}
+               </article>
 
-               {/* Header del artículo */}
-               <header className="text-center space-y-4">
-                  <h1 className="font-very-vogue text-4xl md:text-5xl lg:text-6xl text-silk-secondary leading-tight">
-                     {post.title}
-                  </h1>
+               {/* Separador elegante */}
+               <div className="flex justify-center">
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
+               </div>
 
-                  <p className="text-lg md:text-xl text-silk-secondary/80 max-w-3xl mx-auto leading-relaxed">
-                     {post.description}
+               {/* Call to action */}
+               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border-silk-secondary/20 text-center">
+                  <h3 className="font-very-vogue text-2xl text-silk-secondary mb-4">
+                     ¿Te gustó este post?
+                  </h3>
+                  <p className="text-silk-secondary/80 mb-6">
+                     Descubrí más contenido sobre estilo y tendencias en nuestro blog
                   </p>
 
-                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-silk-secondary/60 pt-4">
-                     <div className="flex items-center gap-2">
-                        <User size={16} />
-                        <span>Por {post.author}</span>
-                     </div>
-
-                     <div className="flex items-center gap-2">
-                        <Calendar size={16} />
-                        <span>{formatDateToShow(post.date, 'date')}</span>
-                     </div>
-
-                     {/* Categoría */}
-                     <Badge
-                        variant="default"
-                        className="bg-silk-primary text-white border-none rounded-full uppercase tracking-wide text-sm px-4 py-1"
-                     >
-                        {post.category.name}
-                     </Badge>
-                  </div>
-               </header>
-
-               {/* Contenido del post */}
-               {Array.isArray(post.content) && post.content.length > 0 ? (
-                  <BlockNoteView
-                     data-headings-font
-                     editable={false}
-                     editor={editor}
-                     theme={{
-                        colors: {
-                           editor: {
-                              background: 'transparent',
-                              text: '#161616',
-                           },
-                        },
-                     }}
-                  />
-               ) : (
-                  <div className="text-center py-16">
-                     <p className="text-silk-secondary/60 text-lg">
-                        Este artículo no tiene contenido disponible.
-                     </p>
-                  </div>
-               )}
-            </article>
-
-            {/* Separador elegante */}
-            <div className="flex justify-center">
-               <div className="w-full h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
-            </div>
-
-            {/* Call to action */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border-silk-secondary/20 text-center">
-               <h3 className="font-very-vogue text-2xl text-silk-secondary mb-4">
-                  ¿Te gustó este post?
-               </h3>
-               <p className="text-silk-secondary/80 mb-6">
-                  Descubrí más contenido sobre estilo y tendencias en nuestro blog
-               </p>
-
-               <Button
-                  onClick={() => navigate(routesConfig.CLIENT_BLOG)}
-                  variant="primary"
-                  size="lg"
-                  className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-               >
-                  <span className="relative z-10 flex items-center">
-                     IR AL BLOG
-                     <ChevronRight
-                        className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                        size={19}
-                     />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-               </Button>
+                  <Button
+                     onClick={() => navigate(routesConfig.CLIENT_BLOG)}
+                     variant="primary"
+                     size="lg"
+                     className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                     <span className="relative z-10 flex items-center">
+                        IR AL BLOG
+                        <ChevronRight
+                           className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
+                           size={19}
+                        />
+                     </span>
+                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </Button>
+               </div>
             </div>
          </div>
-      </div>
+      </>
    )
 }
 

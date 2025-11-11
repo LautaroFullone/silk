@@ -14,6 +14,7 @@ import RequestStatusBadge from './RequestStatusBadge'
 import ScrollToTop from './ScrollToTop'
 import SelectForm from './SelectForm'
 import TextAreaForm from './TextAreaForm'
+import Seo from './Seo'
 
 export {
    ActionButton,
@@ -32,4 +33,5 @@ export {
    ScrollToTop,
    SelectForm,
    TextAreaForm,
+   Seo,
 }

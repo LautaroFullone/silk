@@ -1,8 +1,8 @@
 import ServicesModal from './components/ServicesModal'
 import ServiceCard from './components/ServiceCard'
 import FaqSection from './components/FaqSection'
+import { PageTitleLanding, Seo } from '@shared'
 import { ChevronRight } from 'lucide-react'
-import { PageTitleLanding } from '@shared'
 import { Button } from '@shadcn'
 import { useState } from 'react'
 
@@ -180,22 +180,86 @@ const services = [
 const Services = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
 
+   const servicesJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Servicios de Colorimetría y Estilismo Personal - SILK',
+      description:
+         'Servicios profesionales de asesoría de imagen, personal shopping, digitalización de closet y consultoría de estilo personal.',
+      provider: {
+         '@type': 'LocalBusiness',
+         name: 'Estudio Silk',
+         url: 'https://estudiosilk.com',
+      },
+      serviceType: [
+         'Asesoría de Imagen Integral',
+         'Personal Shopping',
+         'Digitalización de Closet',
+         'Consultoría de Estilo Personal',
+      ],
+      areaServed: 'Argentina',
+      hasOfferCatalog: {
+         '@type': 'OfferCatalog',
+         name: 'Catálogo de Servicios SILK',
+         itemListElement: [
+            {
+               '@type': 'Offer',
+               itemOffered: {
+                  '@type': 'Service',
+                  name: 'Personal Shopping',
+                  description:
+                     'Servicio personalizado para actualizar, renovar o construir tu armario desde cero.',
+               },
+               priceRange: '$$',
+            },
+            {
+               '@type': 'Offer',
+               itemOffered: {
+                  '@type': 'Service',
+                  name: 'Asesoría de Imagen Integral',
+                  description:
+                     'Análisis completo de colorimetría, estilo personal y transformación de imagen.',
+               },
+               priceRange: '$$',
+            },
+         ],
+      },
+   }
+
    return (
-      <div className="container py-15 md:py-20 space-y-10">
-         <PageTitleLanding
-            title={
-               <>
-                  Descubrí nuestros <span className="italic font-light">servicios</span>
-               </>
-            }
-            description="En Silk, creemos que la moda es una herramienta poderosa para expresar
+      <>
+         <Seo
+            title="Servicios de Colorimetría y Estilismo Personal"
+            description="Descubre nuestros servicios especializados: Personal Shopping, Asesoría de Imagen Integral, Digitalización de Closet. Transformamos tu estilo con SILK."
+            url="https://estudiosilk.com/servicios"
+            keywords={[
+               'personal shopping argentina',
+               'asesoría de imagen integral',
+               'digitalización closet',
+               'consultoría de estilo',
+               'servicios de estilismo',
+               'transformación de imagen',
+               'colorimetría profesional',
+               'estilo personal',
+            ]}
+            jsonLd={servicesJsonLd}
+         />
+         <div className="container py-15 md:py-20 space-y-10">
+            <PageTitleLanding
+               title={
+                  <>
+                     Descubrí nuestros{' '}
+                     <span className="italic font-light">servicios</span>
+                  </>
+               }
+               description="En Silk, creemos que la moda es una herramienta poderosa para expresar
                quién sos. Nuestros servicios están diseñados para ayudarte a descubrir y
                potenciar tu estilo único, alineando tu imagen con tus objetivos personales
                y profesionales."
-         />
+            />
 
-         {/* Inspirational Quote */}
-         {/* <h2 className="text-silk-primary font-very-vogue text-right text-2xl sm:text-4xl lg:text-5xl leading-normal">
+            {/* Inspirational Quote */}
+            {/* <h2 className="text-silk-primary font-very-vogue text-right text-2xl sm:text-4xl lg:text-5xl leading-normal">
             <span className="block">
                "Un armario que <span className="italic font-light">te inspira</span>
                ."
@@ -211,53 +275,57 @@ const Services = () => {
             </span>
          </h2> */}
 
-         {/* Services Grid Section */}
-         <section>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-               {services.map((service) => (
-                  <ServiceCard key={service.id} service={service} />
-               ))}
-            </div>
-         </section>
+            {/* Services Grid Section */}
+            <section>
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {services.map((service) => (
+                     <ServiceCard key={service.id} service={service} />
+                  ))}
+               </div>
+            </section>
 
-         <section className="py-20">
-            {/* Contact Form Section */}
-            <div className="text-center">
-               <h3 className="font-very-vogue text-4xl md:text-5xl text-silk-secondary mb-4">
-                  ¿Cuál de estos servicios es{' '}
-                  <span className="italic font-light">perfecto</span> para vos?
-               </h3>
+            <section className="py-20">
+               {/* Contact Form Section */}
+               <div className="text-center">
+                  <h3 className="font-very-vogue text-4xl md:text-5xl text-silk-secondary mb-4">
+                     ¿Cuál de estos servicios es{' '}
+                     <span className="italic font-light">perfecto</span> para vos?
+                  </h3>
 
-               <p className="text-silk-secondary/80 text-lg leading-relaxed max-w-2xl mx-auto">
-                  Si no estás seguro cuál elegir o necesitás una consulta personalizada,
-                  contactanos y te ayudamos a encontrar la opción ideal según tus
-                  objetivos y estilo de vida.
-               </p>
-            </div>
+                  <p className="text-silk-secondary/80 text-lg leading-relaxed max-w-2xl mx-auto">
+                     Si no estás seguro cuál elegir o necesitás una consulta
+                     personalizada, contactanos y te ayudamos a encontrar la opción ideal
+                     según tus objetivos y estilo de vida.
+                  </p>
+               </div>
 
-            <div className="flex justify-center">
-               <Button
-                  onClick={() => setIsModalOpen(true)}
-                  variant="primary"
-                  size="xl"
-                  className="mt-8 group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-               >
-                  <span className="relative z-10 flex items-center">
-                     QUIERO CONTACTARME
-                     <ChevronRight
-                        className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                        size={19}
-                     />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-               </Button>
-            </div>
-         </section>
+               <div className="flex justify-center">
+                  <Button
+                     onClick={() => setIsModalOpen(true)}
+                     variant="primary"
+                     size="xl"
+                     className="mt-8 group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                     <span className="relative z-10 flex items-center">
+                        QUIERO CONTACTARME
+                        <ChevronRight
+                           className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
+                           size={19}
+                        />
+                     </span>
+                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </Button>
+               </div>
+            </section>
 
-         <FaqSection />
+            <FaqSection />
 
-         <ServicesModal isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      </div>
+            <ServicesModal
+               isModalOpen={isModalOpen}
+               onClose={() => setIsModalOpen(false)}
+            />
+         </div>
+      </>
    )
 }
 

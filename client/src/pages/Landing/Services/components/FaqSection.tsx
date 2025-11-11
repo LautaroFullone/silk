@@ -85,14 +85,14 @@ const FaqSection = () => {
             </Accordion>
          </div>
 
-         <div className="text-center border-silk-primary/10">
+         {/* <div className="text-center border-silk-primary/10">
             <p className="text-silk-secondary/60 text-sm">
                ¿Tenés otra consulta?{' '}
                <span className="font-medium text-silk-primary transition-colors cursor-pointer  hover:underline">
                   Escribinos
                </span>
             </p>
-         </div>
+         </div> */}
       </section>
    )
 }

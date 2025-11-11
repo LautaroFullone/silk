@@ -1,17 +1,135 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
-   <meta charset="UTF-8" />
-   <link rel="icon" type="image/svg+xml" href="/silk-logo.webp" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>SILK | Inicio</title>
+   <meta charset="utf-8" />
+   <link rel="icon" type="image/webp" href="/silk-logo.webp" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-      rel="stylesheet">
+   <title>SILK | Asesoría de imagen y estilismo</title>
+   <meta name="description"
+      content="SILK — Asesoría de imagen y estilismo profesional. Servicios personalizados, e-books y consultorías para potenciar tu marca personal." />
+   <link rel="canonical" href="https://estudiosilk.com/" />
+
+   <!-- Open Graph / Social -->
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="SILK" />
+   <meta property="og:title" content="SILK | Asesoría de imagen y estilismo" />
+   <meta property="og:description"
+      content="SILK — Asesoría de imagen y estilismo profesional. Servicios personalizados y recursos para potenciar tu imagen." />
+   <meta property="og:url" content="https://estudiosilk.com/" />
+   <meta property="og:image" content="https://estudiosilk.com/og-image.png" />
+   <meta property="og:image:width" content="1200" />
+   <meta property="og:image:height" content="630" />
+
+   <!-- Twitter Card -->
+   <meta name="twitter:card" content="summary_large_image" />
+   <meta name="twitter:title" content="SILK | Asesoría de imagen y estilismo" />
+   <meta name="twitter:description"
+      content="SILK — Servicios personalizados y guías para mejorar tu imagen profesional." />
+   <meta name="twitter:image" content="https://yourdomain.com/og-image.png" />
+
+   <!-- Preconnect / Preload fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+   <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400&display=swap" />
+   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet" />
+
+   <!-- Structured Data (JSON-LD) - LocalBusiness + Organization -->
+   <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://estudiosilk.com/#business",
+        "name": "Estudio Silk",
+        "alternateName": "SILK",
+        "description": "Estudio especializado en colorimetría, asesoría de imagen y estilismo personal. Transformamos tu estilo en una herramienta de confianza y autenticidad.",
+        "url": "https://estudiosilk.com",
+        "logo": "https://estudiosilk.com/silk-main-logo.webp",
+        "image": [
+          "https://estudiosilk.com/silk-main-logo.webp",
+          "https://estudiosilk.com/hero-images/hero-image-1.webp"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61565342986870",
+          "https://www.instagram.com/estudiosilk",
+          "https://www.linkedin.com/in/estudiosilk",
+          "https://www.tiktok.com/@lucasccontardi",
+          "https://www.tiktok.com/@magalicruzfrezzini"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "contact@estudiosilk.com",
+          "availableLanguage": ["Spanish"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "AR",
+          "addressLocality": "Argentina"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Argentina"
+        },
+        "serviceType": [
+          "Colorimetría",
+          "Asesoría de imagen",
+          "Estilismo personal",
+          "Consultoría de moda",
+          "Transformación de imagen"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Estilismo SILK",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Asesoría de Imagen Completa",
+                "description": "Servicio integral de análisis de colorimetría, estilo personal y transformación de imagen."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Digitalización de Closet",
+                "description": "Organización y digitalización de tu guardarropa para acceder desde cualquier lugar."
+              }
+            }
+          ]
+        },
+        "priceRange": "$$",
+        "currenciesAccepted": "ARS,USD",
+        "paymentAccepted": ["Cash", "Credit Card", "Bank Transfer"],
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5.0",
+          "reviewCount": "25"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://estudiosilk.com/#website",
+        "url": "https://estudiosilk.com/",
+        "name": "SILK",
+        "publisher": {"@id": "https://estudiosilk.com/#business"},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://estudiosilk.com/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 
 </head>
 
