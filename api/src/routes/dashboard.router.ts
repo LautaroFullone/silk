@@ -1,13 +1,12 @@
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
+import requireAuth from '../middlewares/auth.middleware'
 import prismaClient from '../prisma/prismaClient'
-
 
 const dashboardRouter = Router()
 
 // GET -> estadísticas optimizadas para dashboard
-dashboardRouter.get('/stats', async (req: Request, res: Response) => {
-
+dashboardRouter.get('/stats', requireAuth(), async (req: Request, res: Response) => {
    try {
       // Ejecutar todas las queries en paralelo para mejor performance
       const [postsStats, testimonialsStats, requestsStats, recentPosts, recentRequests] =

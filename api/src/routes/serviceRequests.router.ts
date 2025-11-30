@@ -2,6 +2,7 @@ import { generateTimelineEvent } from '../utils/generateTimelineEvent'
 import { Router, type Request, type Response } from 'express'
 import { handleRouteError } from '../errors/handleRouteError'
 import { hasRealChanges } from '../utils/hasRealChanges'
+import requireAuth from '../middlewares/auth.middleware'
 import { ConflictError } from '../errors/ApiError'
 import prismaClient from '../prisma/prismaClient'
 
@@ -13,8 +14,7 @@ import {
 const serviceRequestsRouter = Router()
 
 // GET -> listar solicitudes de servicio
-serviceRequestsRouter.get('/', async (req: Request, res: Response) => {
-
+serviceRequestsRouter.get('/', requireAuth(), async (req: Request, res: Response) => {
    try {
       const requests = await prismaClient.serviceRequest.findMany({
          orderBy: { createdAt: 'desc' },
@@ -31,7 +31,6 @@ serviceRequestsRouter.get('/', async (req: Request, res: Response) => {
 
 // POST -> crear solicitud de servicio
 serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
-
    try {
       const body = serviceRequestCreateSchema.parse(req.body)
 
@@ -67,30 +66,32 @@ serviceRequestsRouter.post('/', async (req: Request, res: Response) => {
 })
 
 // GET -> obtener solicitud de servicio por id
-serviceRequestsRouter.get('/:serviceRequestId', async (req: Request, res: Response) => {
+serviceRequestsRouter.get(
+   '/:serviceRequestId',
+   requireAuth(),
+   async (req: Request, res: Response) => {
+      const { serviceRequestId } = req.params
 
-   const { serviceRequestId } = req.params
+      try {
+         const request = await prismaClient.serviceRequest.findFirstOrThrow({
+            where: { id: serviceRequestId },
+            omit: { updatedAt: true },
+         })
 
-   try {
-      const request = await prismaClient.serviceRequest.findFirstOrThrow({
-         where: { id: serviceRequestId },
-         omit: { updatedAt: true },
-      })
-
-      return res.status(200).send({
-         request,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
+         return res.status(200).send({
+            request,
+         })
+      } catch (error) {
+         return handleRouteError(res, error)
+      }
    }
-})
+)
 
 // PATCH -> actualizar estado de la solicitud de servicio
 serviceRequestsRouter.patch(
    '/:serviceRequestId/status',
-
+   requireAuth(),
    async (req: Request, res: Response) => {
-
       const { serviceRequestId } = req.params
 
       try {
@@ -136,8 +137,8 @@ serviceRequestsRouter.patch(
 // DELETE -> eliminar solicitud de servicio
 serviceRequestsRouter.delete(
    '/:serviceRequestId',
+   requireAuth(),
    async (req: Request, res: Response) => {
-
       const { serviceRequestId } = req.params
 
       try {

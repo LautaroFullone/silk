@@ -7,15 +7,14 @@ import { handleRouteError } from '../errors/handleRouteError'
 import { Router, type Request, type Response } from 'express'
 import { hasRealChanges } from '../utils/hasRealChanges'
 import { uploadImage } from '../middlewares/uploadImage'
+import requireAuth from '../middlewares/auth.middleware'
 import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
-
 
 const postsRouter = Router()
 
 // GET -> listar posts
 postsRouter.get('/', async (req: Request, res: Response) => {
-
    try {
       const { onlyActive } = req.query
 
@@ -39,7 +38,6 @@ postsRouter.get('/', async (req: Request, res: Response) => {
 
 // GET -> obtener post por id
 postsRouter.get('/:postId', async (req: Request, res: Response) => {
-
    const { postId } = req.params
 
    try {
@@ -60,9 +58,9 @@ postsRouter.get('/:postId', async (req: Request, res: Response) => {
 // POST -> crear post
 postsRouter.post(
    '/',
+   requireAuth(),
    uploadImage.single('imageFile'),
    async (req: Request, res: Response) => {
-
       try {
          // Parsear el contenido JSON si viene como string
          const body = postCreateSchema.parse({
@@ -162,9 +160,9 @@ postsRouter.post(
 // PATCH -> actualizar post
 postsRouter.patch(
    '/:postId',
+   requireAuth(),
    uploadImage.single('imageFile'),
    async (req: Request, res: Response) => {
-
       const { postId } = req.params
 
       try {
@@ -310,8 +308,7 @@ postsRouter.patch(
 )
 
 // DELETE -> eliminar post
-postsRouter.delete('/:postId', async (req: Request, res: Response) => {
-
+postsRouter.delete('/:postId', requireAuth(), async (req: Request, res: Response) => {
    const { postId } = req.params
 
    try {

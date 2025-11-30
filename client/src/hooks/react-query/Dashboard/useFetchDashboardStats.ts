@@ -6,8 +6,9 @@ const useFetchDashboardStats = () => {
    const { data, isLoading, error, isError } = useQuery({
       queryKey: [queriesKeys.FETCH_DASHBOARD_STATS],
       queryFn: getDashboardStats,
-      staleTime: 5 * 60 * 1000, // 5 minutos
+      staleTime: 20 * 60 * 1000, // 20 minutos
       refetchOnWindowFocus: false,
+      retry: false,
    })
 
    return {

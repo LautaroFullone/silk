@@ -4,6 +4,7 @@ import { handleRouteError } from '../errors/handleRouteError'
 import { Router, type Request, type Response } from 'express'
 import { hasRealChanges } from '../utils/hasRealChanges'
 import { uploadImage } from '../middlewares/uploadImage'
+import requireAuth from '../middlewares/auth.middleware'
 import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
 
@@ -16,7 +17,6 @@ const testimonialsRouter = Router()
 
 // GET -> listar testimonios
 testimonialsRouter.get('/', async (req: Request, res: Response) => {
-
    try {
       const { onlyActive } = req.query
 
@@ -37,9 +37,9 @@ testimonialsRouter.get('/', async (req: Request, res: Response) => {
 // POST -> crear testimonio
 testimonialsRouter.post(
    '/',
+   requireAuth(),
    uploadImage.single('avatarFile'),
    async (req: Request, res: Response) => {
-
       try {
          const body = testimonialCreateSchema.parse(req.body)
 
@@ -114,30 +114,33 @@ testimonialsRouter.post(
 )
 
 // GET -> obtener testimonio por id
-testimonialsRouter.get('/:testimonialId', async (req: Request, res: Response) => {
+testimonialsRouter.get(
+   '/:testimonialId',
+   requireAuth(),
+   async (req: Request, res: Response) => {
+      const { testimonialId } = req.params
 
-   const { testimonialId } = req.params
+      try {
+         const testimonial = await prismaClient.testimonial.findFirstOrThrow({
+            where: { id: testimonialId },
+            omit: { createdAt: true },
+         })
 
-   try {
-      const testimonial = await prismaClient.testimonial.findFirstOrThrow({
-         where: { id: testimonialId },
-         omit: { createdAt: true },
-      })
-
-      return res.status(200).send({
-         testimonial,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
+         return res.status(200).send({
+            testimonial,
+         })
+      } catch (error) {
+         return handleRouteError(res, error)
+      }
    }
-})
+)
 
 // PATCH -> actualizar testimonio
 testimonialsRouter.patch(
    '/:testimonialId',
+   requireAuth(),
    uploadImage.single('avatarFile'),
    async (req: Request, res: Response) => {
-
       const { testimonialId } = req.params
 
       try {
@@ -249,32 +252,35 @@ testimonialsRouter.patch(
 )
 
 // DELETE -> eliminar testimonio
-testimonialsRouter.delete('/:testimonialId', async (req: Request, res: Response) => {
+testimonialsRouter.delete(
+   '/:testimonialId',
+   requireAuth(),
+   async (req: Request, res: Response) => {
+      const { testimonialId } = req.params
 
-   const { testimonialId } = req.params
+      try {
+         const testimonialDeleted = await prismaClient.testimonial.delete({
+            where: { id: testimonialId },
+         })
 
-   try {
-      const testimonialDeleted = await prismaClient.testimonial.delete({
-         where: { id: testimonialId },
-      })
+         if (testimonialDeleted.avatarImagePath) {
+            const { error: deleteImageError } = await supabaseClient.storage
+               .from(supabaseBucket)
+               .remove([testimonialDeleted.avatarImagePath])
 
-      if (testimonialDeleted.avatarImagePath) {
-         const { error: deleteImageError } = await supabaseClient.storage
-            .from(supabaseBucket)
-            .remove([testimonialDeleted.avatarImagePath])
-
-         if (deleteImageError) {
-            console.warn('Error al eliminar imagen de Storage:', deleteImageError)
+            if (deleteImageError) {
+               console.warn('Error al eliminar imagen de Storage:', deleteImageError)
+            }
          }
-      }
 
-      return res.status(200).send({
-         message: 'Testimonio eliminado',
-         testimonial: testimonialDeleted,
-      })
-   } catch (error) {
-      return handleRouteError(res, error)
+         return res.status(200).send({
+            message: 'Testimonio eliminado',
+            testimonial: testimonialDeleted,
+         })
+      } catch (error) {
+         return handleRouteError(res, error)
+      }
    }
-})
+)
 
 export default testimonialsRouter
