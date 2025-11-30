@@ -229,7 +229,7 @@ const Services = () => {
    return (
       <>
          <Seo
-            title="Servicios de Colorimetría y Estilismo Personal"
+            title="Servicios"
             description="Descubre nuestros servicios especializados: Personal Shopping, Asesoría de Imagen Integral, Digitalización de Closet. Transformamos tu estilo con SILK."
             url="https://estudiosilk.com/servicios"
             keywords={[

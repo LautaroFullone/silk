@@ -80,7 +80,7 @@ const Blog = () => {
    return (
       <>
          <Seo
-            title="Blog - Consejos de Estilo y Tendencias de Moda"
+            title="Blog"
             description="Descubre consejos de estilo, tendencias de moda y secretos profesionales para potenciar tu imagen personal. Blog oficial de Estudio Silk."
             url="https://estudiosilk.com/blog"
             keywords={[
@@ -95,6 +95,7 @@ const Blog = () => {
             ]}
             jsonLd={blogJsonLd}
          />
+
          <div className="container py-15 md:py-20 space-y-10">
             <PageTitleLanding
                title={

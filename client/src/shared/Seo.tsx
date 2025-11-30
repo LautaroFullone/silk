@@ -37,9 +37,7 @@ const Seo = ({
    noIndex = false,
    jsonLd,
 }: SeoProps) => {
-   const fullTitle = title.includes('SILK')
-      ? title
-      : `${title} | SILK - Estudio de Colorimetría`
+   const fullTitle = `SILK | ${title}`
    const keywordsString = keywords.join(', ')
 
    return (

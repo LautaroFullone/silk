@@ -35,7 +35,7 @@ const Home = () => {
    return (
       <>
          <Seo
-            title="Inicio - Colorimetría y Estilismo Personal"
+            title="Inicio"
             description="Descubre tu estilo único con SILK. Especialistas en colorimetría, asesoría de imagen y transformación personal. Digitalizamos tu closet y potenciamos tu confianza."
             url="https://estudiosilk.com/"
             keywords={[

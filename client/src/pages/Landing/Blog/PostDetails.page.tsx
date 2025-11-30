@@ -60,62 +60,57 @@ const PostDetails = () => {
       )
    }
 
-   const postJsonLd = post
-      ? {
-           '@context': 'https://schema.org',
-           '@type': 'BlogPosting',
-           headline: post.title,
-           description: post.description,
-           image: post.imageFilePath
-              ? getPublicImageUrl(post.imageFilePath)
-              : 'https://estudiosilk.com/og-image.jpg',
-           author: {
-              '@type': 'Person',
-              name: post.author || 'Estudio Silk',
-           },
-           publisher: {
-              '@type': 'Organization',
-              name: 'Estudio Silk',
-              logo: 'https://estudiosilk.com/silk-main-logo.webp',
-           },
-           datePublished: post.date,
-           dateModified: post.date,
-           mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': `https://estudiosilk.com/blog/post/${post.id}`,
-           },
-           articleSection: post.category?.name || 'Estilo y Moda',
-           keywords: ['estilo', 'moda', 'colorimetría', post.category?.name || ''],
-        }
-      : undefined
+   const postJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.description,
+      image: post.imageFilePath
+         ? getPublicImageUrl(post.imageFilePath)
+         : 'https://estudiosilk.com/og-image.jpg',
+      author: {
+         '@type': 'Person',
+         name: post.author || 'Estudio Silk',
+      },
+      publisher: {
+         '@type': 'Organization',
+         name: 'Estudio Silk',
+         logo: 'https://estudiosilk.com/silk-main-logo.webp',
+      },
+      datePublished: post.date,
+      dateModified: post.date,
+      mainEntityOfPage: {
+         '@type': 'WebPage',
+         '@id': `https://estudiosilk.com/blog/post/${post.id}`,
+      },
+      articleSection: post.category?.name || 'Estilo y Moda',
+      keywords: ['estilo', 'moda', 'colorimetría', post.category?.name || ''],
+   }
 
    return (
       <>
-         {post && (
-            <Seo
-               title={post.title}
-               description={post.description}
-               url={`https://estudiosilk.com/blog/post/${post.id}`}
-               image={
-                  post.imageFilePath ? getPublicImageUrl(post.imageFilePath) : undefined
-               }
-               type="article"
-               author={post.author || 'Estudio Silk'}
-               publishedTime={post.date}
-               modifiedTime={post.date}
-               section={post.category?.name || 'Estilo y Moda'}
-               tags={['estilo', 'moda', 'colorimetría']}
-               keywords={[
-                  post.title?.toLowerCase(),
-                  post.category?.name?.toLowerCase(),
-                  'blog silk',
-                  'consejos estilo',
-                  'moda argentina',
-                  'estilo personal',
-               ].filter(Boolean)}
-               jsonLd={postJsonLd}
-            />
-         )}
+         <Seo
+            title={post.title}
+            description={post.description}
+            url={`https://estudiosilk.com/blog/post/${postId}`}
+            image={post.imageFilePath ? getPublicImageUrl(post.imageFilePath) : undefined}
+            type="article"
+            author={post.author || 'Estudio Silk'}
+            publishedTime={post.date}
+            modifiedTime={post.date}
+            section={post.category?.name || 'Estilo y Moda'}
+            tags={['estilo', 'moda', 'colorimetría']}
+            keywords={[
+               post.title?.toLowerCase(),
+               post.category?.name?.toLowerCase(),
+               'blog silk',
+               'consejos estilo',
+               'moda argentina',
+               'estilo personal',
+            ].filter(Boolean)}
+            jsonLd={postJsonLd}
+         />
+
          <div className="container py-15 md:py-20">
             <div className="max-w-4xl mx-auto space-y-8">
                <Button

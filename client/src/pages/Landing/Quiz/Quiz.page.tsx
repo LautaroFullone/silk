@@ -29,7 +29,7 @@ const Quiz = () => {
    return (
       <>
          <Seo
-            title="Quiz de Estilo Personal - Descubre tu Estilo Único"
+            title="Quiz de Estilo"
             description="¿No sabes cuál es tu estilo? Nuestro quiz personalizado te ayudará a descubrir tu estilo único. Próximamente disponible en Estudio Silk."
             url="https://estudiosilk.com/quiz"
             keywords={[

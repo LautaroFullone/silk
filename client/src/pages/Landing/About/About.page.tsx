@@ -36,7 +36,7 @@ const About = () => {
    return (
       <>
          <Seo
-            title="Nosotros - Conoce al Equipo de Estudio Silk"
+            title="Nosotros"
             description="Conoce a Magalí Cruz Frezzini y Lucas Contardi, fundadores de Estudio Silk. Especialistas apasionados en colorimetría y estilismo personal con años de experiencia."
             url="https://estudiosilk.com/nosotros"
             keywords={[
