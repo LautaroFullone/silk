@@ -1,5 +1,5 @@
 import { routesConfig } from '@config/routesConfig'
-import useAppStore from '@stores/app.store'
+import { useAuthStore } from '@stores/useAuth.store'
 import { Link } from 'react-router-dom'
 
 const navLinks = [
@@ -11,7 +11,7 @@ const navLinks = [
 ]
 
 const FooterClient = () => {
-   const user = useAppStore((state) => state.user)
+   const user = useAuthStore((state) => state.user)
 
    return (
       <footer className="bg-silk-primary">

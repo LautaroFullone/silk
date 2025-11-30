@@ -10,7 +10,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
    auth: {
       autoRefreshToken: true, // Habilitar refresco automático de tokens
-      persistSession: false, // Deshabilitar persistencia automática de sesión
+      persistSession: true, // Habilitar persistencia automática de sesión
+      detectSessionInUrl: true, // Habilitar detección de sesión en URL
    },
 })
 

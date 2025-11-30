@@ -2,7 +2,7 @@
 import { routesConfig } from '@config/routesConfig'
 import ActionButton from '@shared/ActionButton'
 import { useNavigate } from 'react-router-dom'
-import useAppStore from '@stores/app.store'
+import { useAuthStore } from '@stores/useAuth.store'
 import { useForm } from 'react-hook-form'
 import InputForm from '@shared/InputForm'
 import { useEffect } from 'react'
@@ -27,11 +27,17 @@ const initialFormData: LoginFormData = {
 }
 
 const Login = () => {
+   const user = useAuthStore((state) => state.user)
+
+   const { login, isLoading } = useAuth()
    const navigate = useNavigate()
 
-   // Auth hook y store
-   const { login, isLoading } = useAuth()
-   const user = useAppStore((state) => state.user)
+   useEffect(() => {
+      // Redirigir si ya está autenticado
+      if (user) {
+         navigate(routesConfig.ADMIN_DASHBOARD)
+      }
+   }, [user, navigate])
 
    const {
       register,
@@ -43,19 +49,14 @@ const Login = () => {
       defaultValues: initialFormData,
    })
 
-   // Redirigir si ya está autenticado
-   useEffect(() => {
-      if (user) {
-         navigate(routesConfig.ADMIN_DASHBOARD)
-      }
-   }, [user, navigate])
-
    const onSubmit = async (formData: LoginFormData) => {
       const result = await login(formData)
 
+      console.log('Login result:', result)
       if (result.success) {
          navigate(routesConfig.ADMIN_DASHBOARD)
       }
+      console.log('Login after')
       // Los errores se muestran automáticamente via toast en useAuth
    }
 
