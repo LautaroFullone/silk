@@ -131,7 +131,10 @@ const SidebarAdmin = () => {
                <Button
                   variant="ghost"
                   className="w-full justify-start text-destructive hover:text-red-700 hover:bg-red-50!"
-                  onClick={() => logout()}
+                  onClick={async () => {
+                     await logout()
+                     navigate(routesConfig.ADMIN_LOGIN)
+                  }}
                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar Sesión

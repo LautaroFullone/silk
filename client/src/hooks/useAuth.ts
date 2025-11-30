@@ -1,7 +1,7 @@
-import { useAuthStore } from '@stores/useAuth.store'
 import { AuthError } from '@supabase/supabase-js'
-import { useEffect, useState } from 'react'
+import useAuthStore from '@stores/useAuth.store'
 import { supabase } from '@lib/supabase'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 interface LoginCredentials {
@@ -15,68 +15,25 @@ export const useAuth = () => {
    const isInitialized = useAuthStore((state) => state.isInitialized)
    const authActions = useAuthStore((state) => state.actions)
 
-   // Inicializar la sesión al montar el hook
-   useEffect(() => {
-      if (isInitialized) return
+   const initializeAuth = async () => {
+      if (isInitialized) return // Solo inicializar UNA vez
 
-      const initializeAuth = async () => {
-         try {
-            // Obtener la sesión actual
-            const {
-               data: { session },
-               error,
-            } = await supabase.auth.getSession()
+      try {
+         const {
+            data: { session },
+         } = await supabase.auth.getSession()
 
-            if (error) {
-               console.error('Error obteniendo sesión:', error)
-               authActions.setUser(null)
-            } else if (session?.user) {
-               authActions.setUser(session.user)
-               console.log('📱 Sesión restaurada:', session.user.email)
-            } else {
-               authActions.setUser(null)
-               console.log('📱 No hay sesión activa')
-            }
-         } catch (error) {
-            console.error('Error inicializando autenticación:', error)
+         if (session?.user) {
+            authActions.setUser(session.user)
+         } else {
             authActions.setUser(null)
-         } finally {
-            authActions.setInitialized(true)
          }
+      } catch {
+         authActions.setUser(null)
+      } finally {
+         authActions.setInitialized(true)
       }
-
-      initializeAuth()
-
-      // Escuchar cambios de estado de autenticación
-      const {
-         data: { subscription },
-      } = supabase.auth.onAuthStateChange(async (event, session) => {
-         console.log('🔄 Auth state change:', event, session?.user?.email)
-
-         switch (event) {
-            case 'SIGNED_IN':
-               console.log('SIGNED_IN')
-               if (session?.user) {
-                  authActions.setUser(session.user)
-               }
-               break
-            case 'SIGNED_OUT':
-               console.log('SIGNED_OUT')
-               authActions.setUser(null)
-               break
-            case 'TOKEN_REFRESHED':
-               console.log('TOKEN_REFRESHED')
-               if (session?.user) {
-                  authActions.setUser(session.user)
-               }
-               break
-         }
-      })
-
-      return () => {
-         subscription.unsubscribe()
-      }
-   }, [isInitialized, authActions])
+   }
 
    const login = async ({ email, password }: LoginCredentials) => {
       setIsLoading(true)
@@ -91,8 +48,9 @@ export const useAuth = () => {
             throw error
          }
 
-         // El listener se encargará de actualizar el store automáticamente
-         // EVITAMOS -> authActions.setUser(data.user)
+         // Actualizar el store directamente
+         authActions.setUser(data.user)
+
          toast.success(
             `Bienvenidx de nuevo ${data.user?.user_metadata?.display_name || ''}!`
          )
@@ -134,15 +92,17 @@ export const useAuth = () => {
 
       try {
          await supabase.auth.signOut()
-         // El listener se encargará de limpiar el store automáticamente
-         console.log('👋 Usuario deslogueado')
-         toast.success('Sesión cerrada correctamente')
+
+         // Limpiar el store directamente
+         authActions.setUser(null)
+
+         toast('Hasta la próxima, nos vemos!', { icon: '👋' })
          return { success: true }
       } catch (error) {
          console.error('Error during logout:', error)
 
-         // En caso de error, limpiar el store manualmente
-         authActions.resetStore()
+         // En caso de error, limpiar de todos modos
+         authActions.setUser(null)
          toast.error('Error al cerrar sesión, pero se limpió localmente')
          return { success: false }
       } finally {
@@ -154,6 +114,6 @@ export const useAuth = () => {
       login,
       logout,
       isLoading,
-      isInitialized,
+      initializeAuth,
    }
 }

@@ -1,8 +1,8 @@
 ﻿import { LogIn, UserLock, LockKeyhole, ArrowLeft } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
+import useAuthStore from '@stores/useAuth.store'
 import ActionButton from '@shared/ActionButton'
 import { useNavigate } from 'react-router-dom'
-import { useAuthStore } from '@stores/useAuth.store'
 import { useForm } from 'react-hook-form'
 import InputForm from '@shared/InputForm'
 import { useEffect } from 'react'
@@ -27,17 +27,17 @@ const initialFormData: LoginFormData = {
 }
 
 const Login = () => {
-   const user = useAuthStore((state) => state.user)
+   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
    const { login, isLoading } = useAuth()
    const navigate = useNavigate()
 
    useEffect(() => {
       // Redirigir si ya está autenticado
-      if (user) {
+      if (isAuthenticated) {
          navigate(routesConfig.ADMIN_DASHBOARD)
       }
-   }, [user, navigate])
+   }, [isAuthenticated, navigate])
 
    const {
       register,
@@ -50,14 +50,9 @@ const Login = () => {
    })
 
    const onSubmit = async (formData: LoginFormData) => {
-      const result = await login(formData)
-
-      console.log('Login result:', result)
-      if (result.success) {
-         navigate(routesConfig.ADMIN_DASHBOARD)
-      }
-      console.log('Login after')
+      // La navegación se maneja automáticamente en el useEffect cuando cambia el store
       // Los errores se muestran automáticamente via toast en useAuth
+      await login(formData)
    }
 
    return (
