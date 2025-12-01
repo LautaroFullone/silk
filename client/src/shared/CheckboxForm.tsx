@@ -11,6 +11,7 @@ interface CheckboxFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChan
    description?: string
    isLoading?: boolean
    disabled?: boolean
+   labelClassName?: string
 
    onChange: (value: boolean) => void
    errors?: FieldErrors
@@ -26,6 +27,7 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
    disabled = false,
    errors = {},
    className = '',
+   labelClassName = '',
 }) => {
    // eslint-disable-next-line
    const fieldError = name.split('.').reduce((acc, key) => acc?.[key], errors as any)
@@ -48,7 +50,9 @@ const CheckboxForm: React.FC<CheckboxFormProps> = ({
             {isLoading ? (
                <Skeleton className="h-4 w-36" />
             ) : (
-               <Label htmlFor={`checkbox-${name}`}>{label}</Label>
+               <Label htmlFor={`checkbox-${name}`} className={labelClassName}>
+                  {label}
+               </Label>
             )}
 
             {description && (

@@ -5,11 +5,14 @@ import { api } from '@lib/axios'
  * Obtener todos los testimonios del sistema
  * @returns Mensaje de éxito y datos de los testimonios
  */
-export async function getTestimonials(onlyActive: boolean) {
+export async function getTestimonials(queryParams: {
+   onlyActive: boolean
+   count?: number
+}) {
    type Response = Pick<ResponseApi, 'testimonials'>
    const { data } = await api.get<Response>(`/testimonials`, {
       params: {
-         onlyActive,
+         ...queryParams,
       },
    })
    return data

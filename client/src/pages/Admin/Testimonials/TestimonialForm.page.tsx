@@ -2,13 +2,14 @@ import { TextAreaForm, CheckboxForm, InputForm, PageTitle, ActionButton } from '
 import { Save, Star, User, Quote, Upload, Trash2 } from 'lucide-react'
 import { TestimonialFormData } from '@models/Testimonial.model'
 import { getPublicImageUrl } from '@utils/getPublicImage'
+import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
    useCreateTestimonial,
    useUpdateTestimonial,
    useFetchTestimonial,
+   useFetchTestimonials,
 } from '@hooks/react-query'
 import {
    Button,
@@ -20,6 +21,9 @@ import {
    Input,
    Label,
    Skeleton,
+   Tooltip,
+   TooltipContent,
+   TooltipTrigger,
 } from '@shadcn'
 
 const initialFormData: TestimonialFormData = {
@@ -46,6 +50,22 @@ const TestimonialForm = () => {
       useFetchTestimonial({
          testimonialId: isEdit ? testimonialId : undefined,
       })
+
+   // Obtener todos los testimonios para contar los activos
+   const { testimonials: activeTestimonials } = useFetchTestimonials({
+      onlyActive: false,
+   })
+
+   const isActiveCheckboxDisabled = useMemo(() => {
+      const activeCount = activeTestimonials.filter((t) => t.isActive).length
+      console.log('activeCount:', activeCount)
+      const currentTestimonialIsActive = testimonialToEdit?.isActive || false
+
+      // Solo deshabilitar si:
+      // 1. Ya hay 6 testimonios activos
+      // 2. Y el testimonio actual no está activo (para evitar bloquear la desactivación)
+      return activeCount >= 6 && !currentTestimonialIsActive
+   }, [activeTestimonials, testimonialToEdit?.isActive])
 
    const {
       watch,
@@ -105,6 +125,7 @@ const TestimonialForm = () => {
    const isButtonEnabled = isEdit ? isDirty : !Object.keys(errors).length
    const isMutationPending = isCreateTestimonialPending || isUpdateTestimonialPending
 
+   console.log('isActiveCheckboxDisabled:', isActiveCheckboxDisabled)
    return (
       <>
          <div className="flex justify-between items-center gap-2">
@@ -290,20 +311,55 @@ const TestimonialForm = () => {
                      />
 
                      <div className="grid grid-cols-2 gap-4">
-                        <CheckboxForm
-                           label="Mostrar en la web"
-                           name="isActive"
-                           description="Habilita que el testimonio aparezca en la landing."
-                           value={watch('isActive') || false}
-                           isLoading={isLoadingTestimonial}
-                           onChange={(val) =>
-                              setValue('isActive', val, {
-                                 shouldValidate: true,
-                                 shouldDirty: true,
-                              })
-                           }
-                           errors={errors}
-                        />
+                        <div>
+                           {isActiveCheckboxDisabled ? (
+                              <Tooltip>
+                                 <TooltipTrigger asChild>
+                                    <div className="cursor-not-allowed opacity-60">
+                                       <CheckboxForm
+                                          label="Mostrar en la web"
+                                          name="isActive"
+                                          description="Habilita que el testimonio aparezca en la landing."
+                                          value={false}
+                                          isLoading={isLoadingTestimonial}
+                                          disabled={true}
+                                          onChange={() => {}} // No hacer nada cuando está deshabilitado
+                                          errors={errors}
+                                          labelClassName="cursor-not-allowed"
+                                       />
+                                    </div>
+                                 </TooltipTrigger>
+
+                                 <TooltipContent
+                                    align="center"
+                                    side="top"
+                                    className="max-w-md"
+                                 >
+                                    <p>
+                                       Ya hay 6 testimonios activos (máximo).
+                                       <br />
+                                       Desactivá algún testimonio existente antes de
+                                       activar este.
+                                    </p>
+                                 </TooltipContent>
+                              </Tooltip>
+                           ) : (
+                              <CheckboxForm
+                                 label="Mostrar en la web"
+                                 name="isActive"
+                                 description="Habilita que el testimonio aparezca en la landing."
+                                 value={watch('isActive') || false}
+                                 isLoading={isLoadingTestimonial}
+                                 onChange={(val) =>
+                                    setValue('isActive', val, {
+                                       shouldValidate: true,
+                                       shouldDirty: true,
+                                    })
+                                 }
+                                 errors={errors}
+                              />
+                           )}
+                        </div>
 
                         <CheckboxForm
                            name="isHighlight"

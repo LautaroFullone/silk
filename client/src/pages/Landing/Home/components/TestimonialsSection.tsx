@@ -1,14 +1,17 @@
 import { useFetchTestimonials } from '@hooks/react-query'
 import { getPublicImageUrl } from '@utils/getPublicImage'
 import { ChevronRight, Quote, Star } from 'lucide-react'
-import { PageTitleLanding } from '@shared'
-import { Button, Skeleton } from '@shadcn'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
+import { PageTitleLanding } from '@shared'
+import { Button, Skeleton } from '@shadcn'
 
 const TestimonialsSection = () => {
    const navigate = useNavigate()
-   const { testimonials, isLoading } = useFetchTestimonials({ onlyActive: true })
+   const { testimonials, isLoading } = useFetchTestimonials({
+      onlyActive: true,
+      count: 6,
+   })
 
    return (
       <section className="bg-silk-tertiary">

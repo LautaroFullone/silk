@@ -7,7 +7,6 @@ import { uploadImage } from '../middlewares/uploadImage'
 import requireAuth from '../middlewares/auth.middleware'
 import { optimizeImage } from '../utils/optimizeImage'
 import prismaClient from '../prisma/prismaClient'
-
 import {
    testimonialCreateSchema,
    testimonialUpdateSchema,
@@ -18,11 +17,12 @@ const testimonialsRouter = Router()
 // GET -> listar testimonios
 testimonialsRouter.get('/', async (req: Request, res: Response) => {
    try {
-      const { onlyActive } = req.query
+      const { onlyActive, count } = req.query
 
       const testimonials = await prismaClient.testimonial.findMany({
          where: onlyActive === 'true' ? { isActive: true } : {},
          orderBy: { createdAt: 'desc' },
+         take: count ? Number(count) : undefined,
          omit: { createdAt: true },
       })
 
@@ -51,6 +51,23 @@ testimonialsRouter.post(
             throw new ConflictError('Ya existe un testimonio de esta persona', {
                testimonialId: existingTestimonial.id,
             })
+         }
+
+         // Validar límite de testimonios activos (máximo 6)
+         if (body.isActive) {
+            const activeTestimonialsCount = await prismaClient.testimonial.count({
+               where: { isActive: true },
+            })
+
+            if (activeTestimonialsCount >= 6) {
+               throw new ConflictError(
+                  'Solo se pueden mostrar máximo 6 testimonios activos en el sitio web. Desactivá algún testimonio existente antes de activar este.',
+                  {
+                     maxActiveTestimonials: 6,
+                     currentActiveCount: activeTestimonialsCount,
+                  }
+               )
+            }
          }
 
          const createdTestimonial = await prismaClient.testimonial.create({
@@ -176,6 +193,23 @@ testimonialsRouter.patch(
                throw new ConflictError('Ya existe un testimonio de esta persona', {
                   testimonialId: existingTestimonial.id,
                })
+            }
+         }
+
+         // 5) Validar límite de testimonios activos si se está activando
+         if (body.isActive && !currentTestimonial.isActive) {
+            const activeTestimonialsCount = await prismaClient.testimonial.count({
+               where: { isActive: true },
+            })
+
+            if (activeTestimonialsCount >= 6) {
+               throw new ConflictError(
+                  'Solo se pueden mostrar máximo 6 testimonios activos en el sitio web. Desactivá algún testimonio existente antes de activar este.',
+                  {
+                     maxActiveTestimonials: 6,
+                     currentActiveCount: activeTestimonialsCount,
+                  }
+               )
             }
          }
 
