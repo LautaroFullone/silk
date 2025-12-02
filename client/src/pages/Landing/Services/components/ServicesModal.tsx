@@ -26,7 +26,7 @@ const ServicesModal: React.FC<ServicesModalProps> = ({ isModalOpen, onClose }) =
                      <p className="text-sm font-semibold uppercase">
                         SERVICIOS PERSONALIZADOS DE IMAGEN
                      </p>
-                     <h2 className="mt-3 text-4xl md:text-5xl font-light leading-tight">
+                     <h2 className="mt-3 text-4xl md:text-5xl font-very-vogue font-light leading-tight text-center">
                         Encontrá el servicio que
                         <span className="italic"> transforme</span> tu imagen
                      </h2>
@@ -37,7 +37,7 @@ const ServicesModal: React.FC<ServicesModalProps> = ({ isModalOpen, onClose }) =
                         auténtica.
                      </p>
 
-                     <div className="text-xl md:text-2xl text-silk-primary/90 mt-8 space-y-6 border-l-2 border-silk-primary/50 pl-4">
+                     <div className="font-acumin text-xl md:text-2xl text-silk-primary/90 mt-8 space-y-3 border-l-2 border-silk-primary/50 pl-4 hidden sm:block">
                         {/* Quote inspiracional */}
                         <blockquote className="font-light italic">
                            "Un armario que te <span className="font-normal">inspira</span>

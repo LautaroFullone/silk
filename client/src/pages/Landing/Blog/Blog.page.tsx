@@ -1,7 +1,7 @@
 import { usePagination, useSearchAndSort, useMobile } from '@hooks'
 import PostsTableSection from './components/PostsTableSection'
+import { Container, PageTitleLanding, Seo } from '@shared'
 import { useFetchPosts } from '@hooks/react-query'
-import { PageTitleLanding, Seo } from '@shared'
 import { Search } from 'lucide-react'
 import {
    Button,
@@ -96,7 +96,7 @@ const Blog = () => {
             jsonLd={blogJsonLd}
          />
 
-         <div className="container py-15 md:py-20 space-y-10">
+         <Container as="div" childrenClassName="space-y-10">
             <PageTitleLanding
                title={
                   <>
@@ -226,7 +226,7 @@ const Blog = () => {
                      : 'Pronto tendremos contenido increíble para vos'
                }
             />
-         </div>
+         </Container>
       </>
    )
 }

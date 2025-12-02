@@ -1,6 +1,7 @@
 import { PostFormData } from '@models/Post.model'
 import { ResponseApi } from './ResponseApi'
 import { api } from '@lib/axios'
+import axios from 'axios'
 
 /**
  * Obtener todos los posts del sistema
@@ -10,7 +11,7 @@ import { api } from '@lib/axios'
 export async function getPosts(onlyActive: boolean) {
    type Response = Pick<ResponseApi, 'posts' | 'categories'>
 
-   const { data } = await api.get<Response>('/posts', {
+   const { data } = await axios.get<Response>('/api/posts', {
       params: {
          onlyActive,
       },

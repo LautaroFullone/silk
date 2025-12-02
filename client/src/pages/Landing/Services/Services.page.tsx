@@ -1,7 +1,7 @@
 import ServicesModal from './components/ServicesModal'
 import ServiceCard from './components/ServiceCard'
 import FaqSection from './components/FaqSection'
-import { PageTitleLanding, Seo } from '@shared'
+import { Container, PageTitleLanding, Seo } from '@shared'
 import { ChevronRight } from 'lucide-react'
 import { Button } from '@shadcn'
 import { useState } from 'react'
@@ -245,7 +245,7 @@ const Services = () => {
             jsonLd={servicesJsonLd}
          />
 
-         <div className="container py-15 md:py-20 space-y-10">
+         <Container as="div" childrenClassName="space-y-10">
             <PageTitleLanding
                title={
                   <>
@@ -259,31 +259,11 @@ const Services = () => {
                y profesionales."
             />
 
-            {/* Inspirational Quote */}
-            {/* <h2 className="text-silk-primary font-very-vogue text-right text-2xl sm:text-4xl lg:text-5xl leading-normal">
-            <span className="block">
-               "Un armario que <span className="italic font-light">te inspira</span>
-               ."
-            </span>
-            <span className="block">
-               "Una imagen que <span className="italic font-light">te representa</span>
-               ."
-            </span>
-            <span className="block">
-               "Una confianza que{' '}
-               <span className="italic font-light">transforma realidades</span>
-               ."
-            </span>
-         </h2> */}
-
-            {/* Services Grid Section */}
-            <section>
-               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-6 sm:px-0">
-                  {services.map((service) => (
-                     <ServiceCard key={service.id} service={service} />
-                  ))}
-               </div>
-            </section>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+               {services.map((service) => (
+                  <ServiceCard key={service.id} service={service} />
+               ))}
+            </div>
 
             <section className="py-20">
                {/* Contact Form Section */}
@@ -325,7 +305,7 @@ const Services = () => {
                isModalOpen={isModalOpen}
                onClose={() => setIsModalOpen(false)}
             />
-         </div>
+         </Container>
       </>
    )
 }

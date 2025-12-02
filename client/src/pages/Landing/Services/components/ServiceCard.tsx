@@ -51,7 +51,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
 
          {/* Content Container */}
          <div className={`p-6 ${service.comingSoon ? 'opacity-75' : ''}`}>
-            <h3 className="font-very-vogue text-2xl lg:text-3xl text-silk-primary mb-3 leading-tight">
+            <h3 className="font-very-vogue text-3xl lg:text-4xl text-silk-primary mb-3 leading-tight text-center">
                {service.title}
             </h3>
 

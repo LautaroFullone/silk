@@ -1,5 +1,5 @@
-import { PageTitleLanding } from '@shared'
 import { Heart, Users, Sparkles, Target, Shield, Star } from 'lucide-react'
+import { Container, PageTitleLanding } from '@shared'
 
 const values = [
    {
@@ -48,45 +48,47 @@ const values = [
 
 const ValuesSection = () => {
    return (
-      <section className="bgsilk-tertiary">
-         <div className="container py-15 md:py-20 space-y-10">
-            <PageTitleLanding
-               element="h2"
-               textColor="text-silk-secondary"
-               title={
-                  <>
-                     Nuestros <span className="italic font-light">valores</span>
-                  </>
-               }
-               description="Los principios que guían nuestro trabajo y definen la experiencia SILK"
-            />
+      <Container
+         as="section"
+         backgroundColor="bg-silk-tertiary"
+         childrenClassName="space-y-10"
+      >
+         <PageTitleLanding
+            element="h2"
+            textColor="text-silk-secondary"
+            title={
+               <>
+                  Nuestros <span className="italic font-light">valores</span>
+               </>
+            }
+            description="Los principios que guían nuestro trabajo y definen la experiencia SILK"
+         />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-               {values.map((value) => {
-                  const IconComponent = value.icon
-                  return (
-                     <div
-                        key={value.id}
-                        className="bg-white backdrop-blur-sm rounded-md p-6 border border-silk-primary/20 hover:bg-white transition-all duration-300 group shadow-lg hover:shadow-xl"
-                     >
-                        <div className="flex items-center mb-4">
-                           <div className="bg-gradient-to-b from-emerald-600 to-emerald-800 text-white border-none p-3 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                              <IconComponent size={24} className="text-white" />
-                           </div>
-                           <h3 className="font-very-vogue text-2xl text-silk-secondary ml-4">
-                              {value.title}
-                           </h3>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+            {values.map((value) => {
+               const IconComponent = value.icon
+               return (
+                  <div
+                     key={value.id}
+                     className="bg-white backdrop-blur-sm rounded-md p-6 border border-silk-primary/20 hover:bg-white transition-all duration-300 group shadow-lg hover:shadow-xl"
+                  >
+                     <div className="flex items-center mb-4">
+                        <div className="bg-gradient-to-b from-emerald-600 to-emerald-800 text-white border-none p-3 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                           <IconComponent size={24} className="text-white" />
                         </div>
-
-                        <p className="text-silk-secondary leading-relaxed">
-                           {value.description}
-                        </p>
+                        <h3 className="font-very-vogue text-2xl text-silk-secondary ml-4">
+                           {value.title}
+                        </h3>
                      </div>
-                  )
-               })}
-            </div>
+
+                     <p className="text-silk-secondary leading-relaxed">
+                        {value.description}
+                     </p>
+                  </div>
+               )
+            })}
          </div>
-      </section>
+      </Container>
    )
 }
 

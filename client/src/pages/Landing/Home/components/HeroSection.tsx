@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import ColorimetryModal from './ColorimetryModal'
 import { ChevronRight } from 'lucide-react'
-import { PageTitleLanding } from '@shared'
+import { Container, PageTitleLanding } from '@shared'
 import { Button } from '@shadcn'
 
 const images = [
@@ -64,7 +64,10 @@ const HeroSection = () => {
             </div>
 
             <div className="z-30 w-full">
-               <div className="container py-15 md:py-20 flex flex-col items-center justify-center ">
+               <Container
+                  as="div"
+                  childrenClassName="flex flex-col items-center justify-center"
+               >
                   <PageTitleLanding
                      textColor="text-silk-tertiary"
                      title={
@@ -103,7 +106,7 @@ const HeroSection = () => {
                   <p className="mt-3 text-sm opacity-70">
                      Asesores certificados y con experiencia internacional
                   </p>
-               </div>
+               </Container>
             </div>
          </div>
 

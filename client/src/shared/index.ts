@@ -12,6 +12,7 @@ import PageTitleLanding from './PageTitleLanding'
 import Pagination from './Pagination'
 import RequestStatusBadge from './RequestStatusBadge'
 import ScrollToTop from './ScrollToTop'
+import Container from './Container'
 import SelectForm from './SelectForm'
 import TextAreaForm from './TextAreaForm'
 import Seo from './Seo'
@@ -31,6 +32,7 @@ export {
    Pagination,
    RequestStatusBadge,
    ScrollToTop,
+   Container,
    SelectForm,
    TextAreaForm,
    Seo,

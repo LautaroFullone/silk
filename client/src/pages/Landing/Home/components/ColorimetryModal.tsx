@@ -25,7 +25,7 @@ const ColorimetryModal: React.FC<ColorimetryModalProps> = ({ isModalOpen, onClos
                      <p className="text-sm font-semibold uppercase">
                         ANÁLISIS DE COLOR HECHO POR EXPERTOS
                      </p>
-                     <h2 className="mt-3 text-4xl md:text-5xl font-very-vogue font-light leading-tight">
+                     <h2 className="mt-3 text-4xl md:text-5xl font-very-vogue font-light leading-tight text-center">
                         ¿Usas los colores que realmente te
                         <span className="italic"> favorecen</span>?
                      </h2>

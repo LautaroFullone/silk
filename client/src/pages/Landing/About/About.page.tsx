@@ -50,6 +50,7 @@ const About = () => {
             ]}
             jsonLd={aboutJsonLd}
          />
+
          <TeamSection />
          <MissionSection />
          <ValuesSection />
