@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@shadcn'
+import { Container } from '@shared'
 
 const questions = [
    {
@@ -44,7 +45,11 @@ const questions = [
 
 const FaqSection = () => {
    return (
-      <section className="space-y-10">
+      <Container
+         as="section"
+         backgroundColor="bg-silk-tertiary"
+         childrenClassName="space-y-10"
+      >
          <div className="flex items-center justify-center ">
             <div className="w-full max-w-4xl mx-auto">
                <div className="relative">
@@ -93,7 +98,7 @@ const FaqSection = () => {
                </span>
             </p>
          </div> */}
-      </section>
+      </Container>
    )
 }
 export default FaqSection
