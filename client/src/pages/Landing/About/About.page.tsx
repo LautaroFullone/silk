@@ -55,10 +55,6 @@ const About = () => {
          <MissionSection />
          <ValuesSection />
 
-         <div className="flex justify-center">
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
-         </div>
-
          <WorkSection />
       </>
    )

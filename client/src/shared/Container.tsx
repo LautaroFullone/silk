@@ -10,6 +10,7 @@ interface SectionContainerProps {
       | `bg-[${string}]`
    className?: string
    childrenClassName?: string
+   topBorder?: boolean
 }
 
 const Container: FC<SectionContainerProps> = ({
@@ -18,17 +19,24 @@ const Container: FC<SectionContainerProps> = ({
    backgroundColor = '',
    className = '',
    childrenClassName = '',
+   topBorder = false,
 }) => {
    const Tag = asTag as keyof JSX.IntrinsicElements
 
    return (
-      <Tag className={`${backgroundColor} py-15 md:py-20 px-6 sm:px-0 ${className}`}>
-         <div
-            className={`max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto  ${childrenClassName}`}
-         >
-            {children}
-         </div>
-      </Tag>
+      <>
+         {topBorder && (
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-silk-secondary/30 to-transparent"></div>
+         )}
+
+         <Tag className={`${backgroundColor} py-15 md:py-20 px-6 sm:px-0 ${className}`}>
+            <div
+               className={`max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto  ${childrenClassName}`}
+            >
+               {children}
+            </div>
+         </Tag>
+      </>
    )
 }
 

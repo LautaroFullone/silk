@@ -1,18 +1,19 @@
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
-import { Button } from '@shadcn'
 import { Container } from '@shared'
+import { Button } from '@shadcn'
 
 const WorkSection = () => {
    const navigate = useNavigate()
    return (
-      <Container
-         as="section"
-         backgroundColor="bg-silk-tertiary"
-         childrenClassName="space-y-10"
-      >
-         <div className="text-center space-y-6">
+      <>
+         <Container
+            as="section"
+            backgroundColor="bg-silk-tertiary"
+            childrenClassName="space-y-10"
+            topBorder
+         >
             <div className="text-center">
                <h3 className="font-very-vogue text-4xl md:text-5xl text-silk-secondary mb-4">
                   ¡Vamos a trabajar juntos!
@@ -52,12 +53,12 @@ const WorkSection = () => {
                </Button>
             </div>
 
-            <p className="text-silk-secondary/60 text-sm mt-4">
+            <p className="text-center text-silk-secondary/60 text-sm mt-4">
                Comenzá tu transformación hoy • Te acompañaremos en cada paso • Resultados
                garantizados
             </p>
-         </div>
-      </Container>
+         </Container>
+      </>
    )
 }
 
