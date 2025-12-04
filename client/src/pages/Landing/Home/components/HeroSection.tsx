@@ -1,8 +1,6 @@
+import { Container, LandingButton, PageTitleLanding } from '@shared'
 import { useRef, useEffect, useState } from 'react'
 import ColorimetryModal from './ColorimetryModal'
-import { ChevronRight } from 'lucide-react'
-import { Container, PageTitleLanding } from '@shared'
-import { Button } from '@shadcn'
 
 const images = [
    'banner-hero-1.webp',
@@ -87,25 +85,17 @@ const HeroSection = () => {
                      }
                   />
 
-                  <Button
-                     onClick={() => setIsColorimetryModalOpen(true)}
-                     variant="primary"
-                     size="xl"
-                     className="mt-8 group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                     <span className="relative z-10 flex items-center">
-                        OBTENER MI ANÁLISIS GRATIS
-                        <ChevronRight
-                           className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                           size={19}
-                        />
-                     </span>
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  </Button>
+                  <div className="mt-5 space-y-2.5 text-center">
+                     <LandingButton
+                        label="OBTENER MI ANÁLISIS GRATIS"
+                        onClick={() => setIsColorimetryModalOpen(true)}
+                        variant="primary"
+                     />
 
-                  <p className="mt-3 text-sm opacity-70">
-                     Asesores certificados y con experiencia internacional
-                  </p>
+                     <p className="text-sm opacity-70">
+                        Asesores certificados y con experiencia internacional
+                     </p>
+                  </div>
                </Container>
             </div>
          </div>

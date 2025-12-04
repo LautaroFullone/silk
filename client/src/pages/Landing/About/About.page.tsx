@@ -4,35 +4,35 @@ import TeamSection from './components/TeamSection'
 import WorkSection from './components/WorkSection'
 import { Seo } from '@shared'
 
-const About = () => {
-   const aboutJsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'AboutPage',
-      name: 'Sobre Nosotros - Estudio Silk',
-      description:
-         'Conoce al equipo de Estudio Silk: Magalí Cruz Frezzini y Lucas Contardi. Especialistas en colorimetría y estilismo personal con pasión por transformar estilos.',
-      mainEntity: {
-         '@type': 'Organization',
-         name: 'Estudio Silk',
-         founder: [
-            {
-               '@type': 'Person',
-               name: 'Magalí Cruz Frezzini',
-               jobTitle: 'Especialista en Colorimetría y Estilismo',
-            },
-            {
-               '@type': 'Person',
-               name: 'Lucas Contardi',
-               jobTitle: 'Especialista en Estilismo Personal',
-            },
-         ],
-         foundingDate: '2024',
-         mission:
-            'Transformar el estilo de nuestros clientes en una herramienta de confianza y autenticidad',
-         serviceArea: 'Argentina',
-      },
-   }
+const aboutJsonLd = {
+   '@context': 'https://schema.org',
+   '@type': 'AboutPage',
+   name: 'Sobre Nosotros - Estudio Silk',
+   description:
+      'Conoce al equipo de Estudio Silk: Magalí Cruz Frezzini y Lucas Contardi. Especialistas en colorimetría y estilismo personal con pasión por transformar estilos.',
+   mainEntity: {
+      '@type': 'Organization',
+      name: 'Estudio Silk',
+      founder: [
+         {
+            '@type': 'Person',
+            name: 'Magalí Cruz Frezzini',
+            jobTitle: 'Especialista en Colorimetría y Estilismo',
+         },
+         {
+            '@type': 'Person',
+            name: 'Lucas Contardi',
+            jobTitle: 'Especialista en Estilismo Personal',
+         },
+      ],
+      foundingDate: '2024',
+      mission:
+         'Transformar el estilo de nuestros clientes en una herramienta de confianza y autenticidad',
+      serviceArea: 'Argentina',
+   },
+}
 
+const About = () => {
    return (
       <>
          <Seo
@@ -54,7 +54,6 @@ const About = () => {
          <TeamSection />
          <MissionSection />
          <ValuesSection />
-
          <WorkSection />
       </>
    )

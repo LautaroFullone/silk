@@ -9,6 +9,7 @@ import InfoBanner from './InfoBanner'
 import InputForm from './InputForm'
 import PageTitle from './PageTitle'
 import PageTitleLanding from './PageTitleLanding'
+import LandingButton from './LandingButton'
 import Pagination from './Pagination'
 import RequestStatusBadge from './RequestStatusBadge'
 import ScrollToTop from './ScrollToTop'
@@ -29,6 +30,7 @@ export {
    InputForm,
    PageTitle,
    PageTitleLanding,
+   LandingButton,
    Pagination,
    RequestStatusBadge,
    ScrollToTop,

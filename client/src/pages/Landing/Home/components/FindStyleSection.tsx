@@ -1,8 +1,6 @@
 import { routesConfig } from '@config/routesConfig'
+import { Container, LandingButton } from '@shared'
 import { useNavigate } from 'react-router-dom'
-import { ChevronRight } from 'lucide-react'
-import { Container } from '@shared'
-import { Button } from '@shadcn'
 
 const FindStyleSection = () => {
    const navigate = useNavigate()
@@ -61,21 +59,11 @@ const FindStyleSection = () => {
                         </div>
                      </div>
 
-                     <Button
+                     <LandingButton
+                        label=" HACER EL QUIZ"
                         onClick={() => navigate(routesConfig.CLIENT_QUIZ)}
                         variant="primary"
-                        size="xl"
-                        className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                     >
-                        <span className="relative z-10 flex items-center">
-                           HACER EL QUIZ
-                           <ChevronRight
-                              className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                              size={19}
-                           />
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                     </Button>
+                     />
 
                      <p className="text-xs text-silk-primary/60 mt-3 text-center">
                         Sin registro • Sin spam • Resultados inmediatos

@@ -1,8 +1,6 @@
-import { ChevronRight } from 'lucide-react'
+import { Container, LandingButton } from '@shared'
 import ServicesModal from './ServicesModal'
-import { Container } from '@shared'
 import { useState } from 'react'
-import { Button } from '@shadcn'
 
 const ContactSection = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
@@ -28,21 +26,11 @@ const ContactSection = () => {
             </div>
 
             <div className="flex justify-center">
-               <Button
+               <LandingButton
+                  label="QUIERO CONTACTARME"
                   onClick={() => setIsModalOpen(true)}
                   variant="tertiary"
-                  size="xl"
-                  className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-               >
-                  <span className="relative z-10 flex items-center">
-                     QUIERO CONTACTARME
-                     <ChevronRight
-                        className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                        size={19}
-                     />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-               </Button>
+               />
             </div>
          </Container>
 

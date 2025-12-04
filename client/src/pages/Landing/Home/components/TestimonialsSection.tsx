@@ -1,10 +1,10 @@
+import { PageTitleLanding, Container, LandingButton } from '@shared'
 import { useFetchTestimonials } from '@hooks/react-query'
 import { getPublicImageUrl } from '@utils/getPublicImage'
-import { ChevronRight, Quote, Star } from 'lucide-react'
 import { routesConfig } from '@config/routesConfig'
 import { useNavigate } from 'react-router-dom'
-import { PageTitleLanding, Container } from '@shared'
-import { Button, Skeleton } from '@shadcn'
+import { Quote, Star } from 'lucide-react'
+import { Skeleton } from '@shadcn'
 
 const TestimonialsSection = () => {
    const navigate = useNavigate()
@@ -113,21 +113,11 @@ const TestimonialsSection = () => {
                ¿Te interesa transformar tu imagen y ganar confianza?
             </p>
 
-            <Button
+            <LandingButton
+               label="NUESTROS SERVICIOS"
                onClick={() => navigate(routesConfig.CLIENT_SERVICES)}
                variant="primary"
-               size="xl"
-               className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-               <span className="relative z-10 flex items-center">
-                  NUESTROS SERVICIOS
-                  <ChevronRight
-                     className="ml-2 group-hover:translate-x-1 transition-transform duration-200"
-                     size={19}
-                  />
-               </span>
-               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            </Button>
+            />
          </div>
       </Container>
    )

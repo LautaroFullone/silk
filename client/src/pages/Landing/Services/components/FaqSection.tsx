@@ -77,7 +77,7 @@ const FaqSection = () => {
                         value={String(index)}
                         className="border-silk-primary/20"
                      >
-                        <AccordionTrigger className="text-base text-silk-secondary hover:text-silk-primary hover:border-silk-primary/20 [&[data-state=open]]:text-silk-primary [&[data-state=open]]:font-semibold">
+                        <AccordionTrigger className="text-base text-silk-secondary hover:text-silk-primary hover:border-silk-primary/20 [&[data-state=open]]:text-silk-primary [&[data-state=open]]:font-semibold cursor-pointer">
                            {item.question}
                         </AccordionTrigger>
 
