@@ -5,12 +5,11 @@ import { useFetchDashboardStats } from '@hooks/react-query'
 import ActivityCard from './components/ActivityCard'
 import ShortcutCard from './components/ShortcutCard'
 import { routesConfig } from '@config/routesConfig'
+import { EmptyBanner, PageTitle } from '@shared'
 import { useNavigate } from 'react-router-dom'
 import StatsCard from './components/StatsCard'
-import { PageTitle } from '@shared'
 import { useMemo } from 'react'
 import {
-   AlertCircle,
    Calendar,
    CheckCircle,
    ClipboardList,
@@ -32,31 +31,29 @@ import {
 const Dashboard = () => {
    const navigate = useNavigate()
 
-   const { stats, isLoading, isError } = useFetchDashboardStats()
+   const { stats, isLoading } = useFetchDashboardStats()
 
    const statsCards = useMemo(() => {
-      if (!stats) return []
-
       return [
          {
             title: 'Posts Publicados',
-            value: stats.posts.total,
-            description: `${stats.posts.active} activos`,
+            value: stats?.posts.total || 0,
+            description: `${stats?.posts.active || 0} activos`,
             icon: FileText,
             color: 'text-sky-600',
             bgColor: 'bg-sky-50',
          },
          {
             title: 'Testimonios',
-            value: stats.testimonials.total,
-            description: `${stats.testimonials.highlighted} destacados`,
+            value: stats?.testimonials.total || 0,
+            description: `${stats?.testimonials.highlighted || 0} destacados`,
             icon: MessageSquare,
             color: 'text-purple-600',
             bgColor: 'bg-purple-50',
          },
          {
             title: 'Contrataciones',
-            value: stats.requests.byStatus.CONTRACTED,
+            value: stats?.requests.byStatus.CONTRACTED || 0,
             description: 'Este mes',
             icon: CheckCircle,
             color: 'text-teal-600',
@@ -64,8 +61,8 @@ const Dashboard = () => {
          },
          {
             title: 'Solicitudes',
-            value: stats.requests.total,
-            description: `${stats.requests.byStatus.PENDING} pendientes`,
+            value: stats?.requests.total || 0,
+            description: `${stats?.requests.byStatus.PENDING || 0} pendientes`,
             icon: ClipboardList,
             color: 'text-rose-600',
             bgColor: 'bg-rose-50',
@@ -138,46 +135,31 @@ const Dashboard = () => {
       []
    )
 
-   if (isError) {
-      return (
-         <div className="flex flex-col items-center justify-center space-y-2">
-            <AlertCircle className="size-12 text-emerald-800" />
-            <p className="text-lg font-medium">Error al cargar el dashboard</p>
-            <p className="text-sm text-muted-foreground">Por favor, recarga la página</p>
-         </div>
-      )
-   }
-
    return (
       <>
          <PageTitle title="Panel de Control" description="Resumen de la plataforma" />
 
          {/* Estadísticas principales */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {isLoading ? (
-               <>
-                  {Array.from({ length: 4 }).map((_, index) => (
-                     <StatsCard.Skeleton key={`stat-skeleton-${index}`} />
-                  ))}
-               </>
-            ) : (
-               statsCards.map((stat, index) => (
-                  <StatsCard
-                     key={`stat-card-${index}`}
-                     title={stat.title}
-                     value={stat.value}
-                     description={stat.description}
-                     icon={stat.icon}
-                     iconColor={stat.color}
-                     iconBgColor={stat.bgColor}
-                  />
-               ))
-            )}
+            {isLoading
+               ? Array.from({ length: 4 }).map((_, index) => (
+                    <StatsCard.Skeleton key={`stat-skeleton-${index}`} />
+                 ))
+               : statsCards.map((stat, index) => (
+                    <StatsCard
+                       key={`stat-card-${index}`}
+                       title={stat.title}
+                       value={stat.value}
+                       description={stat.description}
+                       icon={stat.icon}
+                       iconColor={stat.color}
+                       iconBgColor={stat.bgColor}
+                    />
+                 ))}
          </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Actividad reciente */}{' '}
-            <Card className="lg:col-span-2">
+            <Card className="h-min lg:col-span-2">
                <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                      {isLoading ? (
@@ -209,19 +191,11 @@ const Dashboard = () => {
                            <ActivityCard.Skeleton key={`activity-skeleton-${index}`} />
                         ))
                      ) : recentActivities.length === 0 ? (
-                        <div className="text-center py-12 text-gray-500">
-                           <div className="bg-gray-50 rounded-full p-3 w-16 h-16 mx-auto mb-4">
-                              <Calendar className="w-10 h-10 mx-auto text-gray-300" />
-                           </div>
-
-                           <p className="text-sm font-medium text-gray-900 mb-1">
-                              No hay actividad reciente
-                           </p>
-
-                           <p className="text-xs text-gray-500">
-                              Las acciones aparecerán aquí cuando se realicen
-                           </p>
-                        </div>
+                        <EmptyBanner
+                           title="No hay actividad reciente"
+                           icon={Calendar}
+                           description="Las acciones aparecerán aquí cuando se realicen"
+                        />
                      ) : (
                         recentActivities.map((activity, index) => (
                            <ActivityCard
@@ -233,7 +207,7 @@ const Dashboard = () => {
                   </div>
                </CardContent>
             </Card>
-            {/* Acciones Rapidas */}
+
             <Card className="h-min">
                <CardHeader>
                   <CardTitle className="flex items-center gap-2">
